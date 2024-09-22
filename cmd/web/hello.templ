@@ -1,10 +1,40 @@
 package web
 
+import "templ_components/cmd/web/components"
+
 templ HelloForm() {
 	@Base() {
-		<form hx-post="/hello" method="POST" hx-target="#hello-container">
-			<input class="border" id="name" name="name" type="text"/>
+		<form
+			id="test"
+			hx-post="/hello"
+			method="POST"
+			oncontextmenu="showContextMenu(this, event)"
+			hx-target="#hello-container"
+			class="h-20"
+		>
+			<input class="border input" id="name" name="name" type="text"/>
 			<button type="submit">Submit</button>
+			@components.ContextMenu() {
+				@components.MenuItem() {
+					<a href="#">File</a>
+				}
+				@components.SubMenu(components.SubMenuProps{Title: "Edit"}) {
+					@components.MenuItem() {
+						<a href="#">Copy</a>
+					}
+					@components.MenuItem() {
+						<a href="#">Paste</a>
+					}
+					@components.SubMenu(components.SubMenuProps{Title: "Submenu", Attrs: templ.Attributes{"onhover": "showSubMenu(this)"}}) {
+						@components.MenuItem() {
+							<a href="#">Start</a>
+						}
+					}
+				}
+				@components.MenuItem() {
+					<a href="#">Help</a>
+				}
+			}
 		</form>
 		<div id="hello-container"></div>
 	}

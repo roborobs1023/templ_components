@@ -1,0 +1,122 @@
+package components
+
+var handleOnce = templ.NewOnceHandle()
+
+type MenuProps struct {
+	Title string
+}
+
+templ ContextMenu() {
+	<style>
+.menu {
+    display: none;
+    z-index: 1000;
+}
+.menu, .menuItem{
+    margin:0;
+    font-weight:normal;
+    white-space:nowrap;
+    height: 2rem;
+}
+
+.menu a {
+    display: block;
+    text-decoration: none;
+}
+
+.menuItem[title]:before, .subMenu[title]:before {
+    content: attr(title);
+}
+
+.menuItem:hover>.subMenu, .menuItem:focus-within, .subMenu:focus-within {
+    display: block;
+
+}
+
+.subMenu {
+    display: none;
+    position: absolute;
+    left: 100%;
+    top: 0;
+}
+
+
+        
+    </style>
+	@handleOnce.Once() {
+		<script type="text/javascript">
+            
+            function showContextMenu(element, event) {
+                event.preventDefault();
+                var ctxMenu = element.querySelector(':scope > .menu');
+                
+                ctxMenu.style.display="block";
+                ctxMenu.style.left = (event.pageX -10)+"px";
+                ctxMenu.style.top =  (event.pageY -10)+"px";
+
+                var firstItem = ctxMenu.children[0]
+                firstItem.focus()
+                
+                document.addEventListener("click", function(event){
+                
+                var ctxMenu = element.querySelector(':scope > .menu');
+                ctxMenu.style.display = "";
+                ctxMenu.style.left = "";
+                ctxMenu.style.top = "";
+                }, false);
+            };  
+
+            function hideContextMenu(element) {
+                this.style.display="";
+            }
+
+
+            function showSubMenu(element) {
+                var submenu = element.querySelector(':scope > .subMenu')
+                submenu.style.display="block";
+                submenu.addEventListener('focusout', hideSubMenu(submenu))
+            }
+
+            function hideSubMenu(element) {
+                    this.style.display = "";
+                    this.removeEventListener('focusout', hideSubMenu(this))
+            }
+
+
+        </script>
+	}
+	<div class="absolute p-2 rounded-md menu bg-slate-500 text-primary">
+		{ children... }
+	</div>
+}
+
+templ MenuItem() {
+	<div
+		class="relative p-2 menuItem text-primary bg-slate-500 hover:bg-slate-700 hover:text-white hover:font-bold"
+	>
+		{ children... }
+	</div>
+}
+
+type SubMenuProps struct {
+	Title string
+	Href  templ.SafeURL
+	Attrs templ.Attributes
+}
+
+templ SubMenu(p SubMenuProps) {
+	@MenuItem() {
+		{ p.Title }
+		<div class="absolute rounded-sm subMenu bg-slate-500">
+			{ children... }
+		</div>
+	}
+}
+
+// .menuItem:not([title]):before {
+//     content: "\2630";
+// }
+
+// .menuItem > .subMenu {
+//     display: none;
+// }
