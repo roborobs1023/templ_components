@@ -1,0 +1,58 @@
+package layout
+
+const (
+	LocLeft  = "left"
+	LocRight = "right"
+)
+
+type SidebarProps struct {
+	Class     string
+	Title     string
+	Location  string
+	ShowTitle bool
+	IconClass string
+}
+
+func (p *SidebarProps) getLocation() string {
+	if p.Location == LocRight {
+		return LocRight
+	}
+	p.Location = LocLeft
+	return LocLeft
+}
+
+script openSidebar(side string) {
+	let sidebar = "".concat( side, "-sb-expand")
+	document.body.classList.toggle(sidebar)	
+}
+
+templ Sidebar(p SidebarProps) {
+	<style>
+		body.left-sb-expand {
+			--left: 12.5rem;
+		}
+
+		body.right-sb-expand {
+			--right: 12.5rem;
+		}
+
+		body.left-sb-expand>aside.left>button,body.right-sb-expand>aside.right>button {
+			transform: rotateY(180deg);
+			transition: ease-in-out 0.3s;
+		}
+
+	</style>
+	<aside class={ p.getLocation(), "relative grid p-2 gap-2 justify-items-center text-slate-950 dark:text-white bg-slate-400 dark:bg-slate-600 min-h-full", templ.KV("pr-4", (p.Location == LocLeft)), templ.KV("pl-4", (p.Location == LocRight)),p.Class }>
+		if p.ShowTitle {
+			<h2>{ p.Title }</h2>
+		}
+		<button onClick={ openSidebar(p.Location) } class={ "btn border-2  bg-slate-700 dark:bg-white rounded-full absolute top-3", templ.KV("right-[-15px]", (p.Location == LocLeft)), templ.KV("left-[-15px]", (p.Location == LocRight)) }>
+			if p.Location == LocRight {
+				<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="fill-slate-900" class={ p.IconClass }><path d="M560-240 320-480l240-240 56 56-184 184 184 184-56 56Z"></path></svg>
+			} else {
+				<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="fill-slate-900" class={ p.IconClass }><path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z"></path></svg>
+			}
+		</button>
+		{ children... }
+	</aside>
+}

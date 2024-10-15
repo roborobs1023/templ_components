@@ -1,0 +1,72 @@
+package components
+
+type LinkProps struct {
+	Href  string
+	Label string
+	Class string
+	// HTMX options:
+	IsActive bool
+
+	HXGet       string
+	HXTrigger   string
+	HXTarget    string
+	HXSwap      string
+	HXIndicator string
+	Attrs       templ.Attributes
+}
+
+var linkHandle = templ.NewOnceHandle()
+
+script watchLoad() {
+	const currentUrl = window.location.href;
+		
+		
+	let elements = document.getElementsByClassName("navlink")
+	
+	for (var i = 0; i < elements.length; i++) {
+		if (currentUrl.includes(elements[i].href)) {
+			elements[i].classList.add("active");
+		} else {
+			elements[i].classList.remove("active");
+		}
+	}	
+}
+
+templ NavLink(p LinkProps) {
+	<nav-link>
+		<a
+			href={ templ.URL(p.Href) }
+			if p.HXGet != "" {
+				hx-get={ p.HXGet }
+			}
+			if p.HXGet != "" {
+				hx-post={ p.HXGet }
+			}
+			if p.HXTarget != "" {
+				hx-target={ p.HXTarget }
+			}
+			if p.HXSwap != "" {
+				hx-swap={ p.HXSwap }
+			}
+			if p.HXIndicator != "" {
+				hx-indicator={ p.HXIndicator }
+			}
+			class={ "navlink text-lg active:underline active:font-bold active:text-primary dark:text-white hover:font-bold hover:underline", p.Class }
+			{ p.Attrs... }
+		>{ p.Label }</a>
+	</nav-link>
+	@linkHandle.Once() {
+		<style>
+			nav-link .active {
+				font-weight: bold;
+			}
+		</style>
+		@watchLoad()
+	}
+}
+
+templ NavList() {
+	<nav class="flex gap-2">
+		{ children... }
+	</nav>
+}

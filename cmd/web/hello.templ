@@ -1,45 +1,65 @@
 package web
 
-import "templ_components/cmd/web/components"
+import (
+	"templ_components/cmd/web/components"
+	"templ_components/cmd/web/layout"
+)
 
 templ HelloForm() {
-	@Base() {
-		<form
-			id="test"
-			hx-post="/hello"
-			method="POST"
-			oncontextmenu="showContextMenu(this, event)"
-			hx-target="#hello-container"
-			class="h-20"
-		>
-			<input class="border input" id="name" name="name" type="text"/>
-			<button type="submit">Submit</button>
-			@components.ContextMenu() {
-				@components.MenuItem() {
-					<a href="#">File</a>
-				}
-				@components.SubMenu(components.SubMenuProps{Title: "Edit"}) {
-					@components.MenuItem() {
-						<a href="#">Copy</a>
+	@layout.Base(layout.BaseProps{Title: "Templ Components"}) {
+		@layout.Header(layout.HeaderProps{Class: "border-b-slate-400"}) {
+			<img class="max-h-12" src="/assets/img/Lillie.jpg"/>
+			@layout.Nav(layout.NavProps{}) {
+				@components.NavLink(components.LinkProps{Href: "/web", Label: "Home"})
+				@components.NavLink(components.LinkProps{Href: "/hello", Label: "Hello"})
+			}
+		}
+		@layout.Sidebar(layout.SidebarProps{Location: "left"}) {
+			@layout.Nav(layout.NavProps{Vertical: true}) {
+				@components.NavLink(components.LinkProps{Href: "/web", Label: "Home"})
+				@components.NavLink(components.LinkProps{Href: "/hello", Label: "Hello"})
+			}
+		}
+		@layout.Sidebar(layout.SidebarProps{Location: "right"}) {
+			Sidebar Right
+		}
+		<main>
+			@components.Form(components.FormProps{Id: "test1", Name: "Welcome", HXPost: "/hello", Method: "POST", HXTarget: "#hello-container", HideTitle: true, MultiColumn: true, Attrs: templ.Attributes{"oncontextmenu": "showContextMenu(this, event)"}}) {
+				@components.TextInput(components.InputProps{Id: "first_name", Name: "first_name", Label: "first name", Required: true, HelperText: "Enter your first name."})
+				@components.TextInput(components.InputProps{Id: "last_name", Name: "last_name", Label: "Last Name", Required: true, HelperText: "Enter your last name."})
+				@components.TextInput(components.InputProps{Id: "address", Name: "address", Label: "Address"})
+				@components.TextInput(components.InputProps{Id: "email", Name: "email", Label: "Email", HelperText: "Enter your email."})
+				@components.ContextMenu(templ.Attributes{}) {
+					@components.MenuItem(templ.Attributes{}) {
+						<a href="#">File</a>
 					}
-					@components.MenuItem() {
-						<a href="#">Paste</a>
-					}
-					@components.SubMenu(components.SubMenuProps{Title: "Submenu", Attrs: templ.Attributes{"onhover": "showSubMenu(this)"}}) {
-						@components.MenuItem() {
-							<a href="#">Start</a>
+					@components.SubMenu(components.SubMenuProps{Title: "Edit"}) {
+						@components.MenuItem(templ.Attributes{}) {
+							<a href="#">Copy</a>
+						}
+						@components.MenuItem(templ.Attributes{}) {
+							<a href="#">Paste</a>
+						}
+						@components.SubMenu(components.SubMenuProps{Title: "Submenu", Attrs: templ.Attributes{"onclick": "showSubMenu(this)"}}) {
+							@components.MenuItem(templ.Attributes{}) {
+								<a href="#">Start</a>
+							}
 						}
 					}
-				}
-				@components.MenuItem() {
-					<a href="#">Help</a>
+					@components.MenuItem(templ.Attributes{}) {
+						<a href="#">Help</a>
+					}
 				}
 			}
-		</form>
-		<div id="hello-container"></div>
+			<div id="hello-container"></div>
+			@components.CookieWarning()
+		</main>
+		@layout.Footer() {
+			Hello World
+		}
 	}
 }
 
 templ HelloPost(name string) {
-	<div>Hello, { name }</div>
+	<div class="text-white">Hello, { name }</div>
 }

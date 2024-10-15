@@ -1,0 +1,99 @@
+package components
+
+const (
+	POSLeft   = "start"
+	POSCenter = "center"
+	POSSplit  = "split"
+)
+
+type FormProps struct {
+	Id           string
+	Name         string
+	Title        string
+	HideTitle    bool
+	Class        string
+	FooterClass  string
+	MultiColumn  bool
+	Action       string
+	Method       string
+	SubmitTxt    string
+	ShowClearBtn bool
+	BtnPosition  string
+	//HTMX props
+	HXPost    string
+	HXTarget  string
+	HXSwap    string
+	HXHeaders string
+	HXTrigger string
+
+	Attrs templ.Attributes
+}
+
+func getSubmitTxt(text string) string {
+	if text == "" {
+		return "Submit"
+	}
+
+	return text
+}
+
+func (p FormProps) getBtnPostion() string {
+	switch p.BtnPosition {
+	case POSLeft:
+		return "justify-start"
+	case POSCenter:
+		return "justify-center"
+	case POSSplit:
+		return "justify-between"
+	default:
+		return "justify-end"
+
+	}
+
+}
+
+var title string
+
+templ Form(props FormProps) {
+	<form
+		id={ props.Id }
+		action={ templ.URL(props.Action) }
+		method={ props.Method }
+		if props.HXHeaders !="" {
+			hx-headers={ props.HXHeaders }
+		}
+		if props.HXPost != "" {
+			hx-post={ props.HXPost }
+		}
+		if props.HXTrigger != "" {
+			hx-trigger={ props.HXTrigger }
+		}
+		if props.HXTarget != "" {
+			hx-target={ props.HXTarget }
+		}
+		if props.HXSwap != "" {
+			hx-swap={ props.HXSwap }
+		}
+		class={ "max-w-fit sm:w-full p-4 mx-auto mt-1 border-solid border-2 bg-inherit dark:bg-slate-600 border-slate-700 rounded-lg", props.Class }
+		{ props.Attrs... }
+	>
+		if !props.HideTitle {
+			if props.Title != "" {
+				title = props.Title 
+			} else {
+				title = props.Name 
+			}
+			<h1 class="self-center w-full pb-4 mx-auto font-bold text-center capitalize text-primary dark:text-white">{ title } </h1>
+			<hr/>
+		}
+		<div class={ "grid justify-content-end gap-2 m-2", templ.KV("grid-cols-2 auto-cols-max ", props.MultiColumn) }>
+			{ children... }
+		</div>
+		<footer class={ "flex gap-2 w-full align-end p-2", props.FooterClass, props.getBtnPostion() }>
+			<button type="submit" class="badge badge-primary p-2 hover:scale-[1.1] text-black border-2 border-solid rounded-lg bg-sky-800 border-slate-700 badge badge-primary dark:text-white dark:bg-sky-800 disabled:opacity-50">{ getSubmitTxt(props.SubmitTxt) }</button>
+			if props.ShowClearBtn {
+				<button type="reset" class="p-2 hover:scale-[1.1] badge badge-primary text-slate dark:text-white dark:bg-sky-800">Clear</button>
+			}
+		</footer>
+	</form>
+}

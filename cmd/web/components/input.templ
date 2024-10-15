@@ -1,0 +1,121 @@
+package components
+
+const (
+	DirHorizontal = "horizontal"
+	DirVertical   = "vertical"
+)
+
+type InputProps struct {
+	Id            string
+	Type          string
+	Name          string
+	Label         string
+	Direction     string
+	FullWidth     bool
+	Placeholder   string
+	HelperText    string
+	LabelClass    string
+	InputClass    string
+	Value         string
+	Model         string
+	AutoFocus     bool
+	HideLabel     bool
+	Required      bool
+	AsteriskClass string
+	Disabled      bool
+	Vertical      bool
+	// HTMX options:
+	HXPost      string
+	HXGet       string
+	HXTrigger   string
+	HXTarget    string
+	HXSwap      string
+	HXIndicator string
+	Attrs       templ.Attributes
+}
+
+/**
+* Text Input Component.
+* ======================
+* This is a input component that can be used to create text inputs.
+*
+* @params InputProps
+* @author: github.com/tego101 <-> x.com/tegodotdev
+* @license: MIT
+*
+* Usage:
+* @components.Input(components.InputProps{
+*   Type: "text",
+*   Name: "First Name",
+*   Placeholder: "Enter your name",
+*   Class: "max-w-6xl",
+*   HideLabel: true,
+* })
+ */
+
+templ TextInput(props InputProps) {
+	<div class={ "relative flex max-w-2xl gap-2 ml-2 text-black justify-end items-center", templ.KV("flex-col", (props.Direction == DirVertical)) }>
+		<label
+			class={ "relative capitalize text-nowrap dark:text-white", props.LabelClass }
+			for={ props.Id }
+		>
+			if props.Required {
+				<p class="absolute top-0 left-[-0.75rem] text-red-500">*</p>
+			}
+			if !props.HideLabel {
+				// <div class="flex flex-row items-center space-x-2">
+				<strong>{ props.Label }</strong>
+				// </div>
+			}
+		</label>
+		<div class={ "relative" }>
+			<input
+				type={ props.Type }
+				id={ props.Id }
+				if props.Name == "" {
+					name={ props.Id }
+				} else {
+					name={ props.Name }
+				}
+				class={ "relative self-end focus:outline-none focus-visible:outline-none px-3 py-2 text-base dark:text-white dark:ring-slate-500 bg-white dark:bg-slate-800 dark:border-slate-900 border rounded-md peer border-neutral-300 ring-offset-background placeholder:text-slate-400 text-slate-700 focus:border-neutral-300 focus:ring-2 focus:ring-offset-2 focus:ring-neutral-400 disabled:cursor-not-allowed disabled:opacity-50", props.InputClass, templ.KV("w-full", props.FullWidth) }
+				if props.Disabled {
+					disabled
+				}
+				if props.Required {
+					required
+				}
+				if props.AutoFocus {
+					autofocus
+				}
+				placeholder={ props.Placeholder }
+				if props.Model != "" {
+					x-model={ props.Model }
+				}
+				if props.HXGet != "" {
+					hx-get={ props.HXGet }
+				}
+				if props.HXPost != "" {
+					hx-post={ props.HXPost }
+				}
+				if props.HXTrigger != "" {
+					hx-trigger={ props.HXTrigger }
+				}
+				if props.HXTarget != "" {
+					hx-target={ props.HXTarget }
+				}
+				if props.HXSwap != "" {
+					hx-swap={ props.HXSwap }
+				}
+				if props.HXIndicator != "" {
+					hx-indicator={ props.HXIndicator }
+				}
+				{ props.Attrs... }
+			/>
+			if props.HelperText != "" {
+				<p class="pl-2 mt-1 text-xs text-slate-400">
+					{ props.HelperText }
+				</p>
+			}
+		</div>
+	</div>
+}

@@ -1,0 +1,29 @@
+package layout
+
+import "fmt"
+
+type GridProps struct {
+	Rows  int
+	Cols  int
+	Class string
+}
+
+templ Grid(p GridProps) {
+	<div class="flex items-center justify-center w-full h-full p-6">
+		<div class={ "grid w-full h-full gap-4", fmt.Sprintf("grid-cols-%v grid-rows-%s", p.Cols, p.Rows) }>
+			{ children... }
+		</div>
+	</div>
+}
+
+type GridItemProps struct {
+	Rows  int
+	Cols  int
+	Class string
+}
+
+templ GridItem(p GridItemProps) {
+	<div class={ fmt.Sprintf("col-span-%v row-span-%s", p.Cols, p.Rows), p.Class }>
+		{ children... }
+	</div>
+}

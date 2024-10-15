@@ -1,0 +1,46 @@
+package web
+
+import (
+	"templ_components/cmd/web/components"
+	"templ_components/cmd/web/layout"
+)
+
+templ DashboardHandler() {
+	@layout.Base(layout.BaseProps{Title: "Templ Components:Dashboard"}) {
+		@layout.Header(layout.HeaderProps{Class: "border-b-slate-400"}) {
+			<img class="max-h-12" src="/assets/img/Lillie.jpg"/>
+			@layout.Nav(layout.NavProps{}) {
+				@components.NavLink(components.LinkProps{Href: "/web", Label: "Home"})
+				@components.NavLink(components.LinkProps{Href: "/hello", Label: "Hello"})
+			}
+		}
+		@layout.Sidebar(layout.SidebarProps{Location: "left"}) {
+			@layout.Nav(layout.NavProps{Vertical: true}) {
+				@components.NavLink(components.LinkProps{Href: "/web", Label: "Home"})
+				@components.NavLink(components.LinkProps{Href: "/hello", Label: "Hello"})
+			}
+		}
+		@layout.Sidebar(layout.SidebarProps{Location: "right"}) {
+			Sidebar Right
+		}
+		<main>
+			@layout.Grid(layout.GridProps{Rows: 4, Cols: 8}) {
+				@layout.GridItem(layout.GridItemProps{Rows: 4, Cols: 2, Class: "bg-white rounded"}) {
+					<p>Hello World</p>
+				}
+				@layout.GridItem(layout.GridItemProps{Rows: 4, Cols: 3, Class: "bg-blue-500 rounded"}) {
+					<p>Hello Blue</p>
+				}
+				@layout.GridItem(layout.GridItemProps{Rows: 4, Cols: 1, Class: "bg-red-600 rounded"}) {
+					<p>Hello Red</p>
+				}
+				@layout.GridItem(layout.GridItemProps{Rows: 2, Cols: 2, Class: "bg-slate-400 rounded"}) {
+					<p>Hello World</p>
+				}
+				@layout.GridItem(layout.GridItemProps{Rows: 1, Cols: 5, Class: "bg-green-300 rounded"}) {
+					<p>Hello World</p>
+				}
+			}
+		</main>
+	}
+}

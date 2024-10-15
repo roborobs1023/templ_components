@@ -20,6 +20,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 	e.POST("/hello", echo.WrapHandler(http.HandlerFunc(web.HelloWebHandler)))
 
 	e.GET("/", s.HelloWorldHandler)
+	e.GET("/dashboard", echo.WrapHandler(templ.Handler(web.DashboardHandler())))
 
 	return e
 }

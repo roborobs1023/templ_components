@@ -6,49 +6,69 @@ type MenuProps struct {
 	Title string
 }
 
-templ ContextMenu() {
-	<style>
-.menu {
-    display: none;
-    z-index: 1000;
-}
-.menu, .menuItem{
-    margin:0;
-    font-weight:normal;
-    white-space:nowrap;
-    height: 2rem;
-}
-
-.menu a {
-    display: block;
-    text-decoration: none;
-}
-
-.menuItem[title]:before, .subMenu[title]:before {
-    content: attr(title);
-}
-
-.menuItem:hover>.subMenu, .menuItem:focus-within, .subMenu:focus-within {
-    display: block;
-
-}
-
-.subMenu {
-    display: none;
-    position: absolute;
-    left: 100%;
-    top: 0;
-}
-
-
-        
-    </style>
+templ ContextMenu(attrs templ.Attributes) {
 	@handleOnce.Once() {
+		<style>
+            .menu {
+                display: none;
+                position: absolute;
+
+                border-radius: 0.375rem;
+                z-index: 1000;
+                
+            }
+
+            .menuItem {
+                padding: 0.5rem;
+            }
+
+            .menu, .subMenu {
+                padding: 0.2rem;
+                border-radius: 0.375rem;
+            }
+
+            .menu, .menuItem{
+                margin:0;
+                font-weight:normal;
+                white-space:nowrap;
+            }
+
+            .menu a {
+                display: block;
+                text-decoration: none;
+            }
+
+            .menuItem[title]:before, .subMenu[title]:before {
+                content: attr(title);
+            }
+
+            .menuItem:hover>.subMenu, .menuItem:focus-within, .subMenu:focus-within {
+                display: block;
+
+            }
+
+            .subMenu {
+                display: none;
+                position: absolute;
+                padding-left: 0;
+                left: 100%;
+                top: 0;
+                border-top-left-radius: 0;
+            }
+        </style>
 		<script type="text/javascript">
             
             function showContextMenu(element, event) {
                 event.preventDefault();
-                var ctxMenu = element.querySelector(':scope > .menu');
+                var shownMenus = document.querySelectorAll('.menu') 
+                for (var i = 0; i < shownMenus.length; i++) {
+
+                shownMenus[i].style.display = "";
+                shownMenus[i].style.left = "";
+                shownMenus[i].style.top = "";
+                }
+
+                var ctxMenu = element.querySelector(':scope .menu');
                 
                 ctxMenu.style.display="block";
                 ctxMenu.style.left = (event.pageX -10)+"px";
@@ -59,11 +79,12 @@ templ ContextMenu() {
                 
                 document.addEventListener("click", function(event){
                 
-                var ctxMenu = element.querySelector(':scope > .menu');
+                var ctxMenu = element.querySelector(':scope .menu');
                 ctxMenu.style.display = "";
                 ctxMenu.style.left = "";
                 ctxMenu.style.top = "";
                 }, false);
+                
             };  
 
             function hideContextMenu(element) {
@@ -71,10 +92,10 @@ templ ContextMenu() {
             }
 
 
-            function showSubMenu(element) {
+            function showSubMenu(element, event) {
                 var submenu = element.querySelector(':scope > .subMenu')
-                submenu.style.display="block";
-                submenu.addEventListener('focusout', hideSubMenu(submenu))
+                var firstItem = submenu.children[0]
+                firstItem.focus()
             }
 
             function hideSubMenu(element) {
@@ -85,17 +106,22 @@ templ ContextMenu() {
 
         </script>
 	}
-	<div class="absolute p-2 rounded-md menu bg-slate-500 text-primary">
-		{ children... }
+	<div class="bg-gray-400 rounded-md menu" { attrs... }>
+		<ul>
+			{ children... }
+		</ul>
 	</div>
 }
 
-templ MenuItem() {
-	<div
-		class="relative p-2 menuItem text-primary bg-slate-500 hover:bg-slate-700 hover:text-white hover:font-bold"
+templ MenuItem(attrs templ.Attributes) {
+	<li
+		class="relative p-2 text-white menuItem hover:bg-gray-700 hover:text-white hover:font-bold"
+		onhover="showSubMenu(this, event)"
+		onfocus="showSubMenu(this, event)"
+		{ attrs... }
 	>
 		{ children... }
-	</div>
+	</li>
 }
 
 type SubMenuProps struct {
@@ -105,10 +131,12 @@ type SubMenuProps struct {
 }
 
 templ SubMenu(p SubMenuProps) {
-	@MenuItem() {
+	@MenuItem(templ.Attributes{}) {
 		{ p.Title }
-		<div class="absolute rounded-sm subMenu bg-slate-500">
-			{ children... }
+		<div class="absolute bg-gray-400 rounded-sm subMenu">
+			<ul>
+				{ children... }
+			</ul>
 		</div>
 	}
 }

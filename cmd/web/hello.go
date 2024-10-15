@@ -11,8 +11,9 @@ func HelloWebHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Bad Request", http.StatusBadRequest)
 	}
 
-	name := r.FormValue("name")
-	component := HelloPost(name)
+	firstname := r.FormValue("first_name")
+	lastname := r.FormValue("last_name")
+	component := HelloPost(firstname + " " + lastname)
 	err = component.Render(r.Context(), w)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
