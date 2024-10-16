@@ -21,32 +21,46 @@ func (p *SidebarProps) getLocation() string {
 	return LocLeft
 }
 
-script openSidebar(side string) {
-	let sidebar = "".concat( side, "-sb-expand")
-	document.body.classList.toggle(sidebar)	
+script toggleSidebar(id, side string) {
+	let sidebarClass = "".concat( side, "-sb-expand")
+	document.body.classList.toggle(sidebarClass)	
+
+	let sidebar = document.getElementById(id) 
+	console.log(id)
+	console.log(sidebar)
+	sidebar.toggleAttribute("closed")
+	sidebar.toggleAttribute("opened")
 }
 
-templ Sidebar(p SidebarProps) {
+templ Sidebar(id string, p SidebarProps) {
 	<style>
 		body.left-sb-expand {
-			--left: 12.5rem;
+			--left: max-content;
 		}
 
 		body.right-sb-expand {
-			--right: 12.5rem;
+			--right: max-content;
 		}
 
-		body.left-sb-expand>aside.left>button,body.right-sb-expand>aside.right>button {
+		aside[opened] .toggle {
 			transform: rotateY(180deg);
 			transition: ease-in-out 0.3s;
 		}
 
+		aside[closed] label {
+			display: none;
+		}
+
 	</style>
-	<aside class={ p.getLocation(), "relative grid p-2 gap-2 justify-items-center text-slate-950 dark:text-white bg-slate-400 dark:bg-slate-600 min-h-full", templ.KV("pr-4", (p.Location == LocLeft)), templ.KV("pl-4", (p.Location == LocRight)),p.Class }>
+	<aside
+		id={ id }
+		class={ p.getLocation(), "relative grid py-2 gap-2 justify-items-center text-slate-950 dark:text-white bg-slate-400 dark:bg-slate-600 min-h-full px-4",p.Class }
+		closed
+	>
 		if p.ShowTitle {
 			<h2>{ p.Title }</h2>
 		}
-		<button onClick={ openSidebar(p.Location) } class={ "btn border-2  bg-slate-700 dark:bg-white rounded-full absolute top-3", templ.KV("right-[-15px]", (p.Location == LocLeft)), templ.KV("left-[-15px]", (p.Location == LocRight)) }>
+		<button onClick={ toggleSidebar(id, p.Location) } class={ "toggle btn border-2  bg-slate-700 dark:bg-white rounded-full absolute top-3", templ.KV("right-[-15px]", (p.Location == LocLeft)), templ.KV("left-[-15px]", (p.Location == LocRight)) }>
 			if p.Location == LocRight {
 				<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="fill-slate-900" class={ p.IconClass }><path d="M560-240 320-480l240-240 56 56-184 184 184 184-56 56Z"></path></svg>
 			} else {

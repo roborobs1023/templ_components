@@ -2,6 +2,7 @@ package components
 
 type LinkProps struct {
 	Href  string
+	Icon  templ.Component
 	Label string
 	Class string
 	// HTMX options:
@@ -51,9 +52,14 @@ templ NavLink(p LinkProps) {
 			if p.HXIndicator != "" {
 				hx-indicator={ p.HXIndicator }
 			}
-			class={ "navlink text-lg active:underline active:font-bold active:text-primary dark:text-white hover:font-bold hover:underline", p.Class }
+			class={ "flex items-center gap-2 navlink text-lg dark:text-white hover:font-bold hover:underline", p.Class }
 			{ p.Attrs... }
-		>{ p.Label }</a>
+		>
+			if p.Icon != nil {
+				@p.Icon
+			}
+			<label>{ p.Label }</label>
+		</a>
 	</nav-link>
 	@linkHandle.Once() {
 		<style>
@@ -66,7 +72,7 @@ templ NavLink(p LinkProps) {
 }
 
 templ NavList() {
-	<nav class="flex gap-2">
+	<nav class="container flex gap-2">
 		{ children... }
 	</nav>
 }

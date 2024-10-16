@@ -11,16 +11,16 @@ templ HelloForm() {
 			<img class="max-h-12" src="/assets/img/Lillie.jpg"/>
 			@layout.Nav(layout.NavProps{}) {
 				@components.NavLink(components.LinkProps{Href: "/web", Label: "Home"})
-				@components.NavLink(components.LinkProps{Href: "/hello", Label: "Hello"})
+				@components.NavLink(components.LinkProps{Href: "/dashboard", Label: "Dashboard"})
 			}
 		}
-		@layout.Sidebar(layout.SidebarProps{Location: "left"}) {
+		@layout.Sidebar(components.GenerateUniqueKey("sidebar"), layout.SidebarProps{Location: "left"}) {
 			@layout.Nav(layout.NavProps{Vertical: true}) {
 				@components.NavLink(components.LinkProps{Href: "/web", Label: "Home"})
-				@components.NavLink(components.LinkProps{Href: "/hello", Label: "Hello"})
+				@components.NavLink(components.LinkProps{Href: "/dashboard", Label: "Dashboard"})
 			}
 		}
-		@layout.Sidebar(layout.SidebarProps{Location: "right"}) {
+		@layout.Sidebar(components.GenerateUniqueKey("sidebar"), layout.SidebarProps{Location: "right"}) {
 			Sidebar Right
 		}
 		<main>
