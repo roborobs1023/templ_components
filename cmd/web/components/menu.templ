@@ -47,6 +47,7 @@ templ ContextMenu(attrs templ.Attributes) {
 
             }
 
+
             .subMenu {
                 display: none;
                 position: absolute;
@@ -115,7 +116,7 @@ templ ContextMenu(attrs templ.Attributes) {
 
 templ MenuItem(attrs templ.Attributes) {
 	<li
-		class="relative p-2 text-white menuItem hover:bg-gray-700 hover:text-white hover:font-bold"
+		class="relative flex gap-2 p-2 text-white menuItem hover:bg-gray-700 hover:text-white hover:font-bold"
 		onhover="showSubMenu(this, event)"
 		onfocus="showSubMenu(this, event)"
 		{ attrs... }

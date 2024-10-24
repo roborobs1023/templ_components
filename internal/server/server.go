@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"templ_components/cmd/web/icons"
 	"time"
 
 	_ "github.com/joho/godotenv/autoload"
@@ -28,6 +29,8 @@ func NewServer() *http.Server {
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 30 * time.Second,
 	}
+
+	icons.SetCustomDefaults(&icons.IconConfig{Size: "2rem", Color: "white", Fill: false, Variant: "rounded"})
 
 	return server
 }

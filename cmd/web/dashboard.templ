@@ -2,7 +2,7 @@ package web
 
 import (
 	"templ_components/cmd/web/components"
-	"templ_components/cmd/web/icon"
+	"templ_components/cmd/web/icons"
 	"templ_components/cmd/web/layout"
 )
 
@@ -18,8 +18,8 @@ templ DashboardHandler() {
 		@layout.Sidebar(components.GenerateUniqueKey("sidebar"), layout.SidebarProps{Location: "right"}) {
 			@layout.Nav(layout.NavProps{Vertical: true}) {
 				@components.NavLink(components.LinkProps{Href: "/web", Label: "Home"})
-				@components.NavLink(components.LinkProps{Icon: icon.Dashboard(icon.IconProps{}), Href: "/dashboard", Label: "Dashboard"})
-				@components.NavLink(components.LinkProps{Icon: icon.Search(icon.IconProps{}), Href: "#", Label: "Search"})
+				@components.NavLink(components.LinkProps{Icon: icons.Dashboard(icons.IconProps{}), Href: "/dashboard", Label: "Dashboard"})
+				@components.NavLink(components.LinkProps{Icon: icons.Search(icons.IconProps{}), Href: "#", Label: "Search"})
 			}
 		}
 		<main>
