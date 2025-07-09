@@ -1,0 +1,85 @@
+package time
+
+import (
+	"fmt"
+	"github.com/roborobs1023/templ_components/inputs/common"
+	"github.com/roborobs1023/templ_components/internal/utils"
+	"time"
+)
+
+type TimeProps struct {
+	common.InputProps
+	MinTime string //"HH:mm"
+	MaxTime string //"HH:mm"
+	Step    float64
+}
+
+templ timeInput(p TimeProps) {
+	<label for={ p.ID }>{ p.Label }</label>
+	<input
+		type="time"
+		id={ p.ID }
+		name={ p.Name }
+		value={ p.Value }
+		class={ "input input-bordered", p.Classes }
+		required?={ p.Required }
+		disabled?={ p.Disabled }
+		readonly?={ p.Readonly }
+		autofocus?={ p.Autofocus }
+		if p.MinTime != "" {
+			min={ p.MinTime }
+		}
+		if p.MaxTime != "" {
+			max={ p.MaxTime }
+		}
+		if p.Step > 0 {
+			step={ fmt.Sprintf("%d", p.Step) }
+		}
+	/>
+}
+
+type TimeOptFunc func(p *TimeProps)
+
+func Min(t time.Time) TimeOptFunc {
+	return func(p *TimeProps) {
+		p.MinTime = t.Format("15:04")
+	}
+}
+
+func Max(t time.Time) TimeOptFunc {
+	return func(p *TimeProps) {
+		p.MaxTime = t.Format("15:04")
+	}
+}
+
+func Step(t float64) TimeOptFunc {
+	return func(p *TimeProps) {
+		p.Step = t
+	}
+}
+
+func WithAttrs(Attrs templ.Attributes) {
+	return func(p *TimeProps) {
+		p.InputProps.Attrs = Attrs
+	}
+}
+
+func Required(p *TimeProps) {
+	p.InputProps.Required = true
+}
+
+func ReadOnly(p *TimeProps) {
+	p.InputProps.Readonly = true
+}
+
+func Disabled(p *TimeProps) {
+	p.InputProps.Disabled = true
+}
+
+func AutoFocus(p *TimeProps) {
+	p.InputProps.Autofocus = true
+}
+
+func New(name, label string, opts ...TimeOptFunc) templ.Component {
+	props := TimeProps{InputProps: common.InputProps{ID: utils.NewID(name), Name: name, Label: label}}
+}

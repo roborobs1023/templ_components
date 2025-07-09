@@ -14,10 +14,11 @@ func horizontalGroupCSS() templ.CSSClass {
 	templ_7745c5c3_CSSBuilder := templruntime.GetBuilder()
 	templ_7745c5c3_CSSBuilder.WriteString(`display:flex;`)
 	templ_7745c5c3_CSSBuilder.WriteString(`gap:0.5rem;`)
-	templ_7745c5c3_CSSBuilder.WriteString(`margin:0.5rem;`)
+	templ_7745c5c3_CSSBuilder.WriteString(`margin:.75ch;`)
 	templ_7745c5c3_CSSBuilder.WriteString(`align-items:center;`)
 	templ_7745c5c3_CSSBuilder.WriteString(`justify-items:center;`)
 	templ_7745c5c3_CSSBuilder.WriteString(`color:var(--clr-text-primary, black);`)
+	templ_7745c5c3_CSSBuilder.WriteString(`width:100%;`)
 	templ_7745c5c3_CSSID := templ.CSSID(`horizontalGroupCSS`, templ_7745c5c3_CSSBuilder.String())
 	return templ.ComponentCSSClass{
 		ID:    templ_7745c5c3_CSSID,
@@ -29,9 +30,10 @@ func verticalGroupCSS() templ.CSSClass {
 	templ_7745c5c3_CSSBuilder := templruntime.GetBuilder()
 	templ_7745c5c3_CSSBuilder.WriteString(`display:grid;`)
 	templ_7745c5c3_CSSBuilder.WriteString(`gap:0.5rem;`)
-	templ_7745c5c3_CSSBuilder.WriteString(`margin:0.5rem;`)
+	templ_7745c5c3_CSSBuilder.WriteString(`margin:.75ch;`)
 	templ_7745c5c3_CSSBuilder.WriteString(`justify-content:start;`)
 	templ_7745c5c3_CSSBuilder.WriteString(`align-items:center;`)
+	templ_7745c5c3_CSSBuilder.WriteString(`width:100%;`)
 	templ_7745c5c3_CSSID := templ.CSSID(`verticalGroupCSS`, templ_7745c5c3_CSSBuilder.String())
 	return templ.ComponentCSSClass{
 		ID:    templ_7745c5c3_CSSID,
@@ -39,7 +41,34 @@ func verticalGroupCSS() templ.CSSClass {
 	}
 }
 
-func FormGroup(variant, class string) templ.Component {
+type formGroupProps struct {
+	variant string
+	class   string
+}
+
+type FormGroupFunc func(p *formGroupProps)
+
+func Vertical(p *formGroupProps) {
+	p.variant = "vertical"
+}
+
+func Class(class string) FormGroupFunc {
+	return func(p *formGroupProps) {
+		p.class = class
+	}
+}
+
+func NewFormGroup(opts ...FormGroupFunc) templ.Component {
+	p := formGroupProps{}
+	for _, fn := range opts {
+		fn(&p)
+	}
+
+	return formGroup(p)
+
+}
+
+func formGroup(p formGroupProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -61,13 +90,13 @@ func FormGroup(variant, class string) templ.Component {
 		}
 		ctx = templ.ClearChildren(ctx)
 		var gClass templ.CSSClass
-		switch variant {
+		switch p.variant {
 		case "vertical":
 			gClass = verticalGroupCSS()
 		default:
 			gClass = horizontalGroupCSS()
 		}
-		var templ_7745c5c3_Var2 = []any{gClass, class}
+		var templ_7745c5c3_Var2 = []any{gClass, p.class}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var2...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err

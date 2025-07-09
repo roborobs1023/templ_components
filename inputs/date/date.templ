@@ -17,35 +17,33 @@ type DateProps struct {
 type DateOptFunc func(p *DateProps)
 
 templ dateInput(p DateProps) {
-	@inputs.FormGroup() {
-		<label for={ p.ID }>{ p.Label }</label>
-		<input
-			type="date"
-			id={ p.ID }
-			name={ p.Name }
-			value={ p.Value.Format("2006-01-02") }
-			class={ "input input-bordered", p.Classes }
-			required?={ p.Required }
-			disabled?={ p.Disabled }
-			readonly?={ p.Readonly }
-			autofocus?={ p.Autofocus }
-			min={ p.MinDate.Format("2006-01-02") }
-			max={ p.MaxDate.Format("2006-01-02") }
-			if p.Tabindex != 0 {
-				tabindex={ fmt.Sprintf("%d", p.Tabindex) }
-			}
-			{ p.Attrs... }
-		/>
-	}
+	<label for={ p.ID }>{ p.Label }</label>
+	<input
+		type="date"
+		id={ p.ID }
+		name={ p.Name }
+		value={ p.Value.Format("2006-01-02") }
+		class={ "input input-bordered", p.Classes }
+		required?={ p.Required }
+		disabled?={ p.Disabled }
+		readonly?={ p.Readonly }
+		autofocus?={ p.Autofocus }
+		min={ p.MinDate.Format("2006-01-02") }
+		max={ p.MaxDate.Format("2006-01-02") }
+		if p.Tabindex != 0 {
+			tabindex={ fmt.Sprintf("%d", p.Tabindex) }
+		}
+		{ p.Attrs... }
+	/>
 }
 
-func WithMinDate(t time.Time) DateOptFunc {
+func MinDate(t time.Time) DateOptFunc {
 	return func(p *DateProps) {
 		p.MinDate = t
 	}
 }
 
-func WithMaxDate(t time.Time) DateOptFunc {
+func MaxDate(t time.Time) DateOptFunc {
 	return func(p *DateProps) {
 		p.MaxDate = t
 	}
@@ -57,7 +55,7 @@ func DefaultValue(t time.Time) DateOptFunc {
 	}
 }
 
-func WithAttrs(attrs templ.Attributes) DateOptFunc {
+func Attrs(attrs templ.Attributes) DateOptFunc {
 	return func(p *DateProps) {
 		p.InputProps.Attrs = attrs
 	}
