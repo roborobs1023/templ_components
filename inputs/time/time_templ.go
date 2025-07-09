@@ -202,7 +202,7 @@ func timeInput(p TimeProps) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var11 string
-			templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", p.Step))
+			templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%v", p.Step))
 			if templ_7745c5c3_Err != nil {
 				return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/time/time.templ`, Line: 36, Col: 35}
 			}
@@ -267,6 +267,12 @@ func AutoFocus(p *TimeProps) {
 
 func New(name, label string, opts ...TimeOptFunc) templ.Component {
 	props := TimeProps{InputProps: common.InputProps{ID: utils.NewID(name), Name: name, Label: label}}
+
+	for _, fn := range opts {
+		fn(&props)
+	}
+
+	return timeInput(props)
 }
 
 var _ = templruntime.GeneratedTemplate

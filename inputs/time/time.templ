@@ -33,7 +33,7 @@ templ timeInput(p TimeProps) {
 			max={ p.MaxTime }
 		}
 		if p.Step > 0 {
-			step={ fmt.Sprintf("%d", p.Step) }
+			step={ fmt.Sprintf("%v", p.Step) }
 		}
 	/>
 }
@@ -82,4 +82,10 @@ func AutoFocus(p *TimeProps) {
 
 func New(name, label string, opts ...TimeOptFunc) templ.Component {
 	props := TimeProps{InputProps: common.InputProps{ID: utils.NewID(name), Name: name, Label: label}}
+
+	for _, fn := range opts {
+		fn(&props)
+	}
+
+	return timeInput(props)
 }
