@@ -1,0 +1,33 @@
+package common
+
+var inputOnce = templ.NewOnceHandle()
+
+templ FormGroup(class string) {
+	@inputOnce.Once() {
+		<style type="text/css">
+            .tc-form-group {
+                display: flex;
+                gap: 0.5rem;
+                margin: 0.5rem;
+                align-items: center;
+                justify-items: center;
+                color: var(--clr-text-primary, black);
+            }
+
+            .tc-input, .tc-textarea {
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                box-sizing: border-box;
+            }
+
+            .tc-textarea {
+                overflow: auto;
+                resize: vertical;
+            }
+        </style>
+	}
+	<div class={ "tc-form-group", class }>
+		{ children... }
+	</div>
+}
