@@ -1,0 +1,24 @@
+package js
+
+var HTMXHandle = templ.NewOnceHandle()
+var BoxIconsHandle = templ.NewOnceHandle()
+var AlpineHandle = templ.NewOnceHandle()
+
+templ HTMX() {
+	@HTMXHandle.Once() {
+		<script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm" crossorigin="anonymous"></script>
+	}
+}
+
+templ BoxIcons() {
+	@BoxIconsHandle.Once() {
+		<link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet"/>
+		<script defer src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+	}
+}
+
+templ AlpineJS() {
+	@AlpineHandle.Once() {
+		<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.3/dist/cdn.min.js"></script>
+	}
+}
