@@ -73,7 +73,7 @@ func timeInput(p TimeProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var4 = []any{"input input-bordered", p.Classes}
+		var templ_7745c5c3_Var4 = []any{"input input-bordered", p.InputProps.Classes}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var4...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -265,7 +265,7 @@ func AutoFocus(p *TimeProps) {
 	p.InputProps.Autofocus = true
 }
 
-func New(name, label string, opts ...TimeOptFunc) templ.Component {
+func newTimeInput(name, label string, opts ...TimeOptFunc) templ.Component {
 	props := TimeProps{InputProps: common.InputProps{ID: utils.NewID(name), Name: name, Label: label}}
 
 	for _, fn := range opts {

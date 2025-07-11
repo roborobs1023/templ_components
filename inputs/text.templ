@@ -1,0 +1,38 @@
+package inputs
+
+import "fmt"
+
+css InputFieldCSS() {
+	max-width: 250px;
+	padding-block: 0.5rem;
+	margin-bottom: 1rem;
+}
+
+templ textInput(p InputOpts) {
+	<label for={ p.ID }>{ p.Label }</label>
+	<input
+		id={ p.ID }
+		type="text"
+		name={ p.Name }
+		value={ p.Value }
+		placeholder={ p.Placeholder }
+		class={ "input input-bordered", p.Classes }
+		required?={ p.Required }
+		disabled?={ p.Disabled }
+		readonly?={ p.Readonly }
+		autofocus?={ p.Autofocus }
+		form={ p.Form }
+		autocomplete={ p.Autocomplete }
+		spellcheck?={ p.Spellcheck }
+		tabindex={ fmt.Sprintf("%d", p.Tabindex) }
+		if p.MinLength > 0 {
+			minLength={ fmt.Sprintf("%d", p.MinLength) }
+		}
+		if p.MaxLength > 0 {
+			maxlength={ fmt.Sprintf("%d", p.MaxLength) }
+		}
+		if p.Pattern != "" {
+			pattern={ p.Pattern }
+		}
+	/>
+}

@@ -21,7 +21,7 @@ templ timeInput(p TimeProps) {
 		id={ p.ID }
 		name={ p.Name }
 		value={ p.Value }
-		class={ "input input-bordered", p.Classes }
+		class={ "input input-bordered", p.InputProps.Classes }
 		required?={ p.Required }
 		disabled?={ p.Disabled }
 		readonly?={ p.Readonly }
@@ -80,7 +80,7 @@ func AutoFocus(p *TimeProps) {
 	p.InputProps.Autofocus = true
 }
 
-func New(name, label string, opts ...TimeOptFunc) templ.Component {
+func newTimeInput(name, label string, opts ...TimeOptFunc) templ.Component {
 	props := TimeProps{InputProps: common.InputProps{ID: utils.NewID(name), Name: name, Label: label}}
 
 	for _, fn := range opts {
