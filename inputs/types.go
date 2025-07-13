@@ -29,13 +29,13 @@ type numberProps struct {
 	Step  float64
 }
 
-type Option struct {
+type option struct {
 	Label string
 	Value string
 }
 
-func NewOption(label, value string) Option {
-	return Option{
+func NewOption(label, value string) option {
+	return option{
 		Label: label,
 		Value: value,
 	}
@@ -46,7 +46,7 @@ type phoneProps struct {
 }
 
 type optionProps struct {
-	Options      []Option
+	Options      []option
 	DefaultValue string
 }
 
