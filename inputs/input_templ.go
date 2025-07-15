@@ -8,30 +8,34 @@ package inputs
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-import "github.com/roborobs1023/templ_components/internal/utils"
+import (
+	"fmt"
+	"github.com/roborobs1023/templ_components/internal/utils"
+	"strings"
+	"time"
+)
 
 type InputOpts struct {
-	ID          string
-	Name        string
-	Type        InputType
-	Value       string
-	Label       string
-	Placeholder string
+	ID    string
+	Name  string
+	Type  InputType
+	Value string
+	Label string
 
-	Required  bool
-	Disabled  bool
-	Readonly  bool
-	Autofocus bool
-	Multiple  bool
+	Required   bool
+	Disabled   bool
+	Readonly   bool
+	Autofocus  bool
+	Spellcheck bool
 
 	Autocomplete string
-	Spellcheck   bool
-	Tabindex     int
-	Form         string
-	Attrs        templ.Attributes
-	Class        string
-	addressProps
+	Placeholder  string
 
+	Tabindex int
+	Form     string
+	Class    string
+	Attrs    templ.Attributes
+	addressProps
 	dateProps
 	timeProps
 	emailProps
@@ -39,8 +43,11 @@ type InputOpts struct {
 	optionProps
 	PasswordReq
 	phoneProps
+	selectProps
 	textProps
 	textareaProps
+	fileProps
+	rangeProps
 }
 
 type InputType string
@@ -51,32 +58,31 @@ func (t InputType) String() string {
 
 const (
 	ADDRESS     InputType = "address"
-	CHECKBOX              = "checkbox"
-	COLOR                 = "color"
-	DATE                  = "date"
-	DATETIME              = "datetime-local"
-	EMAIL                 = "email"
-	FILE                  = "file"
-	HIDDEN                = "hidden" // Used for inputs that need not be visible but value needs to be submitted with form.
-	IMAGE                 = "image"
-	MONTH                 = "month"
-	NEWPASSWORD           = "new-password"
-	NUMBER                = "number"
-	PASSWORD              = "password"
-	PHONE                 = "tel"
-	RADIO                 = "radio"
-	RANGE                 = "range"
-	SEARCH                = "search"
-	SELECT                = "select"
-	TEXT                  = "text"
-	TIME                  = "time"
-	URL                   = "url"
-	WEEK                  = "week"
+	CHECKBOX    InputType = "checkbox"
+	COLOR       InputType = "color"
+	DATE        InputType = "date"
+	DATETIME    InputType = "datetime-local"
+	EMAIL       InputType = "email"
+	FILE        InputType = "file"
+	HIDDEN      InputType = "hidden" // Used for inputs that need not be visible but value needs to be submitted with form.
+	MONTH       InputType = "month"
+	NEWPASSWORD InputType = "new-password"
+	NUMBER      InputType = "number"
+	PASSWORD    InputType = "password"
+	PHONE       InputType = "tel"
+	RADIO       InputType = "radio"
+	RANGE       InputType = "range"
+	SEARCH      InputType = "search"
+	SELECT      InputType = "select"
+	TEXT        InputType = "text"
+	TIME        InputType = "time"
+	URL         InputType = "url"
+	WEEK        InputType = "week"
 )
 
 type InputOptsFunc func(p *InputOpts)
 
-func NewInput(label, name string, inputType string, opts ...InputOptsFunc) {
+func New(label, name string, inputType string, opts ...InputOptsFunc) {
 
 	p := InputOpts{
 		ID:    utils.NewID(name),
@@ -98,7 +104,6 @@ func NewInput(label, name string, inputType string, opts ...InputOptsFunc) {
 	// case EMAIL:
 	// case FILE:
 	// case HIDDEN:
-	// case IMAGE:
 	// case MONTH:
 	// case NEWPASSWORD:
 	// case NUMBER:
@@ -117,28 +122,295 @@ func NewInput(label, name string, inputType string, opts ...InputOptsFunc) {
 
 }
 
+func Required(p *InputOpts) {
+	p.Required = true
+}
+
+func Readonly(p *InputOpts) {
+	p.Readonly = true
+}
+func Disabled(p *InputOpts) {
+	p.Disabled = true
+}
+
+func Autofocus(p *InputOpts) {
+	p.Autofocus = true
+}
+
+func Spellcheck(p *InputOpts) {
+	p.Spellcheck = true
+}
+
+func Autocomplete(value string) InputOptsFunc {
+	return func(p *InputOpts) {
+		p.Autocomplete = value
+	}
+}
+
+func Placeholder(value string) InputOptsFunc {
+	return func(p *InputOpts) {
+		p.Placeholder = value
+	}
+}
+
+func DefaultValue(value any) InputOptsFunc {
+	return func(p *InputOpts) {
+		p.Value = fmt.Sprintf("%v", value)
+	}
+}
+
+func Form(value string) InputOptsFunc {
+	return func(p *InputOpts) {
+		p.Form = value
+	}
+}
+
+func Class(value string) InputOptsFunc {
+	return func(p *InputOpts) {
+		p.Class = value
+	}
+}
+
+func Tabindex(value int) InputOptsFunc {
+	return func(p *InputOpts) {
+		p.Tabindex = value
+	}
+}
+
+// Text Input Props
+func Pattern(value string) InputOptsFunc {
+	return func(p *InputOpts) {
+		p.Pattern = value
+	}
+}
+
+func MinLength(value int) InputOptsFunc {
+	return func(p *InputOpts) {
+		p.MinLength = value
+	}
+}
+
+func MaxLength(value int) InputOptsFunc {
+	return func(p *InputOpts) {
+		p.MaxLength = value
+	}
+}
+
+// Number Input Props
+func Min(value float64) InputOptsFunc {
+	return func(p *InputOpts) {
+		p.Min = value
+	}
+}
+
+func Max(value float64) InputOptsFunc {
+	return func(p *InputOpts) {
+		p.Max = value
+	}
+}
+
+func Step(value float64) InputOptsFunc {
+	return func(p *InputOpts) {
+		p.Step = value
+	}
+}
+
+// Email Input Props
+func AcceptedDomains(domains []string) InputOptsFunc {
+	return func(p *InputOpts) {
+		p.AcceptedDomains = domains
+	}
+}
+
+// Select/Checkbox/Radio Input Props
+func Options(options map[string]string) InputOptsFunc {
+
+	return func(p *InputOpts) {
+
+		Options := []option{}
+
+		for key, value := range options {
+
+			Options = append(Options, NewOption(key, value))
+		}
+
+		p.Options = Options
+	}
+}
+
+// Date Input Props
+func MinDate(value time.Time) InputOptsFunc {
+	return func(p *InputOpts) {
+		p.MinDate = value
+	}
+}
+
+func MaxDate(value time.Time) InputOptsFunc {
+	return func(p *InputOpts) {
+		p.MaxDate = value
+	}
+}
+
+// Time Input Props
+func MinTime(value time.Time) InputOptsFunc {
+	return func(p *InputOpts) {
+		p.MinTime = value
+	}
+}
+
+func MaxTime(value time.Time) InputOptsFunc {
+	return func(p *InputOpts) {
+		p.MaxTime = value
+	}
+}
+
+// Textarea Input Props
+func Rows(value int) InputOptsFunc {
+	return func(p *InputOpts) {
+		p.Rows = value
+	}
+}
+
+func Columns(value int) InputOptsFunc {
+	return func(p *InputOpts) {
+		p.Cols = value
+	}
+}
+
+// Select Props
+func ShowOther(p *InputOpts) {
+	p.ShowOther = true
+}
+
+func ShowClear(p *InputOpts) {
+	p.ShowClear = true
+}
+
+func Searchable(p *InputOpts) {
+	p.Searchable = true
+}
+
+// New-Password Input Props
+func SetPasswordReqs(req PasswordReq) InputOptsFunc {
+	return func(p *InputOpts) {
+		p.PasswordReq = req
+	}
+}
+
+func AddressProps(City, State, CountryCode string) InputOptsFunc {
+	return func(p *InputOpts) {
+		p.addressProps = addressProps{
+			DefCountry: CountryCode,
+			DefCity:    City,
+			DefState:   State,
+		}
+	}
+}
+
+// File Input Props
+func CaptureEnv(p *InputOpts) {
+	p.Capture = "environment"
+}
+
+func CaptureUser(p *InputOpts) {
+	p.Capture = "user"
+}
+
+func Accept(fileTypes []string) InputOptsFunc {
+	return func(p *InputOpts) {
+		p.Accept = strings.Join(fileTypes, ", ")
+	}
+}
+
+func UseDataList(id string, options map[string]any) InputOptsFunc {
+	return func(p *InputOpts) {
+		p.ListID = id
+		p.CMP = dataList(id, options)
+	}
+}
+
 func SetAttributes(attrs templ.Attributes) InputOptsFunc {
 	return func(p *InputOpts) {
 		p.Attrs = attrs
 	}
 }
 
-func WithOptions(options map[string]string) InputOptsFunc {
-
-	return func(p *InputOpts) {
-
-		Options := []option{}
-
-		for k, v := range options {
-			option := option{
-				Value: v,
-				Label: k,
-			}
-			Options = append(Options, option)
+func dataList(id string, options map[string]any) templ.Component {
+	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
+			return templ_7745c5c3_CtxErr
 		}
-
-		p.optionProps.Options = Options
-	}
+		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+		if !templ_7745c5c3_IsBuffer {
+			defer func() {
+				templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err == nil {
+					templ_7745c5c3_Err = templ_7745c5c3_BufErr
+				}
+			}()
+		}
+		ctx = templ.InitializeContext(ctx)
+		templ_7745c5c3_Var1 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var1 == nil {
+			templ_7745c5c3_Var1 = templ.NopComponent
+		}
+		ctx = templ.ClearChildren(ctx)
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<datalist id=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var2 string
+		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(id)
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/input.templ`, Line: 331, Col: 18}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		for lbl, value := range options {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<option value=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var3 string
+			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%v", value))
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/input.templ`, Line: 333, Col: 43}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "\" label=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var4 string
+			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(lbl)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/input.templ`, Line: 333, Col: 57}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "\"></option>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</datalist>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		return nil
+	})
 }
 
 var _ = templruntime.GeneratedTemplate

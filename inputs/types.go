@@ -1,6 +1,10 @@
 package inputs
 
-import "time"
+import (
+	"time"
+
+	"github.com/a-h/templ"
+)
 
 type textProps struct {
 	MinLength int
@@ -8,25 +12,20 @@ type textProps struct {
 	Pattern   string
 }
 
-type addressProps struct {
-	DefCountry string
-	DefCity    string
-	DefState   string
-}
-
-type checkboxProps struct {
-	Multiple bool
+type numberProps struct {
+	Min  float64
+	Max  float64
+	Step float64
 }
 
 type emailProps struct {
 	AcceptedDomains []string
 }
 
-type numberProps struct {
-	Min   float64
-	Max   float64
-	Value float64
-	Step  float64
+type addressProps struct {
+	DefCountry string
+	DefCity    string
+	DefState   string
 }
 
 type option struct {
@@ -46,11 +45,8 @@ type phoneProps struct {
 }
 
 type optionProps struct {
-	Options      []option
-	DefaultValue string
-}
-
-type radioProps struct {
+	Options  []option
+	Multiple bool
 }
 
 type selectProps struct {
@@ -72,4 +68,14 @@ type dateProps struct {
 type timeProps struct {
 	MinTime time.Time
 	MaxTime time.Time
+}
+
+type fileProps struct {
+	Accept  string
+	Capture string
+}
+
+type rangeProps struct {
+	ListID string
+	CMP    templ.Component
 }

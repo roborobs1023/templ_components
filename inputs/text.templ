@@ -38,13 +38,17 @@ templ textInput(p InputOpts) {
 }
 
 templ textarea(p InputOpts) {
-	<label for={ p.ID }>{ p.Label }</label>
-	<input
+	<label for={ p.ID } class="tc-label">{ p.Label }</label>
+	<textarea
 		id={ p.ID }
 		name={ p.Name }
 		type="textarea"
 		rows={ fmt.Sprintf("%v", p.Rows) }
 		cols={ fmt.Sprintf("%v", p.Cols) }
-		class={ p.Class }
-	/>
+		class={ "tc-textarea", p.Class }
+		placeholder={ p.Placeholder }
+		required?={ p.Required }
+		readonly?={ p.Readonly }
+		disabled?={ p.Disabled }
+	></textarea>
 }

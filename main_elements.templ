@@ -1,0 +1,80 @@
+package templ_components
+
+import "github.com/roborobs1023/templ_components/js"
+
+templ head(p headOpts) {
+	<head>
+		<meta charset="utf-8"/>
+		<title>{ title }</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no"/>
+		if o.icon != "" {
+			<link rel="icon" href={ p.icon } type="image/x-icon"/>
+		}
+		if p.stylesheet != "" {
+			<link rel="stylesheet" href={ p.stylesheet }/>
+		}
+		if p.customJS != "" {
+			<script defer src={ p.customJS }></script>
+		}
+		if p.templCSS {
+			<link href="/assets/css/output.css" rel="stylesheet"/>
+		}
+		if p.generated {
+			<link href="https://github.com/roborobs1023/templ_components/styles/main.css" rel="stylesheet"/>
+		}
+		@js.BoxIcons()
+		@js.AlpineJS()
+		@js.HTMX()
+		{ children... }
+	</head>
+}
+
+type headOpts struct {
+	title      string
+	icon       templ.SafeURL
+	stylesheet templ.SafeURL
+	customJS   templ.SafeURL
+	generated  bool
+	templCSS   bool
+}
+
+type HeadOptsFunc func(p *headOpts)
+
+func FavIcon(url string) HeadOptsFunc {
+	return func(p *headOpts) {
+		p.icon = templ.URL(url)
+	}
+}
+
+func CustomJS(url string) HeadOptsFunc {
+	return func(p *headOpts) {
+		p.customJS = templ.URL(url)
+	}
+}
+
+func Stylesheet(url string) HeadOptsFunc {
+	return func(p *headOpts) {
+		p.stylesheet = templ.URL(url)
+	}
+}
+
+func UseTemplCSS(p *headOpts) {
+	p.templCSS = true
+}
+
+func DisableGeneratedCSS(p *headOpts) {
+	p.generated = false
+}
+
+func NewHead(title string, opts ...HeadOptsFunc) templ.Component {
+	p := headOpts{
+		title:     title,
+		generated: true,
+	}
+
+	for _, fn := range opts {
+		fn(&p)
+	}
+
+	return head(p)
+}
