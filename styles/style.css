@@ -1,4 +1,36 @@
-.tc-input {
+/* All classnames start with tc for templ_components */
 
+*,
+:after,
+:before {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body> :is(header, footer),
+main,
+section,
+article {
+    container-type: inline-size;
+}
+
+.tc-input {
     min-width: 100px;
+    padding-block: 0.5em;
+    border-radius: 0.25rem;
+}
+
+.tc-form-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.tc-new-password {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    position: relative;
 }
