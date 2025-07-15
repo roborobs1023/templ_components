@@ -10,17 +10,17 @@ templ head(p headOpts) {
 		if o.icon != "" {
 			<link rel="icon" href={ p.icon } type="image/x-icon"/>
 		}
-		if p.stylesheet != "" {
-			<link rel="stylesheet" href={ p.stylesheet }/>
-		}
-		if p.customJS != "" {
-			<script defer src={ p.customJS }></script>
-		}
 		if p.templCSS {
 			<link href="/assets/css/output.css" rel="stylesheet"/>
 		}
 		if p.generated {
 			<link href="https://github.com/roborobs1023/templ_components/styles/main.css" rel="stylesheet"/>
+		}
+		if p.stylesheet != "" {
+			<link rel="stylesheet" href={ p.stylesheet }/>
+		}
+		if p.customJS != "" {
+			<script defer src={ p.customJS }></script>
 		}
 		@js.BoxIcons()
 		@js.AlpineJS()
