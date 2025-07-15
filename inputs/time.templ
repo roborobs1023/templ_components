@@ -1,0 +1,29 @@
+package inputs
+
+import (
+	"fmt"
+	"time"
+)
+
+templ TimeInput(p InputOpts) {
+	<label for={ p.ID } class="tc-input-label">{ p.Label }</label>
+	<input
+		type="time"
+		id={ p.ID }
+		name={ p.Name }
+		value={ time.Now().Local().Format("HH:mm") }
+		required?={ p.Required }
+		disabled?={ p.Disabled }
+		readonly?={ p.Readonly }
+		autofocus?={ p.Autofocus }
+		if p.MinTime != 0 {
+			min={ p.MinTime.Format("HH:mm") }
+		}
+		if p.MaxTime != 0 {
+			max={ p.MaxTime.Format("HH:mm") }
+		}
+		if p.Step > 0 {
+			step={ fmt.Sprintf("%v", p.Step) }
+		}
+	/>
+}

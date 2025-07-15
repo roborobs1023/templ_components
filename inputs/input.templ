@@ -74,7 +74,7 @@ const (
 
 type InputOptsFunc func(p *InputOpts)
 
-func New(label, name string, inputType string, opts ...InputOptsFunc) {
+func New(label, name string, inputType string, opts ...InputOptsFunc) templ.Component {
 
 	p := InputOpts{
 		ID:    utils.NewID(name),
@@ -87,7 +87,7 @@ func New(label, name string, inputType string, opts ...InputOptsFunc) {
 		fn(&p)
 	}
 
-	// switch p.Type {
+	switch p.Type {
 	// case ADDRESS:
 	// case CHCECKBOX:
 	// case COLOR:
@@ -105,12 +105,13 @@ func New(label, name string, inputType string, opts ...InputOptsFunc) {
 	// case RANGE:
 	// case SEARCH:
 	// case SELECT:
-	// case TIME:
-	// case URL:
-	// case WEEK:
-	// default:
-
-	// }
+	case TIME:
+		return TimeInput(p)
+		// case URL:
+		// case WEEK:
+	default:
+		return textInput(p)
+	}
 
 }
 
@@ -269,6 +270,13 @@ func Columns(value int) InputOptsFunc {
 	}
 }
 
+func Resizable(vertical, horizontal bool) InputOptsFunc {
+	return func(p *InputOpts) {
+		p.Vertical = vertical
+		p.Horizontal = horizontal
+	}
+}
+
 // Select Props
 func ShowOther(p *InputOpts) {
 	p.ShowOther = true
@@ -328,9 +336,9 @@ func SetAttributes(attrs templ.Attributes) InputOptsFunc {
 }
 
 templ dataList(id string, options map[string]any) {
-	<datalist id={ id }>
+	<datalist id={ id } class="tc-datalist">
 		for lbl, value := range options {
-			<option value={ fmt.Sprintf("%v", value) } label={ lbl }></option>
+			<option value={ fmt.Sprintf("%v", value) } label={ lbl } class="tc-option"></option>
 		}
 	</datalist>
 }

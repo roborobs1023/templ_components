@@ -56,8 +56,10 @@ type selectProps struct {
 }
 
 type textareaProps struct {
-	Rows int
-	Cols int
+	Rows       int
+	Cols       int
+	Vertical   bool
+	Horizontal bool
 }
 
 type dateProps struct {

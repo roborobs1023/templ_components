@@ -10,16 +10,11 @@ templ head(p headOpts) {
 		if o.icon != "" {
 			<link rel="icon" href={ p.icon } type="image/x-icon"/>
 		}
-		if p.stylesheet != "" {
-			<link rel="stylesheet" href={ p.stylesheet }/>
-		}
-		<link href="https://cdn.jsdelivr.net/gh/roborobs1023/templ_components@master/styles/style.css" rel="stylesheet"/>
+		// <link href="https://cdn.jsdelivr.net/gh/roborobs1023/templ_components@master/styles/style.css" rel="stylesheet"/>
+		<link rel="stylesheet" href="https://raw.githubusercontent.com/roborobs1023/templ_components/refs/heads/master/styles/style.css"/>
 		<script defer href="https://cdn.jsdelivr.net/gh/roborobs1023/templ_components@master/js/index.js"></script>
 		if p.templCSS {
 			<link href="/assets/css/output.css" rel="stylesheet"/>
-		}
-		if p.customJS != "" {
-			<script defer src={ p.customJS }></script>
 		}
 		@js.BoxIcons()
 		@js.AlpineJS()
@@ -29,11 +24,9 @@ templ head(p headOpts) {
 }
 
 type headOpts struct {
-	title      string
-	icon       templ.SafeURL
-	stylesheet templ.SafeURL
-	customJS   templ.SafeURL
-	templCSS   bool
+	title    string
+	icon     templ.SafeURL
+	templCSS bool
 }
 
 type HeadOptsFunc func(p *headOpts)

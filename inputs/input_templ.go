@@ -82,7 +82,7 @@ const (
 
 type InputOptsFunc func(p *InputOpts)
 
-func New(label, name string, inputType string, opts ...InputOptsFunc) {
+func New(label, name string, inputType string, opts ...InputOptsFunc) templ.Component {
 
 	p := InputOpts{
 		ID:    utils.NewID(name),
@@ -95,7 +95,7 @@ func New(label, name string, inputType string, opts ...InputOptsFunc) {
 		fn(&p)
 	}
 
-	// switch p.Type {
+	switch p.Type {
 	// case ADDRESS:
 	// case CHCECKBOX:
 	// case COLOR:
@@ -113,12 +113,13 @@ func New(label, name string, inputType string, opts ...InputOptsFunc) {
 	// case RANGE:
 	// case SEARCH:
 	// case SELECT:
-	// case TIME:
-	// case URL:
-	// case WEEK:
-	// default:
-
-	// }
+	case TIME:
+		return TimeInput(p)
+		// case URL:
+		// case WEEK:
+	default:
+		return textInput(p)
+	}
 
 }
 
@@ -277,6 +278,13 @@ func Columns(value int) InputOptsFunc {
 	}
 }
 
+func Resizable(vertical, horizontal bool) InputOptsFunc {
+	return func(p *InputOpts) {
+		p.Vertical = vertical
+		p.Horizontal = horizontal
+	}
+}
+
 // Select Props
 func ShowOther(p *InputOpts) {
 	p.ShowOther = true
@@ -363,13 +371,13 @@ func dataList(id string, options map[string]any) templ.Component {
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(id)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/input.templ`, Line: 331, Col: 18}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/input.templ`, Line: 339, Col: 18}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\" class=\"tc-datalist\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -381,7 +389,7 @@ func dataList(id string, options map[string]any) templ.Component {
 			var templ_7745c5c3_Var3 string
 			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%v", value))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/input.templ`, Line: 333, Col: 43}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/input.templ`, Line: 341, Col: 43}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
@@ -394,13 +402,13 @@ func dataList(id string, options map[string]any) templ.Component {
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(lbl)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/input.templ`, Line: 333, Col: 57}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/input.templ`, Line: 341, Col: 57}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "\"></option>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "\" class=\"tc-option\"></option>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
