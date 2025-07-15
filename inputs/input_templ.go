@@ -40,6 +40,7 @@ type InputOpts struct {
 	PasswordReq
 	phoneProps
 	textProps
+	textareaProps
 }
 
 type InputType string
@@ -122,14 +123,14 @@ func SetAttributes(attrs templ.Attributes) InputOptsFunc {
 	}
 }
 
-func SetOptions(options map[string]string) InputOptsFunc {
+func WithOptions(options map[string]string) InputOptsFunc {
 
 	return func(p *InputOpts) {
 
-		Options := []Option{}
+		Options := []option{}
 
 		for k, v := range options {
-			option := Option{
+			option := option{
 				Value: v,
 				Label: k,
 			}

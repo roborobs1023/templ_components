@@ -16,7 +16,7 @@ templ textInput(p InputOpts) {
 		name={ p.Name }
 		value={ p.Value }
 		placeholder={ p.Placeholder }
-		class={ "input input-bordered", p.Classes }
+		class={ "input input-bordered", p.Class }
 		required?={ p.Required }
 		disabled?={ p.Disabled }
 		readonly?={ p.Readonly }
@@ -34,5 +34,17 @@ templ textInput(p InputOpts) {
 		if p.Pattern != "" {
 			pattern={ p.Pattern }
 		}
+	/>
+}
+
+templ textarea(p InputOpts) {
+	<label for={ p.ID }>{ p.Label }</label>
+	<input
+		id={ p.ID }
+		name={ p.Name }
+		type="textarea"
+		rows={ fmt.Sprintf("%v", p.Rows) }
+		cols={ fmt.Sprintf("%v", p.Cols) }
+		class={ p.Class }
 	/>
 }
