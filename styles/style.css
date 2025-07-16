@@ -11,12 +11,13 @@
 body> :is(header, footer),
 main,
 section,
-article {
+article,
+form {
     container-type: inline-size;
 }
 
 .tc-input {
-    min-width: 100px;
+    min-width: 150px;
     padding-block: 0.5em;
     border-radius: 0.25rem;
 }
@@ -28,9 +29,27 @@ article {
     margin-bottom: 0.5rem;
 }
 
+.tc-label {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.tc-label>span {
+    font-weight: bold;
+}
+
 .tc-new-password {
     display: grid;
     justify-content: center;
     align-items: center;
     position: relative;
+}
+
+.tc-resizeX {
+    resize: horizontal;
+}
+
+.tc-resizeY {
+    resize: vertical;
 }

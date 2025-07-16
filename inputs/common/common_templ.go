@@ -42,14 +42,14 @@ func verticalGroupCSS() templ.CSSClass {
 }
 
 type formGroupProps struct {
-	variant string
-	class   string
+	vertical bool
+	class    string
 }
 
 type FormGroupFunc func(p *formGroupProps)
 
 func Vertical(p *formGroupProps) {
-	p.variant = "vertical"
+	p.vertical = true
 }
 
 func Class(class string) FormGroupFunc {
@@ -89,14 +89,7 @@ func formGroup(p formGroupProps) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		var gClass templ.CSSClass
-		switch p.variant {
-		case "vertical":
-			gClass = verticalGroupCSS()
-		default:
-			gClass = horizontalGroupCSS()
-		}
-		var templ_7745c5c3_Var2 = []any{gClass, p.class}
+		var templ_7745c5c3_Var2 = []any{templ.KV("tc-vertical", p.vertical), p.class}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var2...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err

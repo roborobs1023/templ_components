@@ -115,7 +115,7 @@ func passwordInput(Attrs templ.Attributes) templ.Component {
 	})
 }
 
-func NewPasswordInput(p PasswordReq) templ.Component {
+func newPasswordInput(p PasswordReq) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -228,7 +228,7 @@ func NewPasswordInput(p PasswordReq) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "<label for=\"confirm_password\">Confirm Password</label><div class=\"password-input\"><input id=\"confirm_password\" class=\"input input-bordered input-primary bg-slate-800\" type=\"password\" name=\"confirm_password\" autocomplete=\"new-password\" required minLength=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "<label for=\"confirm_password\">Confirm Password</label><div class=\"password-input\"><input id=\"confirm_password\" class=\"tc-input tc-input-bordered tc-input-primary\" type=\"password\" name=\"confirm_password\" autocomplete=\"new-password\" required minLength=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

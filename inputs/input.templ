@@ -19,6 +19,7 @@ type InputOpts struct {
 	Readonly   bool
 	Autofocus  bool
 	Spellcheck bool
+	vertical   bool
 
 	Autocomplete string
 	Placeholder  string
@@ -67,6 +68,7 @@ const (
 	SEARCH      InputType = "search"
 	SELECT      InputType = "select"
 	TEXT        InputType = "text"
+	TEXTAREA    InputType = "textarea"
 	TIME        InputType = "time"
 	URL         InputType = "url"
 	WEEK        InputType = "week"
@@ -99,7 +101,8 @@ func New(label, name string, inputType string, opts ...InputOptsFunc) templ.Comp
 	// case MONTH:
 	// case NEWPASSWORD:
 	// case NUMBER:
-	// case PASSWORD:
+	case PASSWORD:
+		return passwordInput(p.Attrs)
 	// case PHONE:
 	// case RADIO:
 	// case RANGE:
@@ -109,10 +112,23 @@ func New(label, name string, inputType string, opts ...InputOptsFunc) templ.Comp
 		return TimeInput(p)
 		// case URL:
 		// case WEEK:
+	case TEXTAREA:
+		if p.Rows == 0 {
+			p.Rows = 20
+		}
+
+		if p.Cols == 0 {
+			p.Cols = 20
+		}
+		return textarea(p)
 	default:
 		return textInput(p)
 	}
 
+}
+
+func Variant(p *InputOpts) {
+	p.vertical = true
 }
 
 func Required(p *InputOpts) {
@@ -272,8 +288,8 @@ func Columns(value int) InputOptsFunc {
 
 func Resizable(vertical, horizontal bool) InputOptsFunc {
 	return func(p *InputOpts) {
-		p.Vertical = vertical
-		p.Horizontal = horizontal
+		p.ResizeY = vertical
+		p.ResizeX = horizontal
 	}
 }
 

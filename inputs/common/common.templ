@@ -22,14 +22,14 @@ css verticalGroupCSS() {
 }
 
 type formGroupProps struct {
-	variant string
-	class   string
+	vertical bool
+	class    string
 }
 
 type FormGroupFunc func(p *formGroupProps)
 
 func Vertical(p *formGroupProps) {
-	p.variant = "vertical"
+	p.vertical = true
 }
 
 func Class(class string) FormGroupFunc {
@@ -49,15 +49,7 @@ func NewFormGroup(opts ...FormGroupFunc) templ.Component {
 }
 
 templ formGroup(p formGroupProps) {
-	{{var gClass templ.CSSClass
-switch p.variant {
-case "vertical":
-	gClass = verticalGroupCSS()
-default:
-	gClass = horizontalGroupCSS()
-}
-	}}
-	<div class={ gClass, p.class }>
+	<div class={ templ.KV("tc-vertical", p.vertical), p.class }>
 		{ children... }
 	</div>
 }

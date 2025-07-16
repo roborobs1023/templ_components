@@ -27,6 +27,7 @@ type InputOpts struct {
 	Readonly   bool
 	Autofocus  bool
 	Spellcheck bool
+	vertical   bool
 
 	Autocomplete string
 	Placeholder  string
@@ -75,6 +76,7 @@ const (
 	SEARCH      InputType = "search"
 	SELECT      InputType = "select"
 	TEXT        InputType = "text"
+	TEXTAREA    InputType = "textarea"
 	TIME        InputType = "time"
 	URL         InputType = "url"
 	WEEK        InputType = "week"
@@ -107,7 +109,8 @@ func New(label, name string, inputType string, opts ...InputOptsFunc) templ.Comp
 	// case MONTH:
 	// case NEWPASSWORD:
 	// case NUMBER:
-	// case PASSWORD:
+	case PASSWORD:
+		return passwordInput(p.Attrs)
 	// case PHONE:
 	// case RADIO:
 	// case RANGE:
@@ -117,10 +120,23 @@ func New(label, name string, inputType string, opts ...InputOptsFunc) templ.Comp
 		return TimeInput(p)
 		// case URL:
 		// case WEEK:
+	case TEXTAREA:
+		if p.Rows == 0 {
+			p.Rows = 20
+		}
+
+		if p.Cols == 0 {
+			p.Cols = 20
+		}
+		return textarea(p)
 	default:
 		return textInput(p)
 	}
 
+}
+
+func Variant(p *InputOpts) {
+	p.vertical = true
 }
 
 func Required(p *InputOpts) {
@@ -280,8 +296,8 @@ func Columns(value int) InputOptsFunc {
 
 func Resizable(vertical, horizontal bool) InputOptsFunc {
 	return func(p *InputOpts) {
-		p.Vertical = vertical
-		p.Horizontal = horizontal
+		p.ResizeY = vertical
+		p.ResizeX = horizontal
 	}
 }
 
@@ -371,7 +387,7 @@ func dataList(id string, options map[string]any) templ.Component {
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(id)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/input.templ`, Line: 339, Col: 18}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/input.templ`, Line: 355, Col: 18}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
@@ -389,7 +405,7 @@ func dataList(id string, options map[string]any) templ.Component {
 			var templ_7745c5c3_Var3 string
 			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%v", value))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/input.templ`, Line: 341, Col: 43}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/input.templ`, Line: 357, Col: 43}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
@@ -402,7 +418,7 @@ func dataList(id string, options map[string]any) templ.Component {
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(lbl)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/input.templ`, Line: 341, Col: 57}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/input.templ`, Line: 357, Col: 57}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {

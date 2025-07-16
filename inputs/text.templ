@@ -9,32 +9,34 @@ css InputFieldCSS() {
 }
 
 templ textInput(p InputOpts) {
-	<label for={ p.ID }>{ p.Label }</label>
-	<input
-		id={ p.ID }
-		type="text"
-		name={ p.Name }
-		value={ p.Value }
-		placeholder={ p.Placeholder }
-		class={ "tc-input tc-input-bordered", p.Class }
-		required?={ p.Required }
-		disabled?={ p.Disabled }
-		readonly?={ p.Readonly }
-		autofocus?={ p.Autofocus }
-		form={ p.Form }
-		autocomplete={ p.Autocomplete }
-		spellcheck?={ p.Spellcheck }
-		tabindex={ fmt.Sprintf("%d", p.Tabindex) }
-		if p.MinLength > 0 {
-			minLength={ fmt.Sprintf("%d", p.MinLength) }
-		}
-		if p.MaxLength > 0 {
-			maxlength={ fmt.Sprintf("%d", p.MaxLength) }
-		}
-		if p.Pattern != "" {
-			pattern={ p.Pattern }
-		}
-	/>
+	<label class={ "tc-label", templ.KV("tc-vertical", p.vertical) }>
+		<span>{ p.Label }</span>
+		<input
+			id={ p.ID }
+			type="text"
+			name={ p.Name }
+			value={ p.Value }
+			placeholder={ p.Placeholder }
+			class={ "tc-input tc-input-bordered", p.Class }
+			required?={ p.Required }
+			disabled?={ p.Disabled }
+			readonly?={ p.Readonly }
+			autofocus?={ p.Autofocus }
+			form={ p.Form }
+			autocomplete={ p.Autocomplete }
+			spellcheck?={ p.Spellcheck }
+			tabindex={ fmt.Sprintf("%d", p.Tabindex) }
+			if p.MinLength > 0 {
+				minLength={ fmt.Sprintf("%d", p.MinLength) }
+			}
+			if p.MaxLength > 0 {
+				maxlength={ fmt.Sprintf("%d", p.MaxLength) }
+			}
+			if p.Pattern != "" {
+				pattern={ p.Pattern }
+			}
+		/>
+	</label>
 }
 
 templ textarea(p InputOpts) {
@@ -45,10 +47,28 @@ templ textarea(p InputOpts) {
 		type="textarea"
 		rows={ fmt.Sprintf("%v", p.Rows) }
 		cols={ fmt.Sprintf("%v", p.Cols) }
-		class={ "tc-textarea", p.Class }
+		class={ "tc-textarea", checkResize(p.ResizeX, p.ResizeY), p.Class }
 		placeholder={ p.Placeholder }
 		required?={ p.Required }
 		readonly?={ p.Readonly }
 		disabled?={ p.Disabled }
+		if p.MinLength != 0 {
+			minlength={ fmt.Sprintf("%v", p.MinLength) }
+		}
+		if p.MaxLength != 0 {
+			maxlength={ fmt.Sprintf("%v", p.MaxLength) }
+		}
 	></textarea>
+}
+
+func checkResize(horizontal, vertical bool) string {
+	if horizontal && vertical {
+		return "tc-resizeAll"
+	} else if horizontal {
+		return "tc-resizeX"
+	} else if vertical {
+		return "tc-resizeY"
+	} else {
+		return ""
+	}
 }
