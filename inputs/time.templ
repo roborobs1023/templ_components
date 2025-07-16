@@ -30,3 +30,94 @@ templ TimeInput(p InputOpts) {
 		/>
 	</label>
 }
+
+templ dateInput(p InputOpts) {
+	<label for={ p.ID }>{ p.Label }</label>
+	<input
+		type="date"
+		id={ p.ID }
+		name={ p.Name }
+		value={ p.Value }
+		class={ "input input-bordered", p.Class }
+		required?={ p.Required }
+		disabled?={ p.Disabled }
+		readonly?={ p.Readonly }
+		autofocus?={ p.Autofocus }
+		min={ p.MinDate.Format("2006-01-02") }
+		max={ p.MaxDate.Format("2006-01-02") }
+		if p.Tabindex != 0 {
+			tabindex={ fmt.Sprintf("%d", p.Tabindex) }
+		}
+		{ p.Attrs... }
+	/>
+}
+
+templ dateTimeInput(p InputOpts) {
+	{{
+		if p.Value == "" {
+			p.Value = time.Now().Local().Format("2006-01-02THH:mm")
+		}
+	}}
+	<label for={ p.ID } class="tc-label">
+		<span>{ p.Label }</span>
+		<input
+			type="datetime-local"
+			id={ p.ID }
+			name={ p.Name }
+			value={ p.Value }
+			class={ "input input-bordered", p.Class }
+			required?={ p.Required }
+			disabled?={ p.Disabled }
+			readonly?={ p.Readonly }
+			autofocus?={ p.Autofocus }
+			min={ p.MinDate.Format("2006-01-02THH:mm") }
+			max={ p.MaxDate.Format("2006-01-02THH:mm") }
+			if p.Tabindex != 0 {
+				tabindex={ fmt.Sprintf("%d", p.Tabindex) }
+			}
+			{ p.Attrs... }
+		/>
+	</label>
+}
+
+templ weekInput(p InputOpts) {
+	<label for={ p.ID } class="tc-label">
+		<span>{ p.Label }</span>
+		<input
+			type="week"
+			id={ p.ID }
+			name={ p.Name }
+			value={ p.Value }
+			class={ "tc-input tc-input-bordered", p.Class }
+			required?={ p.Required }
+			disabled?={ p.Disabled }
+			readonly?={ p.Readonly }
+			autofocus?={ p.Autofocus }
+			if p.Tabindex != 0 {
+				tabindex={ fmt.Sprintf("%d", p.Tabindex) }
+			}
+			{ p.Attrs... }
+		/>
+	</label>
+}
+
+templ monthInput(p InputOpts) {
+	<label for={ p.ID } class="tc-label">
+		<span>{ p.Label }</span>
+		<input
+			type="month"
+			id={ p.ID }
+			name={ p.Name }
+			value={ p.Value }
+			class={ "tc-input tc-input-bordered", p.Class }
+			required?={ p.Required }
+			disabled?={ p.Disabled }
+			readonly?={ p.Readonly }
+			autofocus?={ p.Autofocus }
+			if p.Tabindex != 0 {
+				tabindex={ fmt.Sprintf("%d", p.Tabindex) }
+			}
+			{ p.Attrs... }
+		/>
+	</label>
+}

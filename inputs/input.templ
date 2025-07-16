@@ -29,6 +29,7 @@ type InputOpts struct {
 	Class    string
 	Attrs    templ.Attributes
 	addressProps
+	checkboxProps
 	dateProps
 	timeProps
 	emailProps
@@ -52,6 +53,7 @@ func (t InputType) String() string {
 const (
 	ADDRESS     InputType = "address"
 	CHECKBOX    InputType = "checkbox"
+	CHECKBOX_GP InputType = "checkbox-group"
 	COLOR       InputType = "color"
 	DATE        InputType = "date"
 	DATETIME    InputType = "datetime-local"
@@ -91,18 +93,27 @@ func New(label, name string, inputType string, opts ...InputOptsFunc) templ.Comp
 
 	switch p.Type {
 	// case ADDRESS:
-	// case CHCECKBOX:
+	case CHECKBOX:
+		return checkboxInput(p)
+	case CHECKBOX_GP:
+		return checkboxGroup(p)
 	// case COLOR:
 	case DATE:
-		if p.Value == "" {
+
+		_, err := time.Parse("2006-01-02", p.Value)
+		if p.Value == "" || err != nil {
 			p.Value = time.Now().Local().String()
 		}
+
 		return dateInput(p)
-	// case DATETIME:
+	case DATETIME:
+		return dateTimeInput(p)
 	// case EMAIL:
 	// case FILE:
-	// case HIDDEN:
-	// case MONTH:
+	case HIDDEN:
+		return hiddenInput(p)
+	case MONTH:
+		return monthInput(p)
 	// case NEWPASSWORD:
 	// case NUMBER:
 	case PASSWORD:
@@ -111,11 +122,13 @@ func New(label, name string, inputType string, opts ...InputOptsFunc) templ.Comp
 	// case RADIO:
 	// case RANGE:
 	// case SEARCH:
-	// case SELECT:
+	case SELECT:
+		return selectInput(p)
 	case TIME:
 		return TimeInput(p)
 		// case URL:
-		// case WEEK:
+	case WEEK:
+		return weekInput(p)
 	case TEXTAREA:
 		if p.Rows == 0 {
 			p.Rows = 20
@@ -236,6 +249,10 @@ func AcceptedDomains(domains []string) InputOptsFunc {
 }
 
 // Select/Checkbox/Radio Input Props
+func Checked(p *InputOpts) {
+	p.Checked = true
+}
+
 func Options(options map[string]string) InputOptsFunc {
 
 	return func(p *InputOpts) {

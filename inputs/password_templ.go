@@ -146,14 +146,14 @@ func newPasswordInput(p PasswordReq, Attrs templ.Attributes) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "\"></label><div id=\"error_msg\" class=\"hidden error-msg\"><p id=\"minLengthError\" class=\"hidden mt-1 text-sm text-error\">Password must be at least ")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "\"></label><div id=\"error_msg\" class=\"hidden error-msg\"><p id=\"minLengthError\" class=\"hidden mt-1 text-sm tc-text-error\">Password must be at least ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var4 string
 		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", p.minLength))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/password.templ`, Line: 120, Col: 122}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/password.templ`, Line: 120, Col: 125}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 		if templ_7745c5c3_Err != nil {
@@ -164,25 +164,25 @@ func newPasswordInput(p PasswordReq, Attrs templ.Attributes) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		if p.uppercase {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "<p id=\"uppercaseError\" class=\"hidden mt-1 text-sm text-error\">Password must contain at least one uppercase letter.</p>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "<p id=\"uppercaseError\" class=\"hidden mt-1 text-sm tc-text-error\">Password must contain at least one uppercase letter.</p>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
 		if p.lowercase {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<p id=\"lowercaseError\" class=\"hidden mt-1 text-sm text-error\">Password must contain at least one lowercase letter.</p>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<p id=\"lowercaseError\" class=\"hidden mt-1 text-sm tc-text-error\">Password must contain at least one lowercase letter.</p>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
 		if p.digit {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<p id=\"digitError\" class=\"hidden mt-1 text-sm text-error\">Password must contain at least one number.</p>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<p id=\"digitError\" class=\"hidden mt-1 text-sm tc-text-error\">Password must contain at least one number.</p>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
 		if p.specialChar {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<p id=\"specialCharError\" class=\"hidden mt-1 text-sm text-error\">Password must contain at least one special character.</p>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<p id=\"specialCharError\" class=\"hidden mt-1 text-sm tc-text-error\">Password must contain at least one special character.</p>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

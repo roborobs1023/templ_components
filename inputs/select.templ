@@ -1,0 +1,637 @@
+package inputs
+
+templ selectInput(p InputOpts) {
+	<label for={ p.ID + "-select" } class="tc-label">
+		<span>{ p.Label }</span>
+		if p.Required {
+			<span style="color:red;">*</span>
+		}
+		<div id={ p.ID + "-select" } class="tc-select" select-data={ templ.JSONString(p.Options) } multiple?={ p.Multiple }>
+			<div class="tc-selection">
+				<input id={ p.ID } type="hidden" name={ p.Name } form={ p.Form } class="hidden-select-input" value={ p.Value } aria-hidden/>
+				<span id={ p.ID + "-selected-items" } class="tc-selected-items"></span>
+				<button class="tc-dropdown-toggle" aria-expanded="false" aria-controls={ p.ID + "-content" }>
+					<i class="bx bx-chevron-down bx-md"></i>
+				</button>
+			</div>
+			<div class="tc-select-content">
+				if p.Searchable {
+					<input type="text" name={ p.ID + "-search" } id={ p.ID + "-search" } placeholder="Search..." class="tc-select-search"/>
+				}
+				<datalist id={ p.ID + "-item-list" }></datalist>
+				if p.ShowClear {
+					<button id={ p.ID + "-clear-select" }>Clear Selection</button>
+				}
+			</div>
+		</div>
+	</label>
+	<p id={ p.ID + "-error" } class="hidden tc-error-message" aria-live="polite"></p>
+	@selectHandle.Once() {
+		@selectScript(p.ID, p)
+	}
+}
+
+var selectHandle = templ.NewOnceHandle()
+
+templ selectScript(id string, p InputOpts) {
+	<script type="text/javascript" id="select-global-init-script">
+		// Helper functions (defined once globally)
+		function toggleDropdown(buttonEl, forceClose = null) {
+			console.log("toggleDropdown called for button:", buttonEl.id || buttonEl.className);
+			const dropdownId = buttonEl.getAttribute('aria-controls');
+			const dropdownMenu = document.getElementById(dropdownId);
+			if (!dropdownMenu) {
+				console.error("Select Menu not found for button:", buttonEl);
+				return;
+			}
+
+            let willBeExpanded;
+            if (forceClose !== null) {
+                willBeExpanded = !forceClose; // If forceClose is true, willBeExpanded is false
+            } else {
+                willBeExpanded = !dropdownMenu.classList.contains('show');
+            }
+
+			// Apply/remove 'show' class
+			dropdownMenu.classList.toggle('show', willBeExpanded);
+            // Apply/remove aria-expanded attribute
+			buttonEl.setAttribute('aria-expanded', willBeExpanded);
+
+            // Update icon rotation
+			const icon = buttonEl.querySelector('i');
+			if (icon) {
+				icon.classList.toggle('bx-rotate-90', willBeExpanded);
+			}
+
+            // Accessibility: Focus management when opening/closing
+            const listbox = dropdownMenu.querySelector('[role="listbox"]');
+            if (willBeExpanded) {
+                // When opened, focus the search input if present, otherwise the listbox
+                if (listbox) {
+                    // Reset active descendant when opening
+                    buttonEl.removeAttribute('aria-activedescendant');
+                    const firstActive = listbox.querySelector('[aria-selected="true"]');
+                    if (firstActive) {
+                        firstActive.focus(); // Focus the first selected item
+                        buttonEl.setAttribute('aria-activedescendant', firstActive.id);
+                    } else {
+                        const firstItem = listbox.querySelector('[role="option"]');
+                        if (firstItem) {
+                            firstItem.focus(); // Focus the first option
+                            buttonEl.setAttribute('aria-activedescendant', firstItem.id);
+                        } else if (searchInput) {
+                            searchInput.focus(); // Fallback to search input
+                        }
+                    }
+                } else if (searchInput) {
+                    searchInput.focus();
+                }
+            } else {
+                // When closed, return focus to the toggle button
+                buttonEl.focus();
+            }
+		}
+
+		function setOptions(options, listId, componentId) { // Pass componentId for unique option IDs
+			const list = document.getElementById(listId);
+			if (!list) {
+				console.error(`List element with ID ${listId} not found.`);
+				return;
+			}
+
+			// Set ARIA role for the list
+			list.setAttribute('role', 'listbox');
+            // If multiple selection is allowed, add aria-multiselectable
+            const isMultiple = document.getElementById(componentId + "-select").hasAttribute('multiple');
+            if (isMultiple) {
+                list.setAttribute('aria-multiselectable', 'true');
+            } else {
+                list.removeAttribute('aria-multiselectable');
+            }
+
+			options.sort((a, b) => {
+				return String(a.Label).localeCompare(String(b.Label)); // Sort by label for user-facing order
+			});
+
+			list.innerHTML = '';
+			options.forEach((opt, index) => {
+				let item = document.createElement('option');
+				item.textContent = opt.Label;
+				item.setAttribute('value', opt.Value); // Keep value for internal logic
+				item.classList.add('select-item');
+
+                // ARIA attributes for each option
+                item.setAttribute('role', 'option');
+                item.setAttribute('id', `${componentId}-option-${index}`); // Unique ID for aria-activedescendant
+                item.setAttribute('tabindex', '-1'); // Not in tab order, but focusable via JS
+
+				list.appendChild(item);
+			});
+		}
+
+		// The core initialization function for each select component
+		function initializeSelectComponent(componentId, isMultiple, initialValue, placeholder, isSearchable) {
+			const selectElement = document.getElementById(componentId + "-select");
+			if (!selectElement) {
+				console.error(`Root select element with ID ${componentId}-select not found.`);
+				return;
+			}
+
+			const hiddenInput = document.getElementById(componentId);
+			const valueDisplay = document.getElementById(componentId + "-selected-items");
+			const searchInput = isSearchable ? selectElement.querySelector('#' + componentId + "-search") : null;
+			const listElementId = componentId + "-item-list";
+			const clearBtn = selectElement.querySelector('#' + componentId + "-clear-select");
+			const dropdownToggle = selectElement.querySelector('.tc-dropdown-toggle');
+			const labelElement = selectElement.querySelector('label[for="' + componentId + '-select"]');
+            const dropdownMenu = document.getElementById(dropdownToggle.getAttribute('aria-controls')); // The content div
+
+            const updateValidationState = () => {
+                const isRequired = hiddenInput.hasAttribute('required') 
+                console.log(hiddenInput.value)
+                let currentValues = []
+                try {
+                    if (isMultiple) {
+                        currentValues = JSON.parse(hiddenInput.value || '[]');
+
+                    } else {
+                        currentValues = hiddenInput.value ? [hiddenInput.value] : [];
+                    }
+                } catch (e) {
+                    console.error ("Error parsing current hidden input value for validation.", e);
+                    currentValues = [];
+                }
+
+                let isValid = true;
+                let errorMessage = '';
+
+                if (isRequired && currentValues.length === 0) {
+                    console.log('invalid')
+                    isValid = false;
+                    errorMessage = 'This field is required.'
+                }
+
+                // Add more complex validation here if needed, e.g., checking if 'other' is selected and 'other' input is filled.
+                // For value integrity, ensure selectedValues are actually in optionsData:
+                // const validOptionValues = new Set(optionsData.map(opt => opt.Value));
+                // if (currentValues.some(val => !validOptionValues.has(val))) {
+                //     isValid = false;
+                //     errorMessage = 'Invalid selection detected.';
+                // }
+
+                if (isValid) {
+                    hiddenInput.setCustomValidity(''); // Clear custom validity message
+                    dropdownToggle.removeAttribute('aria-invalid');
+                    // You might want to remove a 'has-error' class from the display
+                    valueDisplay.classList.remove('is-invalid');
+                    // Hide error message element if you have one
+                    const errorEl = document.getElementById(componentId + '-error');
+                    if (errorEl) {
+                        errorEl.textContent = '';
+                        errorEl.classList.add('hidden'); // Assuming you have a 'hidden' class
+                    }
+                } else {
+                    // Set custom validity message (for native browser validation UI)
+                    hiddenInput.setCustomValidity(errorMessage);
+                    dropdownToggle.setAttribute('aria-invalid', 'true');
+                    // Add error class to the display
+                    valueDisplay.classList.add('is-invalid');
+                    // Show error message element
+                    const errorEl = document.getElementById(componentId + '-error');
+                    if (errorEl) {
+                        errorEl.textContent = errorMessage;
+                        errorEl.classList.remove('hidden');
+                    }
+                }
+            }
+
+            
+            // ARIA setup for the toggle button
+            dropdownToggle.setAttribute('role', 'combobox'); // Or on a wrapper input if it exists
+            dropdownToggle.setAttribute('aria-haspopup', 'listbox');
+            // aria-expanded and aria-controls are handled by toggleDropdown
+
+			let selectedItems = [];
+			let selectedLabels = [];
+			const optionsData = JSON.parse(selectElement.getAttribute('select-data'));
+
+			const currentHiddenValue = hiddenInput.value;
+			if (currentHiddenValue) {
+				if (isMultiple) {
+					try {
+						selectedItems = JSON.parse(currentHiddenValue);
+					} catch (e) {
+						console.error("Error parsing initial multiple select value:", e);
+						selectedItems = [];
+					}
+				} else {
+					selectedItems = [currentHiddenValue];
+				}
+			} else if (initialValue) {
+				selectedItems = [initialValue];
+			}
+
+			setOptions(optionsData, listElementId, componentId); // Pass componentId
+			const selectItems = selectElement.querySelectorAll('.tc-select-item'); // Re-query after setOptions
+
+			selectItems.forEach(item => {
+				const itemValue = item.getAttribute('value');
+				if (selectedItems.includes(itemValue)) {
+					item.classList.add('active');
+					item.setAttribute('aria-selected', 'true'); // Set aria-selected for selected items
+					if (!selectedLabels.includes(item.textContent)) {
+						selectedLabels.push(item.textContent);
+					}
+				} else {
+                    item.setAttribute('aria-selected', 'false'); // Ensure non-selected items have false
+                }
+			});
+
+			if (valueDisplay) {
+				valueDisplay.textContent = selectedLabels.length > 0 ? selectedLabels.join(', ') : placeholder;
+			}
+			if (hiddenInput) {
+				hiddenInput.value = isMultiple ? JSON.stringify(selectedItems) : selectedItems[0] || '';
+			}
+
+            // Event listener for the label element
+			if (labelElement) {
+				labelElement.addEventListener('click', (event) => {
+					event.preventDefault(); 
+					event.stopPropagation(); // Stop propagation to prevent document click from closing
+					console.log("Label clicked for:", componentId);
+					dropdownToggle.click(); // Programmatically click the toggle button
+				});
+			}
+
+             if (valueDisplay) {
+                valueDisplay.addEventListener('click', (event) => {
+					event.preventDefault(); 
+					event.stopPropagation(); // Stop propagation to prevent document click from closing
+					dropdownToggle.click(); // Programmatically click the toggle button
+				});
+            }
+
+
+            // Event listener for the dropdown toggle button
+			if (dropdownToggle) {
+				dropdownToggle.addEventListener('click', (event) => {
+					event.preventDefault();
+                    event.stopPropagation(); // Prevent click on button from reaching global listener
+					console.log("Dropdown toggle clicked for:", componentId);
+					toggleDropdown(dropdownToggle);
+
+                    // Close other open dropdowns when one opens
+                    document.querySelectorAll('.tc-dropdown-toggle').forEach(otherButton => {
+                        if (otherButton !== dropdownToggle) {
+                            const otherDropdownId = otherButton.getAttribute('aria-controls');
+                            const otherDropdownMenu = document.getElementById(otherDropdownId);
+                            if (otherDropdownMenu && otherDropdownMenu.classList.contains('show')) {
+                                toggleDropdown(otherButton, true); // Force close other dropdowns
+                            }
+                        }
+                    });
+				});
+
+                // Keyboard Navigation for the Toggle Button
+                dropdownToggle.addEventListener('keydown', (event) => {
+                    const isExpanded = dropdownToggle.getAttribute('aria-expanded') === 'true';
+                    const allOptions = Array.from(selectItems);
+                    let currentActiveOptionIndex = -1;
+                    const activeDescendantId = dropdownToggle.getAttribute('aria-activedescendant');
+                    if (activeDescendantId) {
+                        currentActiveOptionIndex = allOptions.findIndex(opt => opt.id === activeDescendantId);
+                    }
+
+                    switch (event.key) {
+                        case 'Enter':
+                        case ' ': // Space key
+                            event.preventDefault(); // Prevent default scroll for space
+                            if (!isExpanded) {
+                                toggleDropdown(dropdownToggle); // Open
+                            } else {
+                                // If open and an item is active, select it
+                                const activeElement = document.getElementById(activeDescendantId);
+                                if (activeElement) {
+                                    activeElement.click(); // Simulate click on the active item
+                                } else {
+                                    toggleDropdown(dropdownToggle); // Close if no item active
+                                }
+                            }
+                            break;
+                        case 'ArrowDown':
+                        case 'ArrowUp':
+                            event.preventDefault(); // Prevent default scroll
+                            if (!isExpanded) {
+                                toggleDropdown(dropdownToggle); // Open if closed
+                                // Set initial active descendant to first/last if opening with arrow
+                                if (event.key === 'ArrowDown') {
+                                    if (allOptions.length > 0) {
+                                        allOptions[0].focus();
+                                        dropdownToggle.setAttribute('aria-activedescendant', allOptions[0].id);
+                                    }
+                                } else { // ArrowUp
+                                    if (allOptions.length > 0) {
+                                        allOptions[allOptions.length - 1].focus();
+                                        dropdownToggle.setAttribute('aria-activedescendant', allOptions[allOptions.length - 1].id);
+                                    }
+                                }
+                            } else {
+                                // Navigate options
+                                let nextIndex = currentActiveOptionIndex;
+                                if (event.key === 'ArrowDown') {
+                                    nextIndex = (nextIndex + 1) % allOptions.length;
+                                } else { // ArrowUp
+                                    nextIndex = (nextIndex - 1 + allOptions.length) % allOptions.length;
+                                }
+
+                                if (allOptions[nextIndex]) {
+                                    allOptions[nextIndex].focus();
+                                    dropdownToggle.setAttribute('aria-activedescendant', allOptions[nextIndex].id);
+                                }
+                            }
+                            break;
+                        case 'Escape':
+                            if (isExpanded) {
+                                event.preventDefault();
+                                toggleDropdown(dropdownToggle, true); // Force close
+                                // Focus returns to button after toggleDropdown
+                            }
+                            break;
+                        case 'Home':
+                            if (isExpanded && allOptions.length > 0) {
+                                event.preventDefault();
+                                allOptions[0].focus();
+                                dropdownToggle.setAttribute('aria-activedescendant', allOptions[0].id);
+                            }
+                            break;
+                        case 'End':
+                            if (isExpanded && allOptions.length > 0) {
+                                event.preventDefault();
+                                allOptions[allOptions.length - 1].focus();
+                                dropdownToggle.setAttribute('aria-activedescendant', allOptions[allOptions.length - 1].id);
+                            }
+                            break;
+                        // Type-ahead functionality (already handled by search input, but could be added here for pure keyboard nav)
+                        default:
+                            if (event.key.length === 1 && event.key.match(/[a-z0-9]/i)) { // Single alphanumeric key
+                                // If dropdown is closed, open it first
+                                if (!isExpanded) {
+                                    toggleDropdown(dropdownToggle);
+                                }
+                                // Trigger search input
+                                if (searchInput) {
+                                    searchInput.focus();
+                                    searchInput.value += event.key; // Append key to search input
+                                    const inputEvent = new Event('input', { bubbles: true });
+                                    searchInput.dispatchEvent(inputEvent); // Manually trigger input event
+                                }
+                            }
+                            break;
+                    }
+                });
+			}
+
+            // Keyboard Navigation for List Items (Options)
+            if (dropdownMenu) { // Attach listener to the menu itself for delegation
+                dropdownMenu.addEventListener('keydown', (event) => {
+                    const allOptions = Array.from(selectItems);
+                    const currentFocusedOption = event.target.closest('[role="option"]');
+                    let currentFocusedIndex = -1;
+                    if (currentFocusedOption) {
+                        currentFocusedIndex = allOptions.indexOf(currentFocusedOption);
+                    }
+
+                    switch (event.key) {
+                        case 'ArrowDown':
+                        case 'ArrowUp':
+                            event.preventDefault(); // Prevent scrolling
+                            if (allOptions.length > 0 && currentFocusedIndex !== -1) {
+                                let nextIndex;
+                                if (event.key === 'ArrowDown') {
+                                    nextIndex = (currentFocusedIndex + 1) % allOptions.length;
+                                } else { // ArrowUp
+                                    nextIndex = (currentFocusedIndex - 1 + allOptions.length) % allOptions.length;
+                                }
+                                allOptions[nextIndex].focus();
+                                dropdownToggle.setAttribute('aria-activedescendant', allOptions[nextIndex].id);
+                            }
+                            break;
+                        case 'Enter':
+                        case ' ': // Space key
+                            event.preventDefault();
+                            if (currentFocusedOption) {
+                                currentFocusedOption.click(); // Select the focused option
+                                // For single select, click will close it. For multiple, it stays open.
+                                if (!isMultiple) {
+                                    toggleDropdown(dropdownToggle, true); // Force close for single select
+                                }
+                            }
+                            break;
+                        case 'Escape':
+                            event.preventDefault();
+                            toggleDropdown(dropdownToggle, true); // Force close
+                            break;
+                        case 'Home':
+                            if (allOptions.length > 0) {
+                                event.preventDefault();
+                                allOptions[0].focus();
+                                dropdownToggle.setAttribute('aria-activedescendant', allOptions[0].id);
+                            }
+                            break;
+                        case 'End':
+                            if (allOptions.length > 0) {
+                                event.preventDefault();
+                                allOptions[allOptions.length - 1].focus();
+                                dropdownToggle.setAttribute('aria-activedescendant', allOptions[allOptions.length - 1].id);
+                            }
+                            break;
+                        // For type-ahead within the list (optional, can defer to search input)
+                        default:
+                            if (event.key.length === 1 && event.key.match(/[a-z0-9]/i)) {
+                                if (searchInput) {
+                                    searchInput.focus();
+                                    searchInput.value += event.key;
+                                    const inputEvent = new Event('input', { bubbles: true });
+                                    searchInput.dispatchEvent(inputEvent);
+                                }
+                            }
+                            break;
+                    }
+                });
+            }
+
+            // Attach listener for search input keydowns (optional, but good for robust type-ahead)
+            if (searchInput) {
+                searchInput.addEventListener('keydown', (event) => {
+                    event.stopPropagation();
+                    const isExpanded = dropdownToggle.getAttribute('aria-expanded') === 'true';
+                    const allOptions = Array.from(selectItems).filter(item => item.style.display !== 'none'); // Only visible options
+                    let currentActiveOptionIndex = -1;
+                    const activeDescendantId = dropdownToggle.getAttribute('aria-activedescendant');
+                    if (activeDescendantId) {
+                        currentActiveOptionIndex = allOptions.findIndex(opt => opt.id === activeDescendantId);
+                    }
+
+                    switch (event.key) {
+                        case 'ArrowDown':
+                            event.preventDefault();
+                            if (allOptions.length > 0) {
+                                let nextIndex = (currentActiveOptionIndex + 1) % allOptions.length;
+                                allOptions[nextIndex].focus();
+                                dropdownToggle.setAttribute('aria-activedescendant', allOptions[nextIndex].id);
+                            }
+                            break;
+                        case 'ArrowUp':
+                            event.preventDefault();
+                            if (allOptions.length > 0) {
+                                let nextIndex = (currentActiveOptionIndex - 1 + allOptions.length) % allOptions.length;
+                                allOptions[nextIndex].focus();
+                                dropdownToggle.setAttribute('aria-activedescendant', allOptions[nextIndex].id);
+                            }
+                            break;
+                        case 'Enter':
+                            event.preventDefault();
+                            // Select the currently active item
+                            const activeElement = document.getElementById(activeDescendantId);
+                            if (activeElement) {
+                                activeElement.click();
+                                updateValidationState();
+                            }
+
+
+                            break;
+                        case 'Escape':
+                            event.preventDefault();
+                            toggleDropdown(dropdownToggle, true); // Force close
+                            updateValidationState();
+                            break;
+                    }
+                });
+            }
+
+            selectItems.forEach(item => {
+                item.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    event.stopPropagation(); // Stop propagation from item clicks
+
+                    const value = item.getAttribute('value');
+                    const label = item.textContent;
+                    console.log(value)
+                    // Update aria-selected state
+                    if (isMultiple) {
+                        const index = selectedItems.indexOf(value);
+                        if (index === -1) {
+                            selectedItems.push(value);
+                            selectedLabels.push(label);
+                            item.classList.add('active');
+                            item.setAttribute('aria-selected', 'true');
+                        } else {
+                            selectedItems.splice(index, 1);
+                            selectedLabels.splice(index, 1);
+                            item.classList.remove('active');
+                            item.setAttribute('aria-selected', 'false');
+                        }
+
+                        valueDisplay.textContent = selectedLabels.length > 0 ? selectedLabels.join(', ') : placeholder;
+                    } else { // Single select mode
+                        const currentlySelectedValue = hiddenInput.value;
+                        console.log(hiddenInput.value)
+                        // Deselect previously active item if different from current click
+                        Array.from(selectItems).forEach(i => {
+                            if (i.classList.contains('active') && i !== item) { // Only deselect others if not the current item
+                                i.classList.remove('active');
+                                i.setAttribute('aria-selected', 'false');
+                            }
+                        });
+                        
+
+                        if (currentlySelectedValue === value) {
+                            // Deselect if clicking the same item again
+                            hiddenInput.value = '';
+                            valueDisplay.textContent = placeholder;
+                            item.classList.remove('active');
+                            item.setAttribute('aria-selected', 'false');
+                        } else {
+                            // Select new item
+                            selectedItems = []
+                            selectedItems.push(value);
+                            valueDisplay.textContent = label;
+                            item.classList.add('active');
+                            item.setAttribute('aria-selected', 'true');
+                        }
+                        toggleDropdown(dropdownToggle, true); // Close dropdown after single selection
+                    }
+                    hiddenInput.value = isMultiple ? JSON.stringify(selectedItems) : (selectedItems[0] || '');
+                    updateValidationState();
+                });
+
+                // Listen for focus on individual options to update aria-activedescendant
+                item.addEventListener('focus', () => {
+                    dropdownToggle.setAttribute('aria-activedescendant', item.id);
+                });
+            });
+
+            if (clearBtn) {
+                clearBtn.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    selectedItems = [];
+                    selectedLabels = [];
+                    hiddenInput.value = '';
+                    valueDisplay.textContent = placeholder;
+
+                    if (searchInput) {
+                        searchInput.value = '';
+                        selectItems.forEach(item => item.style.display = '');
+                    }
+                    selectItems.forEach((item) => {
+                        item.classList.remove('active');
+                        item.setAttribute('aria-selected', 'false'); // Clear aria-selected
+                    });
+                    toggleDropdown(dropdownToggle, true); // Close the dropdown after clearing
+                    updateValidationState();
+                });
+            }
+		}
+
+		document.addEventListener('DOMContentLoaded', () => {
+            if (!window.selectComponentsInitialized) {
+                window.selectComponentsInitialized = new Set();
+            }
+
+            const allSelectComponentRoots = document.querySelectorAll('.tc-select');
+
+            allSelectComponentRoots.forEach(rootEl => {
+                const componentId = rootEl.id.replace('-select', '');
+
+                if (!window.selectComponentsInitialized.has(componentId)) {
+                    const isMultiple = rootEl.hasAttribute('multiple');
+                    const initialValue = rootEl.getAttribute('initial-value') || '';
+                    const placeholderSpan = rootEl.querySelector('.tc-selected-items');
+                    const placeholder = placeholderSpan ? placeholderSpan.textContent : 'Select...';
+                    const isSearchable = rootEl.querySelector('.tc-select-search') !== null;
+
+                    initializeSelectComponent(componentId, isMultiple, initialValue, placeholder, isSearchable);
+                    window.selectComponentsInitialized.add(componentId);
+                }
+            });
+
+            if (!window.globalSelectOutsideClickListenerAttached) {
+                document.addEventListener('click', (event) => {
+                    allSelectComponentRoots.forEach(rootEl => {
+                        const dropdownToggle = rootEl.querySelector('.tc-dropdown-toggle');
+                        const dropdownMenu = rootEl.querySelector('.tc-select-content');
+                        
+                        if (dropdownMenu && dropdownMenu.classList.contains('show')) {
+                            if (!rootEl.contains(event.target)) { // Check if click is outside the entire component root
+                                toggleDropdown(dropdownToggle, true); // Force close
+                            }
+                        }
+                    });
+                });
+                window.globalSelectOutsideClickListenerAttached = true;
+            }
+		});
+	</script>
+}

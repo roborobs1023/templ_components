@@ -27,6 +27,9 @@ type addressProps struct {
 	DefCity    string
 	DefState   string
 }
+type checkboxProps struct {
+	Checked bool
+}
 
 type option struct {
 	Label string

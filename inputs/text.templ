@@ -33,6 +33,34 @@ templ textInput(p InputOpts) {
 	</label>
 }
 
+templ hiddenInput(p InputOpts) {
+	<input
+		id={ p.ID }
+		type="hidden"
+		name={ p.Name }
+		value={ p.Value }
+		placeholder={ p.Placeholder }
+		class={ "tc-input tc-input", p.Class }
+		required?={ p.Required }
+		disabled?={ p.Disabled }
+		readonly?={ p.Readonly }
+		autofocus?={ p.Autofocus }
+		form={ p.Form }
+		autocomplete={ p.Autocomplete }
+		spellcheck?={ p.Spellcheck }
+		tabindex={ fmt.Sprintf("%d", p.Tabindex) }
+		if p.MinLength > 0 {
+			minLength={ fmt.Sprintf("%d", p.MinLength) }
+		}
+		if p.MaxLength > 0 {
+			maxlength={ fmt.Sprintf("%d", p.MaxLength) }
+		}
+		if p.Pattern != "" {
+			pattern={ p.Pattern }
+		}
+	/>
+}
+
 templ textarea(p InputOpts) {
 	<label for={ p.ID } class="tc-label">
 		<span>{ p.Label }</span>

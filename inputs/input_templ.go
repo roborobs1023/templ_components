@@ -37,6 +37,7 @@ type InputOpts struct {
 	Class    string
 	Attrs    templ.Attributes
 	addressProps
+	checkboxProps
 	dateProps
 	timeProps
 	emailProps
@@ -60,6 +61,7 @@ func (t InputType) String() string {
 const (
 	ADDRESS     InputType = "address"
 	CHECKBOX    InputType = "checkbox"
+	CHECKBOX_GP InputType = "checkbox-group"
 	COLOR       InputType = "color"
 	DATE        InputType = "date"
 	DATETIME    InputType = "datetime-local"
@@ -99,18 +101,27 @@ func New(label, name string, inputType string, opts ...InputOptsFunc) templ.Comp
 
 	switch p.Type {
 	// case ADDRESS:
-	// case CHCECKBOX:
+	case CHECKBOX:
+		return checkboxInput(p)
+	case CHECKBOX_GP:
+		return checkboxGroup(p)
 	// case COLOR:
 	case DATE:
-		if p.Value == "" {
+
+		_, err := time.Parse("2006-01-02", p.Value)
+		if p.Value == "" || err != nil {
 			p.Value = time.Now().Local().String()
 		}
+
 		return dateInput(p)
-	// case DATETIME:
+	case DATETIME:
+		return dateTimeInput(p)
 	// case EMAIL:
 	// case FILE:
-	// case HIDDEN:
-	// case MONTH:
+	case HIDDEN:
+		return hiddenInput(p)
+	case MONTH:
+		return monthInput(p)
 	// case NEWPASSWORD:
 	// case NUMBER:
 	case PASSWORD:
@@ -119,11 +130,13 @@ func New(label, name string, inputType string, opts ...InputOptsFunc) templ.Comp
 	// case RADIO:
 	// case RANGE:
 	// case SEARCH:
-	// case SELECT:
+	case SELECT:
+		return selectInput(p)
 	case TIME:
 		return TimeInput(p)
 		// case URL:
-		// case WEEK:
+	case WEEK:
+		return weekInput(p)
 	case TEXTAREA:
 		if p.Rows == 0 {
 			p.Rows = 20
@@ -244,6 +257,10 @@ func AcceptedDomains(domains []string) InputOptsFunc {
 }
 
 // Select/Checkbox/Radio Input Props
+func Checked(p *InputOpts) {
+	p.Checked = true
+}
+
 func Options(options map[string]string) InputOptsFunc {
 
 	return func(p *InputOpts) {
@@ -391,7 +408,7 @@ func dataList(id string, options map[string]any) templ.Component {
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(id)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/input.templ`, Line: 359, Col: 18}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/input.templ`, Line: 376, Col: 18}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
@@ -409,7 +426,7 @@ func dataList(id string, options map[string]any) templ.Component {
 			var templ_7745c5c3_Var3 string
 			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%v", value))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/input.templ`, Line: 361, Col: 43}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/input.templ`, Line: 378, Col: 43}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
@@ -422,7 +439,7 @@ func dataList(id string, options map[string]any) templ.Component {
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(lbl)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/input.templ`, Line: 361, Col: 57}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/input.templ`, Line: 378, Col: 57}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {

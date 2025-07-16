@@ -33,7 +33,8 @@ form {
     margin-bottom: 0.5rem;
 }
 
-.tc-label {
+.tc-label,
+.tc-input-group {
     display: flex;
     gap: 0.5rem;
     flex-wrap: wrap;
@@ -65,4 +66,173 @@ form {
 
 .hidden {
     display: none !important;
+}
+
+.tc-label [type="checkbox"] {
+    opacity: 0;
+}
+
+.tc-label [type="checkbox"]+span {
+    position: relative;
+    padding-left: 30px;
+    cursor: pointer;
+    display: inline-block;
+
+}
+
+.tc-label [type="checkbox"]+span::before,
+.tc-label [type="checkbox"]+span::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1em;
+    height: 1em;
+    border-radius: 5px;
+}
+
+.tc-label [type="checkbox"]+span::before {
+    outline: 2px solid currentColor;
+    border-radius: 5px;
+    background-color: transparent;
+    transition: all .1s ease
+}
+
+.tc-label [type="checkbox"]:checked+span::before {
+    outline: 2px solid var(--clr-primary);
+}
+
+.tc-label [type="checkbox"]:checked+span::after {
+    color: var(--clr-primary, currentColor);
+    background-color: var(--clr-primary, currentColor);
+    /* background-image: url("/assets/images/checkmark.svg"); */
+    background-size: contain;
+    opacity: 1;
+    transform: scale(1);
+    transition: all 0.2s ease;
+
+}
+
+
+.tc-label [type="checkbox"]:not(:checked)+span::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 1em;
+    width: 1em;
+    color: var(--clr-primary, purple);
+    opacity: 0;
+    transform: scale(0);
+}
+
+.tc-label [type="checkbox"]:disabled,
+.tc-label [type="checkbox"]:disabled+span {
+    color: #666;
+    cursor: initial;
+}
+
+.tc-checkbox__group {
+    display: flex;
+    gap: 0.5rem;
+    padding: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Custom Select Box Styles */
+.tc-select {
+    position: relative;
+    background-color: transparent;
+}
+
+.tc-hidden-select-input {
+    visibility: collapse;
+}
+
+.tc-selected-items {
+    display: flex;
+    align-items: center;
+    width: max(250px, 100%);
+    height: 2.75rem;
+    padding-inline: 0.5rem;
+}
+
+.tc-selection {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--clr-secondary, #565556);
+    color: var(--clr-text-primary, white);
+    border: 1px solid currentColor;
+    border-radius: 5px;
+    width: 275px;
+}
+
+.tc-dropdown-toggle {
+    background-color: transparent;
+    border: none;
+}
+
+.tc-dropdown-toggle:hover,
+.tc-dropdown-toggle:focus {
+    outline: 1px dotted currentColor;
+}
+
+.tc-select-input {
+    display: flex;
+
+}
+
+.tc-select-content {
+    display: grid;
+    position: absolute;
+    gap: 0.25rem;
+    top: 2.5em;
+    left: 0;
+    background-color: var(--clr-monochrome, lightblue);
+    opacity: 0;
+    transition: all 0.5s ease;
+    z-index: -1;
+
+}
+
+.tc-select-content ul {
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.tc-select-content.show {
+    display: grid;
+    position: absolute;
+    opacity: 1;
+    top: 2.5em;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    border: 1px solid currentColor;
+    border-end-end-radius: 5px;
+    border-end-start-radius: 5px;
+
+}
+
+.tc-select-search {
+    width: 100%;
+}
+
+.tc-select-item {
+    padding-inline: 0.5rem;
+    width: 100%;
+}
+
+.tc-select-item.active,
+.tc-select-item:hover {
+    background-color: var(--clr-primary);
+    cursor: pointer;
+}
+
+/*text styles*/
+.tc-text-error {
+    font-size: var(--fs-sm, clamp(0.8333rem, 0.7576rem + 0.303vw, 1rem));
+    color: red;
+    text-decoration: wavy underline;
 }
