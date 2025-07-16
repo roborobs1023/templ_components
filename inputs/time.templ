@@ -16,12 +16,8 @@ templ TimeInput(p InputOpts) {
 		disabled?={ p.Disabled }
 		readonly?={ p.Readonly }
 		autofocus?={ p.Autofocus }
-		if p.MinTime != 0 {
-			min={ p.MinTime.Format("HH:mm") }
-		}
-		if p.MaxTime != 0 {
-			max={ p.MaxTime.Format("HH:mm") }
-		}
+		min={ p.MinTime.Format("HH:mm") }
+		max={ p.MaxTime.Format("HH:mm") }
 		if p.Step > 0 {
 			step={ fmt.Sprintf("%v", p.Step) }
 		}

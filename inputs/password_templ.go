@@ -47,7 +47,7 @@ var DefaultPasswordReq = PasswordReq{
 }
 
 func SetPassMinLength(min int) PasswordReqFunc {
-	return func(r *PassowrdReq) {
+	return func(r *PasswordReq) {
 		r.minLength = min
 	}
 }
