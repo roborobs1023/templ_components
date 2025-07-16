@@ -17,9 +17,13 @@ form {
 }
 
 .tc-input {
-    min-width: 150px;
     padding-block: 0.5em;
     border-radius: 0.25rem;
+}
+
+.tc-input:disabled {
+    color: var(--clr-disabled, lightgrey);
+    background-color: var(--clr-disabled-bg, grey);
 }
 
 .tc-form-group {
@@ -53,4 +57,12 @@ form {
 
 .tc-resizeY {
     resize: vertical;
+}
+
+.tc-resizeAll {
+    resize: both;
+}
+
+.hidden {
+    display: none !important;
 }

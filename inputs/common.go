@@ -1,32 +1,6 @@
-package common
+package inputs
 
-import (
-	"github.com/a-h/templ"
-	"github.com/roborobs1023/templ_components/types"
-)
-
-type InputProps struct {
-	ID          string
-	Name        string
-	Type        string
-	Value       string
-	Label       string
-	Placeholder string
-
-	Required  bool
-	Disabled  bool
-	Readonly  bool
-	Autofocus bool
-
-	Autocomplete string
-	Spellcheck   bool
-	Tabindex     int
-	Form         string
-	Attrs        templ.Attributes
-	Class        string
-}
-
-var States = []types.SelectOption{
+var States = []option{
 	{Label: "Alabama", Value: "AL"},
 	{Label: "Alaska", Value: "AK"},
 	{Label: "Arizona", Value: "AZ"},
@@ -79,7 +53,7 @@ var States = []types.SelectOption{
 	{Label: "Wyoming", Value: "WY"},
 }
 
-var Countries = []types.SelectOption{
+var Countries = []option{
 	{Label: "Afghanistan", Value: "AF"},
 	{Label: "Albania", Value: "AL"},
 	{Label: "Algeria", Value: "DZ"},

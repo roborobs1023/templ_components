@@ -67,7 +67,7 @@ func head(p headOpts) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<link rel=\"stylesheet\" href=\"https://raw.githubusercontent.com/roborobs1023/templ_components/refs/heads/master/styles/tc-style.css\"><script defer href=\"https://cdn.jsdelivr.net/gh/roborobs1023/templ_components@master/js/index.js\"></script>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<link href=\"https://cdn.jsdelivr.net/gh/roborobs1023/templ_components@master/styles/tc-style.css\" rel=\"stylesheet\"><script defer href=\"https://cdn.jsdelivr.net/gh/roborobs1023/templ_components@master/js/index.js\"></script>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -115,30 +115,14 @@ func FavIcon(url string) HeadOptsFunc {
 	}
 }
 
-func CustomJS(url string) HeadOptsFunc {
-	return func(p *headOpts) {
-		p.customJS = templ.URL(url)
-	}
-}
-
-func Stylesheet(url string) HeadOptsFunc {
-	return func(p *headOpts) {
-		p.stylesheet = templ.URL(url)
-	}
-}
-
 func UseTemplCSS(p *headOpts) {
 	p.templCSS = true
 }
 
-func DisableGeneratedCSS(p *headOpts) {
-	p.generated = false
-}
-
 func NewHead(title string, opts ...HeadOptsFunc) templ.Component {
 	p := headOpts{
-		title:     title,
-		generated: true,
+		title:    title,
+		templCSS: false,
 	}
 
 	for _, fn := range opts {

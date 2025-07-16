@@ -8,10 +8,7 @@ package inputs
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-import (
-	"fmt"
-	"github.com/roborobs1023/templ_components/inputs/common"
-)
+import "fmt"
 
 type PasswordReq struct {
 	minLength          int
@@ -99,7 +96,7 @@ func passwordInput(Attrs templ.Attributes) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<label for=\"password\">Password:</label><div class=\"password-input\"><input id=\"password\" type=\"password\" name=\"password\" required aria-required=\"true\" autocomplete=\"current-password\" aria-autocomplete=\"current-password\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<label for=\"password\" class=\"tc-label\"><span>Password</span><div class=\"password-input\"><input id=\"password\" type=\"password\" name=\"password\" required aria-required=\"true\" autocomplete=\"current-password\" aria-autocomplete=\"current-password\" class=\"tc-input\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -107,7 +104,7 @@ func passwordInput(Attrs templ.Attributes) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "> <button type=\"button\" class=\"password-toggle\" data-tooltip=\"View Password\" _=\"on click if [type of previous <input/>] == 'password' then remove [@type=password] from previous <input/> then hide #eye then remove .hidden from #eye-slash else show #eye then add .hidden to #eye-slash then tell previous <input/> toggle [@type=password] then end\"><svg id=\"eye\" xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" viewBox=\"0 0 16 16\"><path d=\"M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0\"></path> <path d=\"M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7\"></path></svg> <svg id=\"eye-slash\" class=\"hidden\" xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" viewBox=\"0 0 16 16\"><path d=\"m10.79 12.912-1.614-1.615a3.5 3.5 0 0 1-4.474-4.474l-2.06-2.06C.938 6.278 0 8 0 8s3 5.5 8 5.5a7 7 0 0 0 2.79-.588M5.21 3.088A7 7 0 0 1 8 2.5c5 0 8 5.5 8 5.5s-.939 1.721-2.641 3.238l-2.062-2.062a3.5 3.5 0 0 0-4.474-4.474z\"></path> <path d=\"M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829zm4.95.708-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829zm3.171 6-12-12 .708-.708 12 12z\"></path></svg></button></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "> <button type=\"button\" class=\"password-toggle\" data-tooltip=\"View Password\" _=\"on click if [type of previous <input/>] == 'password' then remove [@type=password] from previous <input/> then hide #eye then remove .hidden from #eye-slash else show #eye then add .hidden to #eye-slash then tell previous <input/> toggle [@type=password] then end\"><svg id=\"eye\" xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" viewBox=\"0 0 16 16\"><path d=\"M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0\"></path> <path d=\"M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7\"></path></svg> <svg id=\"eye-slash\" class=\"hidden\" xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" viewBox=\"0 0 16 16\"><path d=\"m10.79 12.912-1.614-1.615a3.5 3.5 0 0 1-4.474-4.474l-2.06-2.06C.938 6.278 0 8 0 8s3 5.5 8 5.5a7 7 0 0 0 2.79-.588M5.21 3.088A7 7 0 0 1 8 2.5c5 0 8 5.5 8 5.5s-.939 1.721-2.641 3.238l-2.062-2.062a3.5 3.5 0 0 0-4.474-4.474z\"></path> <path d=\"M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829zm4.95.708-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829zm3.171 6-12-12 .708-.708 12 12z\"></path></svg></button></div></label>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -115,7 +112,7 @@ func passwordInput(Attrs templ.Attributes) templ.Component {
 	})
 }
 
-func newPasswordInput(p PasswordReq) templ.Component {
+func newPasswordInput(p PasswordReq, Attrs templ.Attributes) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -136,194 +133,146 @@ func newPasswordInput(p PasswordReq) templ.Component {
 			templ_7745c5c3_Var2 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Var3 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
-			templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
-			templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
-			if !templ_7745c5c3_IsBuffer {
-				defer func() {
-					templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
-					if templ_7745c5c3_Err == nil {
-						templ_7745c5c3_Err = templ_7745c5c3_BufErr
-					}
-				}()
-			}
-			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<label for=\"new_password\">New Password</label> <input id=\"new_password\" class=\"input input-bordered input-primary bg-slate-800\" type=\"password\" name=\"password\" autocomplete=\"new-password\" aria-autocomplete=\"new-password\" required aria-required=\"true\" minLength=\"")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			var templ_7745c5c3_Var4 string
-			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", p.minLength))
-			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/password.templ`, Line: 116, Col: 45}
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "\">")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			return nil
-		})
-		templ_7745c5c3_Err = common.NewFormGroup().Render(templ.WithChildren(ctx, templ_7745c5c3_Var3), templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<label for=\"new_password\"><span>New Password</span> <input id=\"new_password\" class=\"input input-bordered input-primary bg-slate-800\" type=\"password\" name=\"password\" autocomplete=\"new-password\" aria-autocomplete=\"new-password\" required aria-required=\"true\" minLength=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<div id=\"error_msg\" class=\"hidden error-msg\"><p id=\"minLengthError\" class=\"hidden mt-1 text-sm text-error\">Password must be at least ")
+		var templ_7745c5c3_Var3 string
+		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", p.minLength))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/password.templ`, Line: 116, Col: 45}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "\"></label><div id=\"error_msg\" class=\"hidden error-msg\"><p id=\"minLengthError\" class=\"hidden mt-1 text-sm text-error\">Password must be at least ")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var4 string
+		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", p.minLength))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/password.templ`, Line: 120, Col: 122}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, " characters long.</p>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		if p.uppercase {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "<p id=\"uppercaseError\" class=\"hidden mt-1 text-sm text-error\">Password must contain at least one uppercase letter.</p>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		if p.lowercase {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<p id=\"lowercaseError\" class=\"hidden mt-1 text-sm text-error\">Password must contain at least one lowercase letter.</p>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		if p.digit {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<p id=\"digitError\" class=\"hidden mt-1 text-sm text-error\">Password must contain at least one number.</p>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		if p.specialChar {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<p id=\"specialCharError\" class=\"hidden mt-1 text-sm text-error\">Password must contain at least one special character.</p>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "</div><label for=\"confirm_password\" class=\"tc-label\"><span>Confirm Password</span><div class=\"password-input\"><input id=\"confirm_password\" class=\"tc-input tc-input-bordered\" type=\"password\" name=\"confirm_password\" autocomplete=\"new-password\" required minLength=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var5 string
 		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", p.minLength))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/password.templ`, Line: 120, Col: 122}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/password.templ`, Line: 144, Col: 46}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, " characters long.</p>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "\"> <button type=\"button\" id=\"toggleConfirmPasswordVisibility\" class=\"password-toggle\" data-tooltip=\"View Password\"><svg id=\"EyeOpen\" xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" viewBox=\"0 0 16 16\"><path d=\"M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0\"></path> <path d=\"M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7\"></path></svg> <svg id=\"EyeClosed\" class=\"hidden\" xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" viewBox=\"0 0 16 16\"><path d=\"m10.79 12.912-1.614-1.615a3.5 3.5 0 0 1-4.474-4.474l-2.06-2.06C.938 6.278 0 8 0 8s3 5.5 8 5.5a7 7 0 0 0 2.79-.588M5.21 3.088A7 7 0 0 1 8 2.5c5 0 8 5.5 8 5.5s-.939 1.721-2.641 3.238l-2.062-2.062a3.5 3.5 0 0 0-4.474-4.474z\"></path> <path d=\"M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829zm4.95.708-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829zm3.171 6-12-12 .708-.708 12 12z\"></path></svg></button></div></label><p id=\"passwordMatchError\" class=\"hidden mt-1 tc-text-sm tc-text-error\">Passwords must match.</p><script type=\"text/javascript\">\r\n\t\t\t// Wrap in an IIFE to avoid polluting global scope\r\n\t\t\t(function() {\r\n\t\t\t\tconst newPasswordInput = document.getElementById('new_password');\r\n\t\t\t\tconst confirmPasswordInput = document.getElementById('confirm_password');\r\n\t\t\t\tconst toggleConfirmPasswordVisibilityBtn = document.getElementById('toggleConfirmPasswordVisibility');\r\n\r\n\t\t\t\tconst ErrorMessages = document.getElementById('error_msg');\r\n\t\t\t\tconst EyeOpen = document.getElementById('EyeOpen');\r\n\t\t\t\tconst EyeClosed = document.getElementById('EyeClosed');\r\n\r\n\t\t\t\tconst passwordMatchError = document.getElementById('passwordMatchError');\r\n\t\t\t\tconst minLengthError = document.getElementById('minLengthError');\r\n\t\t\t\tconst uppercaseError = document.getElementById('uppercaseError');\r\n\t\t\t\tconst lowercaseError = document.getElementById('lowercaseError');\r\n\t\t\t\tconst digitError = document.getElementById('digitError');\r\n\t\t\t\tconst specialCharError = document.getElementById('specialCharError');\r\n\t\t\t\t\r\n\t\t\t\tconst submitButton = document.getElementById('submitBtn'); \r\n\r\n\t\t\t\t// Go-provided constants (interpolated directly by templ)\r\n\t\t\t\tconst MIN_LENGTH = ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		if p.uppercase {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<p id=\"uppercaseError\" class=\"hidden mt-1 text-sm text-error\">Password must contain at least one uppercase letter.</p>")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-		}
-		if p.lowercase {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<p id=\"lowercaseError\" class=\"hidden mt-1 text-sm text-error\">Password must contain at least one lowercase letter.</p>")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-		}
-		if p.digit {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<p id=\"digitError\" class=\"hidden mt-1 text-sm text-error\">Password must contain at least one number.</p>")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-		}
-		if p.specialChar {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<p id=\"specialCharError\" class=\"hidden mt-1 text-sm text-error\">Password must contain at least one special character.</p>")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "</div>")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Var6 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
-			templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
-			templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
-			if !templ_7745c5c3_IsBuffer {
-				defer func() {
-					templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
-					if templ_7745c5c3_Err == nil {
-						templ_7745c5c3_Err = templ_7745c5c3_BufErr
-					}
-				}()
-			}
-			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "<label for=\"confirm_password\">Confirm Password</label><div class=\"password-input\"><input id=\"confirm_password\" class=\"tc-input tc-input-bordered tc-input-primary\" type=\"password\" name=\"confirm_password\" autocomplete=\"new-password\" required minLength=\"")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			var templ_7745c5c3_Var7 string
-			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", p.minLength))
-			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/password.templ`, Line: 144, Col: 46}
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "\"> <button type=\"button\" id=\"toggleConfirmPasswordVisibility\" class=\"password-toggle\" data-tooltip=\"View Password\"><svg id=\"EyeOpen\" xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" viewBox=\"0 0 16 16\"><path d=\"M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0\"></path> <path d=\"M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7\"></path></svg> <svg id=\"EyeClosed\" class=\"hidden\" xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" viewBox=\"0 0 16 16\"><path d=\"m10.79 12.912-1.614-1.615a3.5 3.5 0 0 1-4.474-4.474l-2.06-2.06C.938 6.278 0 8 0 8s3 5.5 8 5.5a7 7 0 0 0 2.79-.588M5.21 3.088A7 7 0 0 1 8 2.5c5 0 8 5.5 8 5.5s-.939 1.721-2.641 3.238l-2.062-2.062a3.5 3.5 0 0 0-4.474-4.474z\"></path> <path d=\"M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829zm4.95.708-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829zm3.171 6-12-12 .708-.708 12 12z\"></path></svg></button></div>")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			return nil
-		})
-		templ_7745c5c3_Err = common.NewFormGroup().Render(templ.WithChildren(ctx, templ_7745c5c3_Var6), templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "<p id=\"passwordMatchError\" class=\"hidden mt-1 text-sm text-error\">Passwords must match.</p><script type=\"text/javascript\">\r\n\t\t\t// Wrap in an IIFE to avoid polluting global scope\r\n\t\t\t(function() {\r\n\t\t\t\tconst newPasswordInput = document.getElementById('new_password');\r\n\t\t\t\tconst confirmPasswordInput = document.getElementById('confirm_password');\r\n\t\t\t\tconst toggleConfirmPasswordVisibilityBtn = document.getElementById('toggleConfirmPasswordVisibility');\r\n\r\n\t\t\t\tconst ErrorMessages = document.getElementById('error_msg');\r\n\t\t\t\tconst EyeOpen = document.getElementById('EyeOpen');\r\n\t\t\t\tconst EyeClosed = document.getElementById('EyeClosed');\r\n\r\n\t\t\t\tconst passwordMatchError = document.getElementById('passwordMatchError');\r\n\t\t\t\tconst minLengthError = document.getElementById('minLengthError');\r\n\t\t\t\tconst uppercaseError = document.getElementById('uppercaseError');\r\n\t\t\t\tconst lowercaseError = document.getElementById('lowercaseError');\r\n\t\t\t\tconst digitError = document.getElementById('digitError');\r\n\t\t\t\tconst specialCharError = document.getElementById('specialCharError');\r\n\t\t\t\t\r\n\t\t\t\tconst submitButton = document.getElementById('submitBtn'); \r\n\r\n\t\t\t\t// Go-provided constants (interpolated directly by templ)\r\n\t\t\t\tconst MIN_LENGTH = ")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Var8, templ_7745c5c3_Err := templruntime.ScriptContentOutsideStringLiteral(p.minLength)
+		templ_7745c5c3_Var6, templ_7745c5c3_Err := templruntime.ScriptContentOutsideStringLiteral(p.minLength)
 		if templ_7745c5c3_Err != nil {
 			return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/password.templ`, Line: 185, Col: 37}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var6)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, ";\r\n\t\t\t\tconst HAS_UPPERCASE_REQ = ")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Var7, templ_7745c5c3_Err := templruntime.ScriptContentOutsideStringLiteral(p.uppercase)
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/password.templ`, Line: 186, Col: 44}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var7)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, ";\r\n\t\t\t\tconst HAS_LOWERCASE_REQ = ")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Var8, templ_7745c5c3_Err := templruntime.ScriptContentOutsideStringLiteral(p.lowercase)
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/password.templ`, Line: 187, Col: 44}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var8)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, ";\r\n\t\t\t\tconst HAS_UPPERCASE_REQ = ")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, ";\r\n\t\t\t\tconst HAS_DIGIT_REQ = ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Var9, templ_7745c5c3_Err := templruntime.ScriptContentOutsideStringLiteral(p.uppercase)
+		templ_7745c5c3_Var9, templ_7745c5c3_Err := templruntime.ScriptContentOutsideStringLiteral(p.digit)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/password.templ`, Line: 186, Col: 44}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/password.templ`, Line: 188, Col: 36}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var9)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, ";\r\n\t\t\t\tconst HAS_LOWERCASE_REQ = ")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, ";\r\n\t\t\t\tconst HAS_SPECIAL_CHAR_REQ = ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Var10, templ_7745c5c3_Err := templruntime.ScriptContentOutsideStringLiteral(p.lowercase)
+		templ_7745c5c3_Var10, templ_7745c5c3_Err := templruntime.ScriptContentOutsideStringLiteral(p.specialChar)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/password.templ`, Line: 187, Col: 44}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/password.templ`, Line: 189, Col: 49}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var10)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, ";\r\n\t\t\t\tconst HAS_DIGIT_REQ = ")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, ";\r\n\t\t\t\tconst SPECIAL_CHAR_PATTERN = ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Var11, templ_7745c5c3_Err := templruntime.ScriptContentOutsideStringLiteral(p.digit)
+		templ_7745c5c3_Var11, templ_7745c5c3_Err := templruntime.ScriptContentOutsideStringLiteral(p.specialCharPattern)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/password.templ`, Line: 188, Col: 36}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/password.templ`, Line: 190, Col: 56}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var11)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, ";\r\n\t\t\t\tconst HAS_SPECIAL_CHAR_REQ = ")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Var12, templ_7745c5c3_Err := templruntime.ScriptContentOutsideStringLiteral(p.specialChar)
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/password.templ`, Line: 189, Col: 49}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var12)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, ";\r\n\t\t\t\tconst SPECIAL_CHAR_PATTERN = ")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Var13, templ_7745c5c3_Err := templruntime.ScriptContentOutsideStringLiteral(p.specialCharPattern)
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/password.templ`, Line: 190, Col: 56}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var13)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, ";\r\n\r\n\t\t\t\tconst upperRegex = new RegExp('[A-Z]+');\r\n\t\t\t\tconst lowerRegex = new RegExp('[a-z]+');\r\n\t\t\t\tconst digitRegex = new RegExp('[0-9]+');\r\n\t\t\t\tconst specialCharRegex = SPECIAL_CHAR_PATTERN ? new RegExp(SPECIAL_CHAR_PATTERN) : null;\r\n\r\n\t\t\t\tfunction togglePasswordVisibility() {\r\n\t\t\t\t\tif (newPasswordInput.type === 'password') {\r\n\t\t\t\t\t\tnewPasswordInput.type = 'text';\r\n\t\t\t\t\tconfirmPasswordInput.type = 'text';\r\n\t\t\t\t\t\tEyeOpen.classList.add('hidden');\r\n\t\t\t\t\t\tEyeClosed.classList.remove('hidden');\r\n\t\t\t\t\t} else {\r\n\t\t\t\t\t\tnewPasswordInput.type = 'password';\r\n\t\t\t\t\t\tconfirmPasswordInput.type = 'password';\r\n\t\t\t\t\t\tEyeOpen.classList.remove('hidden');\r\n\t\t\t\t\t\tEyeClosed.classList.add('hidden');\r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\r\n\t\t\t\t}\r\n\r\n\t\t\t\tfunction validatePasswords() {\r\n\t\t\t\t\tconst newPassword = newPasswordInput.value;\r\n\t\t\t\t\tconst confirmPassword = confirmPasswordInput.value;\r\n\r\n\t\t\t\t\tlet allConditionsMet = true;\r\n\t\t\t\t\t\r\n\t\t\t\t\tif ((newPassword === confirmPassword) || newPassword === \"\" || confirmPassword === \"\") {\r\n\t\t\t\t\t\tpasswordMatchError.classList.add('hidden');\t\r\n\t\t\t\t\t} else {\r\n\t\t\t\t\t\tnewPasswordInput.classList.add('invalid');\r\n\t\t\t\t\t\tconfirmPasswordInput.classList.add('invalid');\r\n\t\t\t\t\t\tpasswordMatchError.classList.remove('hidden');\r\n\t\t\t\t\t\tallConditionsMet = false;\r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t\tif (newPassword.length >= MIN_LENGTH && !(confirmPassword === \"\")) {\r\n\t\t\t\t\t\tminLengthError.classList.add('hidden');\r\n\t\t\t\t\t\tnewPasswordInput.classList.add('invalid');\r\n\t\t\t\t\t} else {\r\n\t\t\t\t\t\tminLengthError.classList.remove('hidden');\r\n\t\t\t\t\t\tallConditionsMet = false;\r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t\tif (HAS_UPPERCASE_REQ) {\r\n\t\t\t\t\t\tif (upperRegex.test(newPassword) && !(confirmPassword === \"\")) {\r\n\t\t\t\t\t\t\tuppercaseError.classList.add('hidden');\r\n\t\t\t\t\t\t\tnewPasswordInput.classList.add('invalid');\r\n\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\tuppercaseError.classList.remove('hidden');\r\n\t\t\t\t\t\t\tallConditionsMet = false;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t} else if (uppercaseError) { \r\n\t\t\t\t\t\tuppercaseError.classList.add('hidden');\r\n\t\t\t\t\t\tnewPasswordInput.classList.add('invalid');\r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t\tif (HAS_LOWERCASE_REQ) {\r\n\t\t\t\t\t\tif (lowerRegex.test(newPassword) && !(confirmPassword === \"\")) {\r\n\t\t\t\t\t\t\tlowercaseError.classList.add('hidden');\r\n\t\t\t\t\t\t\tnewPasswordInput.classList.add('invalid');\r\n\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\tlowercaseError.classList.remove('hidden');\r\n\t\t\t\t\t\t\tallConditionsMet = false;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t} else if (lowercaseError && !(confirmPassword === \"\")) {\r\n\t\t\t\t\t\tlowercaseError.classList.add('hidden');\r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t\tif (HAS_DIGIT_REQ) {\r\n\t\t\t\t\t\tif (digitRegex.test(newPassword) && !(confirmPassword === \"\")) {\r\n\t\t\t\t\t\t\tdigitError.classList.add('hidden');\r\n\t\t\t\t\t\t\tnewPasswordInput.classList.add('invalid');\r\n\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\tdigitError.classList.remove('hidden');\r\n\t\t\t\t\t\t\tallConditionsMet = false;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t} else if (digitError) {\r\n\t\t\t\t\t\tdigitError.classList.add('hidden');\r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t\tif (HAS_SPECIAL_CHAR_REQ) {\r\n\t\t\t\t\t\tif (specialCharRegex && specialCharRegex.test(newPassword) && !(confirmPassword === \"\" )) {\r\n\t\t\t\t\t\t\tspecialCharError.classList.add('hidden');\r\n\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\tspecialCharError.classList.remove('hidden');\r\n\t\t\t\t\t\t\tallConditionsMet = false;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t} else if (specialCharError) {\r\n\t\t\t\t\t\tspecialCharError.classList.add('hidden');\r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t\tif (submitButton) {\r\n\t\t\t\t\t\tsubmitButton.disabled = !allConditionsMet;\r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t\tif (!allConditionsMet) {\r\n\t\t\t\t\t\tErrorMessages.classList.remove('hidden');\r\n\t\t\t\t\t} else {\r\n\t\t\t\t\t\tErrorMessages.classList.add('hidden');\r\n\t\t\t\t\t\tnewPasswordInput.classList.remove('invalid');\r\n\t\t\t\t\t\tconfirmPasswordInput.classList.remove('invalid');\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\r\n\t\t\t\tnewPasswordInput.addEventListener('input', validatePasswords);\r\n\t\t\t\tconfirmPasswordInput.addEventListener('input', validatePasswords);\r\n\t\t\t\tconfirmPasswordInput.addEventListener('blur', validatePasswords); \r\n\r\n\t\t\t\ttoggleConfirmPasswordVisibilityBtn.addEventListener('click', () => {\r\n\t\t\t\t\ttogglePasswordVisibility();\r\n\t\t\t\t\t\r\n\t\t\t\t});\r\n\r\n\t\t\t\t\r\n\t\t\t})(); \r\n\t\t</script>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, ";\r\n\r\n\t\t\t\tconst upperRegex = new RegExp('[A-Z]+');\r\n\t\t\t\tconst lowerRegex = new RegExp('[a-z]+');\r\n\t\t\t\tconst digitRegex = new RegExp('[0-9]+');\r\n\t\t\t\tconst specialCharRegex = SPECIAL_CHAR_PATTERN ? new RegExp(SPECIAL_CHAR_PATTERN) : null;\r\n\r\n\t\t\t\tfunction togglePasswordVisibility() {\r\n\t\t\t\t\tif (newPasswordInput.type === 'password') {\r\n\t\t\t\t\t\tnewPasswordInput.type = 'text';\r\n\t\t\t\t\tconfirmPasswordInput.type = 'text';\r\n\t\t\t\t\t\tEyeOpen.classList.add('hidden');\r\n\t\t\t\t\t\tEyeClosed.classList.remove('hidden');\r\n\t\t\t\t\t} else {\r\n\t\t\t\t\t\tnewPasswordInput.type = 'password';\r\n\t\t\t\t\t\tconfirmPasswordInput.type = 'password';\r\n\t\t\t\t\t\tEyeOpen.classList.remove('hidden');\r\n\t\t\t\t\t\tEyeClosed.classList.add('hidden');\r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\r\n\t\t\t\t}\r\n\r\n\t\t\t\tfunction validatePasswords() {\r\n\t\t\t\t\tconst newPassword = newPasswordInput.value;\r\n\t\t\t\t\tconst confirmPassword = confirmPasswordInput.value;\r\n\r\n\t\t\t\t\tlet allConditionsMet = true;\r\n\t\t\t\t\t\r\n\t\t\t\t\tif ((newPassword === confirmPassword) || newPassword === \"\" || confirmPassword === \"\") {\r\n\t\t\t\t\t\tpasswordMatchError.classList.add('hidden');\t\r\n\t\t\t\t\t} else {\r\n\t\t\t\t\t\tnewPasswordInput.classList.add('invalid');\r\n\t\t\t\t\t\tconfirmPasswordInput.classList.add('invalid');\r\n\t\t\t\t\t\tpasswordMatchError.classList.remove('hidden');\r\n\t\t\t\t\t\tallConditionsMet = false;\r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t\tif (newPassword.length >= MIN_LENGTH && !(confirmPassword === \"\")) {\r\n\t\t\t\t\t\tminLengthError.classList.add('hidden');\r\n\t\t\t\t\t\tnewPasswordInput.classList.add('invalid');\r\n\t\t\t\t\t} else {\r\n\t\t\t\t\t\tminLengthError.classList.remove('hidden');\r\n\t\t\t\t\t\tallConditionsMet = false;\r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t\tif (HAS_UPPERCASE_REQ) {\r\n\t\t\t\t\t\tif (upperRegex.test(newPassword) && !(confirmPassword === \"\")) {\r\n\t\t\t\t\t\t\tuppercaseError.classList.add('hidden');\r\n\t\t\t\t\t\t\tnewPasswordInput.classList.add('invalid');\r\n\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\tuppercaseError.classList.remove('hidden');\r\n\t\t\t\t\t\t\tallConditionsMet = false;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t} else if (uppercaseError) { \r\n\t\t\t\t\t\tuppercaseError.classList.add('hidden');\r\n\t\t\t\t\t\tnewPasswordInput.classList.add('invalid');\r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t\tif (HAS_LOWERCASE_REQ) {\r\n\t\t\t\t\t\tif (lowerRegex.test(newPassword) && !(confirmPassword === \"\")) {\r\n\t\t\t\t\t\t\tlowercaseError.classList.add('hidden');\r\n\t\t\t\t\t\t\tnewPasswordInput.classList.add('invalid');\r\n\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\tlowercaseError.classList.remove('hidden');\r\n\t\t\t\t\t\t\tallConditionsMet = false;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t} else if (lowercaseError && !(confirmPassword === \"\")) {\r\n\t\t\t\t\t\tlowercaseError.classList.add('hidden');\r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t\tif (HAS_DIGIT_REQ) {\r\n\t\t\t\t\t\tif (digitRegex.test(newPassword) && !(confirmPassword === \"\")) {\r\n\t\t\t\t\t\t\tdigitError.classList.add('hidden');\r\n\t\t\t\t\t\t\tnewPasswordInput.classList.add('invalid');\r\n\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\tdigitError.classList.remove('hidden');\r\n\t\t\t\t\t\t\tallConditionsMet = false;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t} else if (digitError) {\r\n\t\t\t\t\t\tdigitError.classList.add('hidden');\r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t\tif (HAS_SPECIAL_CHAR_REQ) {\r\n\t\t\t\t\t\tif (specialCharRegex && specialCharRegex.test(newPassword) && !(confirmPassword === \"\" )) {\r\n\t\t\t\t\t\t\tspecialCharError.classList.add('hidden');\r\n\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\tspecialCharError.classList.remove('hidden');\r\n\t\t\t\t\t\t\tallConditionsMet = false;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t} else if (specialCharError) {\r\n\t\t\t\t\t\tspecialCharError.classList.add('hidden');\r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t\tif (submitButton) {\r\n\t\t\t\t\t\tsubmitButton.disabled = !allConditionsMet;\r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t\tif (!allConditionsMet) {\r\n\t\t\t\t\t\tErrorMessages.classList.remove('hidden');\r\n\t\t\t\t\t} else {\r\n\t\t\t\t\t\tErrorMessages.classList.add('hidden');\r\n\t\t\t\t\t\tnewPasswordInput.classList.remove('invalid');\r\n\t\t\t\t\t\tconfirmPasswordInput.classList.remove('invalid');\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\r\n\t\t\t\tnewPasswordInput.addEventListener('input', validatePasswords);\r\n\t\t\t\tconfirmPasswordInput.addEventListener('input', validatePasswords);\r\n\t\t\t\tconfirmPasswordInput.addEventListener('blur', validatePasswords); \r\n\r\n\t\t\t\ttoggleConfirmPasswordVisibilityBtn.addEventListener('click', () => {\r\n\t\t\t\t\ttogglePasswordVisibility();\r\n\t\t\t\t\t\r\n\t\t\t\t});\r\n\r\n\t\t\t\t\r\n\t\t\t})(); \r\n\t\t</script>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

@@ -93,7 +93,11 @@ func New(label, name string, inputType string, opts ...InputOptsFunc) templ.Comp
 	// case ADDRESS:
 	// case CHCECKBOX:
 	// case COLOR:
-	// case DATE:
+	case DATE:
+		if p.Value == "" {
+			p.Value = time.Now().Local().String()
+		}
+		return dateInput(p)
 	// case DATETIME:
 	// case EMAIL:
 	// case FILE:

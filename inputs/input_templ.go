@@ -101,7 +101,11 @@ func New(label, name string, inputType string, opts ...InputOptsFunc) templ.Comp
 	// case ADDRESS:
 	// case CHCECKBOX:
 	// case COLOR:
-	// case DATE:
+	case DATE:
+		if p.Value == "" {
+			p.Value = time.Now().Local().String()
+		}
+		return dateInput(p)
 	// case DATETIME:
 	// case EMAIL:
 	// case FILE:
@@ -387,7 +391,7 @@ func dataList(id string, options map[string]any) templ.Component {
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(id)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/input.templ`, Line: 355, Col: 18}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/input.templ`, Line: 359, Col: 18}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
@@ -405,7 +409,7 @@ func dataList(id string, options map[string]any) templ.Component {
 			var templ_7745c5c3_Var3 string
 			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%v", value))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/input.templ`, Line: 357, Col: 43}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/input.templ`, Line: 361, Col: 43}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
@@ -418,7 +422,7 @@ func dataList(id string, options map[string]any) templ.Component {
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(lbl)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/input.templ`, Line: 357, Col: 57}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/input.templ`, Line: 361, Col: 57}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {

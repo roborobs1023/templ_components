@@ -2,12 +2,6 @@ package inputs
 
 import "fmt"
 
-css InputFieldCSS() {
-	max-width: 250px;
-	padding-block: 0.5rem;
-	margin-bottom: 1rem;
-}
-
 templ textInput(p InputOpts) {
 	<label class={ "tc-label", templ.KV("tc-vertical", p.vertical) }>
 		<span>{ p.Label }</span>
@@ -17,7 +11,7 @@ templ textInput(p InputOpts) {
 			name={ p.Name }
 			value={ p.Value }
 			placeholder={ p.Placeholder }
-			class={ "tc-input tc-input-bordered", p.Class }
+			class={ "tc-input tc-input", p.Class }
 			required?={ p.Required }
 			disabled?={ p.Disabled }
 			readonly?={ p.Readonly }
@@ -40,25 +34,27 @@ templ textInput(p InputOpts) {
 }
 
 templ textarea(p InputOpts) {
-	<label for={ p.ID } class="tc-label">{ p.Label }</label>
-	<textarea
-		id={ p.ID }
-		name={ p.Name }
-		type="textarea"
-		rows={ fmt.Sprintf("%v", p.Rows) }
-		cols={ fmt.Sprintf("%v", p.Cols) }
-		class={ "tc-textarea", checkResize(p.ResizeX, p.ResizeY), p.Class }
-		placeholder={ p.Placeholder }
-		required?={ p.Required }
-		readonly?={ p.Readonly }
-		disabled?={ p.Disabled }
-		if p.MinLength != 0 {
-			minlength={ fmt.Sprintf("%v", p.MinLength) }
-		}
-		if p.MaxLength != 0 {
-			maxlength={ fmt.Sprintf("%v", p.MaxLength) }
-		}
-	></textarea>
+	<label for={ p.ID } class="tc-label">
+		<span>{ p.Label }</span>
+		<textarea
+			id={ p.ID }
+			name={ p.Name }
+			type="textarea"
+			rows={ fmt.Sprintf("%v", p.Rows) }
+			cols={ fmt.Sprintf("%v", p.Cols) }
+			class={ "tc-textarea", checkResize(p.ResizeX, p.ResizeY), p.Class }
+			placeholder={ p.Placeholder }
+			required?={ p.Required }
+			readonly?={ p.Readonly }
+			disabled?={ p.Disabled }
+			if p.MinLength != 0 {
+				minlength={ fmt.Sprintf("%v", p.MinLength) }
+			}
+			if p.MaxLength != 0 {
+				maxlength={ fmt.Sprintf("%v", p.MaxLength) }
+			}
+		></textarea>
+	</label>
 }
 
 func checkResize(horizontal, vertical bool) string {
