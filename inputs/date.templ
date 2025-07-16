@@ -8,8 +8,8 @@ templ dateInput(p InputOpts) {
 		type="date"
 		id={ p.ID }
 		name={ p.Name }
-		value={ p.Value.Format("2006-01-02") }
-		class={ "input input-bordered", p.Classes }
+		value={ p.Value }
+		class={ "input input-bordered", p.Class }
 		required?={ p.Required }
 		disabled?={ p.Disabled }
 		readonly?={ p.Readonly }
