@@ -16,9 +16,9 @@ import (
 )
 
 type InputOpts struct {
-	ID    string
-	Name  string
-	Type  InputType
+	ID   string
+	Name string
+
 	Value string
 	Label string
 
@@ -59,29 +59,29 @@ func (t InputType) String() string {
 }
 
 const (
-	ADDRESS     InputType = "address"
-	CHECKBOX    InputType = "checkbox"
-	CHECKBOX_GP InputType = "checkbox-group"
-	COLOR       InputType = "color"
-	DATE        InputType = "date"
-	DATETIME    InputType = "datetime-local"
-	EMAIL       InputType = "email"
-	FILE        InputType = "file"
-	HIDDEN      InputType = "hidden" // Used for inputs that need not be visible but value needs to be submitted with form.
-	MONTH       InputType = "month"
-	NEWPASSWORD InputType = "new-password"
-	NUMBER      InputType = "number"
-	PASSWORD    InputType = "password"
-	PHONE       InputType = "tel"
-	RADIO       InputType = "radio"
-	RANGE       InputType = "range"
-	SEARCH      InputType = "search"
-	SELECT      InputType = "select"
-	TEXT        InputType = "text"
-	TEXTAREA    InputType = "textarea"
-	TIME        InputType = "time"
-	URL         InputType = "url"
-	WEEK        InputType = "week"
+	ADDRESS     string = "address"
+	CHECKBOX    string = "checkbox"
+	CHECKBOX_GP string = "checkbox-group"
+	COLOR       string = "color"
+	DATE        string = "date"
+	DATETIME    string = "datetime-local"
+	EMAIL       string = "email"
+	FILE        string = "file"
+	HIDDEN      string = "hidden" // Used for inputs that need not be visible but value needs to be submitted with form.
+	MONTH       string = "month"
+	NEWPASSWORD string = "new-password"
+	NUMBER      string = "number"
+	PASSWORD    string = "password"
+	PHONE       string = "tel"
+	RADIO       string = "radio"
+	RANGE       string = "range"
+	SEARCH      string = "search"
+	SELECT      string = "select"
+	TEXT        string = "text"
+	TEXTAREA    string = "textarea"
+	TIME        string = "time"
+	URL         string = "url"
+	WEEK        string = "week"
 )
 
 type InputOptsFunc func(p *InputOpts)
@@ -92,15 +92,16 @@ func New(label, name string, inputType string, opts ...InputOptsFunc) templ.Comp
 		ID:    utils.NewID(name),
 		Name:  name,
 		Label: label,
-		Type:  InputType(inputType),
 	}
 
 	for _, fn := range opts {
 		fn(&p)
 	}
 
-	switch p.Type {
-	// case ADDRESS:
+	fmt.Println(inputType)
+	switch inputType {
+	case ADDRESS:
+		return addressInput(p)
 	case CHECKBOX:
 		return checkboxInput(p)
 	case CHECKBOX_GP:
@@ -408,7 +409,7 @@ func dataList(id string, options map[string]any) templ.Component {
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(id)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/input.templ`, Line: 376, Col: 18}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/input.templ`, Line: 377, Col: 18}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
@@ -426,7 +427,7 @@ func dataList(id string, options map[string]any) templ.Component {
 			var templ_7745c5c3_Var3 string
 			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%v", value))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/input.templ`, Line: 378, Col: 43}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/input.templ`, Line: 379, Col: 43}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
@@ -439,7 +440,7 @@ func dataList(id string, options map[string]any) templ.Component {
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(lbl)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/input.templ`, Line: 378, Col: 57}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `inputs/input.templ`, Line: 379, Col: 57}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
