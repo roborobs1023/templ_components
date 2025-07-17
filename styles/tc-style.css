@@ -68,11 +68,11 @@ form {
     display: none !important;
 }
 
-.tc-label [type="checkbox"] {
+[type="checkbox"] {
     opacity: 0;
 }
 
-.tc-label [type="checkbox"]+span {
+[type="checkbox"]+span {
     position: relative;
     padding-left: 30px;
     cursor: pointer;
@@ -80,8 +80,8 @@ form {
 
 }
 
-.tc-label [type="checkbox"]+span::before,
-.tc-label [type="checkbox"]+span::after {
+[type="checkbox"]+span::before,
+[type="checkbox"]+span::after {
     content: "";
     position: absolute;
     top: 0;
@@ -91,18 +91,18 @@ form {
     border-radius: 5px;
 }
 
-.tc-label [type="checkbox"]+span::before {
+[type="checkbox"]+span::before {
     outline: 2px solid currentColor;
     border-radius: 5px;
     background-color: transparent;
     transition: all .1s ease
 }
 
-.tc-label [type="checkbox"]:checked+span::before {
+[type="checkbox"]:checked+span::before {
     outline: 2px solid var(--clr-primary);
 }
 
-.tc-label [type="checkbox"]:checked+span::after {
+[type="checkbox"]:checked+span::after {
     color: var(--clr-primary, currentColor);
     background-color: var(--clr-primary, currentColor);
     /* background-image: url("/assets/images/checkmark.svg"); */
@@ -114,7 +114,7 @@ form {
 }
 
 
-.tc-label [type="checkbox"]:not(:checked)+span::after {
+[type="checkbox"]:not(:checked)+span::after {
     content: "";
     position: absolute;
     top: 0;
@@ -126,8 +126,8 @@ form {
     transform: scale(0);
 }
 
-.tc-label [type="checkbox"]:disabled,
-.tc-label [type="checkbox"]:disabled+span {
+[type="checkbox"]:disabled,
+[type="checkbox"]:disabled+span {
     color: #666;
     cursor: initial;
 }
