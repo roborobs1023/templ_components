@@ -249,7 +249,7 @@ form {
 }
 
 .tc-address-group {
-    grid-template-columns: ;
+    grid-template-columns: auto auto auto;
 }
 
 @media (max-width: 500px) {
