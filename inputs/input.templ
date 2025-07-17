@@ -91,6 +91,7 @@ func New(label, name string, inputType string, opts ...InputOptsFunc) templ.Comp
 		fn(&p)
 	}
 
+	fmt.Println(p.Type)
 	switch p.Type {
 	case ADDRESS:
 		return addressInput(p)
