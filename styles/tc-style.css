@@ -249,13 +249,17 @@ form {
 }
 
 .tc-address-group {
-    grid-template-columns: repeat(auto-fit, minmax(min-content, 1fr));
+    grid-template-columns: repeat(3, minmax(min-content, 1fr));
 }
 
 @media (max-width: 500px) {
     .tc-grid {
         display: block;
 
+    }
+
+    .tc-address-group {
+        grid-template-columns: repeat(auto-fit, minmax(min-content, 1fr));
     }
 }
 
