@@ -1,4 +1,35 @@
 package inputs
 
-templ addressInput() {
+templ addressInput(p InputOpts) {
+	<fieldset class="tc-input-group grid" name={ p.Name }>
+		<legend>{ p.Label }</legend>
+		<label for={ p.ID + "Line1" } class="tc-input-label span-all">
+			<input type="text" name={ p.Name + "[line1]" } id={ p.ID + "Line1" } class="tc-input" required?={ p.Required }/>
+		</label>
+		<label for={ p.ID + "Line2" } class="tc-input-label span-all">
+			<input type="text" name={ p.Name + "[line2]" } id={ p.ID + "Line2" } class="tc-input"/>
+		</label>
+		<label for={ p.ID + "City" } class="tc-input-label span-all">
+			<input type="text" name={ p.Name + "[city]" } id={ p.ID + "City" } class="tc-input" required?={ p.Required }/>
+		</label>
+		<label for={ p.ID + "State" } class="tc-input-label">
+			<input type="text" name={ p.Name + "[state]" } id={ p.ID + "State" } class="tc-input" required?={ p.Required } list="states-list"/>
+			<datalist id="states-list">
+				for _, s := range States {
+					<option value={ s.Value }>{ s.Label }</option>
+				}
+			</datalist>
+		</label>
+		<label for={ p.ID + "Zipcode" } class="tc-input-label">
+			<input type="text" name={ p.Name + "[zip]" } id={ p.ID + "Zipcode" } class="tc-input" required?={ p.Required }/>
+		</label>
+		<label for={ p.ID + "Country" } class="tc-input-label">
+			<input type="text" name={ p.Name + "[country]" } id={ p.ID + "Country" } class="tc-input" required?={ p.Required } list="countries-list"/>
+			<datalist id="countries-list">
+				for _, c := range Countries {
+					<option value={ c.Value }>{ c.Label }</option>
+				}
+			</datalist>
+		</label>
+	</fieldset>
 }

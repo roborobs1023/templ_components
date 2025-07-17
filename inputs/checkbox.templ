@@ -24,7 +24,7 @@ templ checkboxGroup(p InputOpts) {
 		<legend>{ p.Label }</legend>
 		for _, o := range p.Options {
 			<label for={ fmt.Sprintf("%s%s", p.Name, o.Value) } class="tc-label">
-				<input type="checkbox" name={ fmt.Sprintf("%s", p.Name) } id={ fmt.Sprintf("%s%s", p.Name, o.Value) } value={ o.Value } form={ p.Form } checked?={ p.Value == p.Value }/>
+				<input type="checkbox" name={ fmt.Sprintf("%s", p.Name) } id={ fmt.Sprintf("%s%s", p.Name, o.Value) } value={ o.Value } form={ p.Form } checked?={ o.Value == p.Value }/>
 				<span>{ o.Label }</span>
 			</label>
 		}
