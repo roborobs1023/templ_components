@@ -273,7 +273,7 @@ form {
     display: grid;
     grid-template-columns: 1fr 100px 150px;
     gap: 0.5rem;
-    width: min(100%, 400px);
+    width: min(100%, 450px);
 }
 
 .tc-address-group legend {
