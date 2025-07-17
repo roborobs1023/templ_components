@@ -63,12 +63,12 @@ templ addressInput(p InputOpts) {
 				autocomplete="address-level1"
 				list="states-list"
 			/>
-			<datalist id="states-list">
-				for _, s := range States {
-					<option value={ s.Value }>{ s.Label }</option>
-				}
-			</datalist>
 		</label>
+		<datalist id="states-list">
+			for _, s := range States {
+				<option value={ s.Value }>{ s.Label }</option>
+			}
+		</datalist>
 		<label for={ p.ID + "Zip" } class="tc-label">
 			<span>Zip</span>
 			if p.Required {
@@ -102,11 +102,11 @@ templ addressInput(p InputOpts) {
 				list="countries-list"
 				autocomplete="country-code"
 			/>
-			<datalist id="countries-list">
-				for _, c := range Countries {
-					<option value={ c.Value }>{ c.Label }</option>
-				}
-			</datalist>
 		</label>
+		<datalist id="countries-list">
+			for _, c := range Countries {
+				<option value={ c.Value }>{ c.Label }</option>
+			}
+		</datalist>
 	</fieldset>
 }
