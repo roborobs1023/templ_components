@@ -236,3 +236,29 @@ form {
     color: red;
     text-decoration: wavy underline;
 }
+
+[autocomplete="country"],
+[autocomplete="address-level1"] {
+    width: 2ch + 1rem;
+    padding-inline: 0.5rem;
+}
+
+.tc-grid {
+    display: grid;
+
+}
+
+.tc-address-group {
+    grid-template-columns: repeat(auto-fit, minmax(min-content, 1fr));
+}
+
+@media (max-width: 500px) {
+    .tc-grid {
+        display: block;
+
+    }
+}
+
+.full-width {
+    grid-column: 1/ -1;
+}

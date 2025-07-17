@@ -1,30 +1,96 @@
 package inputs
 
 templ addressInput(p InputOpts) {
-	<fieldset class="tc-input-group grid" name={ p.Name }>
+	<fieldset class={ "tc-address-group tc-grid" } name={ p.Name }>
 		<legend>{ p.Label }</legend>
-		<label for={ p.ID + "Line1" } class="tc-input-label span-all">
-			<input type="text" name={ p.Name + "[line1]" } id={ p.ID + "Line1" } class="tc-input" required?={ p.Required }/>
+		<label for={ p.ID + "Line1" } class="tc-label full-width">
+			<span>Street</span>
+			if p.Required {
+				<span style="color: red;">*</span>
+			}
+			<input
+				type="text"
+				name={ p.Name + "[line1]" }
+				form={ p.Form }
+				id={ p.ID + "Line1" }
+				class="tc-input"
+				required?={ p.Required }
+				autocomplete="address-line1"
+				placeholder="Street Address / P.O. Box"
+			/>
 		</label>
-		<label for={ p.ID + "Line2" } class="tc-input-label span-all">
-			<input type="text" name={ p.Name + "[line2]" } id={ p.ID + "Line2" } class="tc-input"/>
+		<label for={ p.ID + "Line2" } class="tc-label full-width">
+			<span>Line 2</span>
+			<input
+				type="text"
+				name={ p.Name + "[line2]" }
+				form={ p.Form }
+				id={ p.ID + "Line2" }
+				class="tc-input"
+				autocomplete="address-line2"
+				placeholder="Apt. / Ste."
+			/>
 		</label>
-		<label for={ p.ID + "City" } class="tc-input-label span-all">
-			<input type="text" name={ p.Name + "[city]" } id={ p.ID + "City" } class="tc-input" required?={ p.Required }/>
+		<label for={ p.ID + "City" } class="tc-label">
+			<span>City</span>
+			if p.Required {
+				<span style="color: red;">*</span>
+			}
+			<input
+				type="text"
+				name={ p.Name + "[city]" }
+				form={ p.Form }
+				id={ p.ID + "City" }
+				class="tc-input"
+				autocomplete="address-level2"
+				required?={ p.Required }
+			/>
 		</label>
-		<label for={ p.ID + "State" } class="tc-input-label">
-			<input type="text" name={ p.Name + "[state]" } id={ p.ID + "State" } class="tc-input" required?={ p.Required } list="states-list"/>
+		<label for={ p.ID + "State" } class="tc-label">
+			<input
+				type="text"
+				name={ p.Name + "[state]" }
+				form={ p.Form }
+				id={ p.ID + "State" }
+				class="tc-input"
+				required?={ p.Required }
+				autocomplete="address-level1"
+				list="states-list"
+			/>
 			<datalist id="states-list">
 				for _, s := range States {
 					<option value={ s.Value }>{ s.Label }</option>
 				}
 			</datalist>
 		</label>
-		<label for={ p.ID + "Zipcode" } class="tc-input-label">
-			<input type="text" name={ p.Name + "[zip]" } id={ p.ID + "Zipcode" } class="tc-input" required?={ p.Required }/>
+		<label for={ p.ID + "Zip" } class="tc-label">
+			<span>Zip</span>
+			if p.Required {
+				<span style="color: red;">*</span>
+			}
+			<input
+				type="text"
+				name={ p.Name + "[zip]" }
+				form={ p.Form }
+				id={ p.ID + "Zip" }
+				class="tc-input"
+				required?={ p.Required }
+				autocomplete="postal-code"
+				title="Enter a 5-digit or 9-digit (#####-####) zip code"
+				placeholder="e.g., 12345 or 12345-6789"
+				pattern="^\d{5}(?:-\d{4})?$"
+			/>
 		</label>
-		<label for={ p.ID + "Country" } class="tc-input-label">
-			<input type="text" name={ p.Name + "[country]" } id={ p.ID + "Country" } class="tc-input" required?={ p.Required } list="countries-list"/>
+		<label for={ p.ID + "Country" } class="tc-label full-width">
+			<input
+				type="text"
+				name={ p.Name + "[country]" }
+				id={ p.ID + "Country" }
+				class="tc-input"
+				required?={ p.Required }
+				list="countries-list"
+				autocomplete="country-code"
+			/>
 			<datalist id="countries-list">
 				for _, c := range Countries {
 					<option value={ c.Value }>{ c.Label }</option>
