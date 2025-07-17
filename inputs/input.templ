@@ -92,7 +92,8 @@ func New(label, name string, inputType string, opts ...InputOptsFunc) templ.Comp
 	}
 
 	switch p.Type {
-	// case ADDRESS:
+	case ADDRESS:
+		return addressInput(p)
 	case CHECKBOX:
 		return checkboxInput(p)
 	case CHECKBOX_GP:
