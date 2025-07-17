@@ -44,9 +44,14 @@ templ addressInput(p InputOpts) {
 				class="tc-input"
 				autocomplete="address-level2"
 				required?={ p.Required }
+				placeholder="City"
 			/>
 		</label>
 		<label for={ p.ID + "State" } class="tc-label">
+			<span>State</span>
+			if p.Required {
+				<span style="color: red;">*</span>
+			}
 			<input
 				type="text"
 				name={ p.Name + "[state]" }
@@ -54,6 +59,7 @@ templ addressInput(p InputOpts) {
 				id={ p.ID + "State" }
 				class="tc-input"
 				required?={ p.Required }
+				placeholder="state"
 				autocomplete="address-level1"
 				list="states-list"
 			/>
@@ -88,6 +94,7 @@ templ addressInput(p InputOpts) {
 				id={ p.ID + "Country" }
 				class="tc-input"
 				required?={ p.Required }
+				placeholder="Country"
 				list="countries-list"
 				autocomplete="country-code"
 			/>

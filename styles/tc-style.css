@@ -249,7 +249,7 @@ form {
 }
 
 .tc-address-group {
-    grid-template-columns: repeat(3, minmax(min-content, 1fr));
+    grid-template-columns: ;
 }
 
 @media (max-width: 500px) {
@@ -259,7 +259,7 @@ form {
     }
 
     .tc-address-group {
-        grid-template-columns: repeat(auto-fit, minmax(min-content, 1fr));
+        grid-template-columns: auto auto auto;
     }
 }
 
