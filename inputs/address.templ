@@ -88,6 +88,10 @@ templ addressInput(p InputOpts) {
 			/>
 		</label>
 		<label for={ p.ID + "Country" } class="tc-label full-width">
+			<span>Country</span>
+			if p.Required {
+				<span style="color: red;">*</span>
+			}
 			<input
 				type="text"
 				name={ p.Name + "[country]" }
