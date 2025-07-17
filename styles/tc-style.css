@@ -246,26 +246,48 @@ form {
     padding-inline: 0.5rem;
 }
 
-.tc-grid {
-    display: grid;
+.tc-label {
+    display: flex;
+    position: relative;
+    align-items: end;
+    justify-content: end;
+    gap: 0.5rem;
+    width: 100%;
+    color: currentColor;
 
+}
+
+.tc-label span {
+    word-wrap: none;
+}
+
+.tc-address-group input[type="text"] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 75%;
+    min-width: 10px;
 }
 
 .tc-address-group {
-    grid-template-columns: auto auto auto;
+    display: grid;
+    grid-template-columns: 1fr 100px 150px;
+    gap: 0.5rem;
+    width: min(100%, 400px);
 }
 
-@media (max-width: 500px) {
-    .tc-grid {
-        display: block;
+.tc-address-group legend {
+    font-weight: bold;
+}
 
-    }
-
-    .tc-address-group {
-        grid-template-columns: auto auto auto;
-    }
+.tc-asterics {
+    color: red;
 }
 
 .full-width {
-    grid-column: 1/ -1;
+    grid-column: 1/-1;
+}
+
+fieldset {
+    border: none;
 }
