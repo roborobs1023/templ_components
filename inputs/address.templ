@@ -2,12 +2,14 @@ package inputs
 
 templ addressInput(p InputOpts) {
 	<fieldset class={ "tc-address-group tc-grid" } name={ p.Name }>
-		<legend>{ p.Label }</legend>
-		<label for={ p.ID + "Line1" } class="tc-label full-width">
-			<span>Street</span>
+		<legend>
+			{ p.Label }
 			if p.Required {
 				<span style="color: red;">*</span>
 			}
+		</legend>
+		<label for={ p.ID + "Line1" } class="tc-label full-width">
+			<span>Street</span>
 			<input
 				type="text"
 				name={ p.Name + "[line1]" }
@@ -33,9 +35,6 @@ templ addressInput(p InputOpts) {
 		</label>
 		<label for={ p.ID + "City" } class="tc-label">
 			<span>City</span>
-			if p.Required {
-				<span style="color: red;">*</span>
-			}
 			<input
 				type="text"
 				name={ p.Name + "[city]" }
@@ -49,9 +48,6 @@ templ addressInput(p InputOpts) {
 		</label>
 		<label for={ p.ID + "State" } class="tc-label">
 			<span>State</span>
-			if p.Required {
-				<span style="color: red;">*</span>
-			}
 			<input
 				type="text"
 				name={ p.Name + "[state]" }
@@ -71,9 +67,6 @@ templ addressInput(p InputOpts) {
 		</datalist>
 		<label for={ p.ID + "Zip" } class="tc-label">
 			<span>Zip</span>
-			if p.Required {
-				<span style="color: red;">*</span>
-			}
 			<input
 				type="text"
 				name={ p.Name + "[zip]" }
@@ -89,9 +82,6 @@ templ addressInput(p InputOpts) {
 		</label>
 		<label for={ p.ID + "Country" } class="tc-label full-width">
 			<span>Country</span>
-			if p.Required {
-				<span style="color: red;">*</span>
-			}
 			<input
 				type="text"
 				name={ p.Name + "[country]" }
