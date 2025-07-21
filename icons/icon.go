@@ -25,7 +25,7 @@ type Props struct {
 }
 
 // Icon returns a function that generates a templ.Component for the specified icon name.
-func Icon(name string, family ...string) func(props ...Props) templ.Component {
+func Icon(name string, family ...string) func(...Props) templ.Component {
 	var iconFamily = "boxicons"
 
 	if len(family) > 0 {
