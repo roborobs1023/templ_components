@@ -44,7 +44,7 @@ func Icon(name string, family ...string) func(...Props) templ.Component {
 		return templ.ComponentFunc(func(ctx context.Context, w io.Writer) (err error) {
 			iconMutex.RLock()
 			svg, cached := iconContents[cacheKey]
-			iconMutex.Unlock()
+			iconMutex.RUnlock()
 
 			if cached {
 				_, err = w.Write([]byte(svg))
