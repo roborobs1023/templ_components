@@ -105,7 +105,7 @@ func generateSVG(name string, family string, props Props) (string, error) {
 	// Construct the final SVG string.
 	// The data-lucide attribute helps identify these as Lucide icons if needed.
 
-	var res = fmt.Sprintf("<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"%d\" height=\"%d\" viewBox=\"0 0 24 24\" fill=\"%s\" stroke=\"%s\" stroke-width=\"%s\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"%s\" data-lucide=\"icon\">%s</svg>",
+	var res = fmt.Sprintf("<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"%d\" height=\"%d\" viewBox=\"0 0 24 24\" style=\"fill:%s; stroke:%s; stroke-width:%s; stroke-linecap:round; stroke-linejoin:round;\" class=\"%s\" data-lucide=\"icon\">%s</svg>",
 		size, size, fill, stroke, strokeWidth, props.Class, content)
 
 	// fmt.Println(res)
@@ -123,6 +123,8 @@ func getIconContent(name string, family string) (string, error) {
 
 	case "lucide":
 		content, exists = lucideSvgData[name]
+	default:
+		content, exists = bxIconSvgData[name]
 	}
 	if !exists {
 		return "", fmt.Errorf("icon '%s' not found in %s svg data map", name, family)
