@@ -59,7 +59,7 @@ func Icon(name string, family ...string) func(...Props) templ.Component {
 				// Provide more context in the error message
 				return fmt.Errorf("failed to generate svg for icon '%s' with props %+v: %w", name, p, err)
 			}
-			log.Println(generatedSvg)
+			// log.Println(generatedSvg)
 
 			iconMutex.Lock()
 			iconContents[cacheKey] = generatedSvg
@@ -108,7 +108,7 @@ func generateSVG(name string, family string, props Props) (string, error) {
 	var res = fmt.Sprintf("<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"%d\" height=\"%d\" viewBox=\"0 0 24 24\" fill=\"%s\" stroke=\"%s\" stroke-width=\"%s\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"%s\" data-lucide=\"icon\">%s</svg>",
 		size, size, fill, stroke, strokeWidth, props.Class, content)
 
-	fmt.Println(res)
+	// fmt.Println(res)
 	return res, nil
 }
 
