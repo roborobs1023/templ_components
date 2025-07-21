@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"log"
 	"sync"
 
 	"github.com/a-h/templ"
@@ -14,6 +15,15 @@ var (
 	iconContents = make(map[string]string)
 	iconMutex    sync.RWMutex
 )
+
+type Props struct {
+	Size        int
+	Color       string
+	Fill        string
+	Stroke      string
+	StrokeWidth string
+	Class       string
+}
 
 // Icon returns a function that generates a templ.Component for the specified icon name.
 func Icon(name string, family ...string) func(...Props) templ.Component {
@@ -63,6 +73,7 @@ func generateSVG(name string, family string, props Props) (string, error) {
 	// Get the raw, inner SVG content for the icon name from our internal data map.
 	content, err := getIconContent(name, family) // This now reads from internalSvgData
 	if err != nil {
+		log.Println(err.Error())
 		return "", err // Error from getIconContent already includes icon name
 	}
 
