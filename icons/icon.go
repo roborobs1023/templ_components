@@ -120,6 +120,7 @@ func getIconContent(name string, family string) (string, error) {
 	switch family {
 	case "bxicons":
 		content, exists = bxIconSvgData[name]
+
 	case "lucide":
 		content, exists = lucideSvgData[name]
 	}
