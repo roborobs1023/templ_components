@@ -16,10 +16,17 @@ var (
 	iconMutex    sync.RWMutex
 )
 
+const (
+	BX     = "bxicons"
+	LUCIDE = "lucide"
+	CUSTOM = "custom"
+)
+
 type Props struct {
 	ID          string
 	Size        int
 	Color       string
+	Solid       bool
 	Fill        string
 	Stroke      string
 	StrokeWidth string
@@ -85,22 +92,29 @@ func generateSVG(name string, family string, props Props) (string, error) {
 		size = 24 // Default size
 	}
 
-	fill := props.Fill
-	if fill == "" {
-		fill = "none" // Default fill
-	}
-
 	stroke := props.Stroke
 	if stroke == "" {
 		stroke = props.Color // Fallback to Color if Stroke is not set
 	}
-	if stroke == "" {
+	if stroke == "" && props.Color == "" {
 		stroke = "currentColor" // Default stroke color
 	}
 
 	strokeWidth := props.StrokeWidth
 	if strokeWidth == "" {
 		strokeWidth = "1" // Default stroke width
+		if family == LUCIDE {
+			strokeWidth = "2"
+		}
+	}
+
+	fill := props.Fill
+	if fill == "" {
+		fill = "none" // Default fill
+	}
+
+	if props.Solid {
+		fill = stroke
 	}
 
 	// Construct the final SVG string.
@@ -122,11 +136,13 @@ func getIconContent(name string, family string) (string, error) {
 	content := ""
 	exists := false
 	switch family {
-	case "bxicons":
+	case BX:
 		content, exists = bxIconSvgData[name]
 
-	case "lucide":
+	case LUCIDE:
 		content, exists = lucideSvgData[name]
+	case CUSTOM:
+		content, exists = customSvgData[name]
 	default:
 		content, exists = bxIconSvgData[name]
 	}
@@ -134,4 +150,10 @@ func getIconContent(name string, family string) (string, error) {
 		return "", fmt.Errorf("icon '%s' not found in %s svg data map", name, family)
 	}
 	return content, nil
+}
+
+var customSvgData = map[string]string{}
+
+func AddSvg(name, content string) {
+	customSvgData[name] = content
 }
