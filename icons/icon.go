@@ -17,6 +17,7 @@ var (
 )
 
 type Props struct {
+	ID          string
 	Size        int
 	Color       string
 	Fill        string
@@ -104,8 +105,11 @@ func generateSVG(name string, family string, props Props) (string, error) {
 
 	// Construct the final SVG string.
 	// The data-lucide attribute helps identify these as Lucide icons if needed.
-
-	var res = fmt.Sprintf("<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"%d\" height=\"%d\" viewBox=\"0 0 24 24\" style=\"fill:%s; stroke:%s; stroke-width:%s; stroke-linecap:round; stroke-linejoin:round;\" class=\"%s\" data-lucide=\"icon\">%s</svg>",
+	var res = "<svg"
+	if props.ID != "" {
+		res += " id=" + props.ID
+	}
+	res += fmt.Sprintf(" xmlns=\"http://www.w3.org/2000/svg\" width=\"%d\" height=\"%d\" viewBox=\"0 0 24 24\" style=\"fill:%s; stroke:%s; stroke-width:%s; stroke-linecap:round; stroke-linejoin:round;\" class=\"%s\" data-lucide=\"icon\">%s</svg>",
 		size, size, fill, stroke, strokeWidth, props.Class, content)
 
 	// fmt.Println(res)
