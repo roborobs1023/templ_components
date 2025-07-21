@@ -1,0 +1,63 @@
+package svg
+
+type SVGProps struct {
+	Variant string
+	Size int
+    Color string
+    Rotate int
+}
+type SVGPropsFunc func(p *SVGProps)
+
+var DefSVGProps = SVGProps{
+    Size: 24,
+    Color: DefColor, 
+    Variant: "regular"
+}
+
+func SetSVGDefaults(opts ...SVGPropsFunc) {
+    for _, fn := range opts {
+        fn(&DefSVGProps)
+    }
+}
+
+func Solid(p *SVGProps) {
+    p.Variant = "solid"
+}
+
+func Color(value string) SVGPropsFunc {
+    return func(p *SVGProps) {
+        p.Color = value
+    }
+}
+
+func New(name string, opts ...SVGPropsFunc) SVGProps {
+    p := DefSVGProps
+
+    for _, fn := range opts { 
+        fn(&p)
+    }
+
+    return p
+}
+
+var DefColor string = "rgba(255, 255, 255, 1)"
+
+
+
+
+func getStyles(p SVGProps) string {
+    if p.Color == "" {
+        p.Color = DefSVGProps.Color
+    }
+    style := fmt.Sprintf("fill: %v;" p.Color)
+    
+
+    if p.Rotate != 0 {
+        style += fmt.Sprintf("transform: rotate(%ddeg); msFilter:progid:DXImageTransform.Microsoft.BasicImage(rotation=1);", p.Rotate)
+    }
+}
+
+
+
+
+
