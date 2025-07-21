@@ -100,7 +100,7 @@ func generateSVG(name string, family string, props Props) (string, error) {
 
 	strokeWidth := props.StrokeWidth
 	if strokeWidth == "" {
-		strokeWidth = "2" // Default stroke width
+		strokeWidth = "1" // Default stroke width
 	}
 
 	// Construct the final SVG string.
@@ -109,7 +109,7 @@ func generateSVG(name string, family string, props Props) (string, error) {
 	if props.ID != "" {
 		res += " id=" + props.ID
 	}
-	res += fmt.Sprintf(" xmlns=\"http://www.w3.org/2000/svg\" width=\"%d\" height=\"%d\" viewBox=\"0 0 24 24\" style=\"fill:%s; stroke:%s; stroke-width:%s; stroke-linecap:round; stroke-linejoin:round;\" class=\"%s\" data-lucide=\"icon\">%s</svg>",
+	res += fmt.Sprintf(" xmlns=\"http://www.w3.org/2000/svg\" width=\"%d\" height=\"%d\" viewBox=\"0 0 24 24\" style=\"fill:%s; stroke:%s; stroke-width:%s;\" class=\"%s\" data-lucide=\"icon\">%s</svg>",
 		size, size, fill, stroke, strokeWidth, props.Class, content)
 
 	// fmt.Println(res)
