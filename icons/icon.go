@@ -51,6 +51,7 @@ func Icon(name string, family ...string) func(...Props) templ.Component {
 				_, err = w.Write([]byte(svg))
 				return err
 			}
+
 			// Not cached, generate it
 			// The actual generation now happens once and is cached.
 			generatedSvg, err := generateSVG(name, iconFamily, p) // p (Props) is passed to generateSVG
@@ -58,6 +59,7 @@ func Icon(name string, family ...string) func(...Props) templ.Component {
 				// Provide more context in the error message
 				return fmt.Errorf("failed to generate svg for icon '%s' with props %+v: %w", name, p, err)
 			}
+			log.Println(generatedSvg)
 
 			iconMutex.Lock()
 			iconContents[cacheKey] = generatedSvg
