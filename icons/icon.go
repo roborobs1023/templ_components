@@ -2,9 +2,15 @@ package icons
 
 import (
 	"context"
+	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"log"
+	"os"
+	"path/filepath"
+	"regexp"
+	"strings"
 	"sync"
 
 	"github.com/a-h/templ"
@@ -17,7 +23,7 @@ var (
 )
 
 const (
-	BX     = "bxicons"
+	BOX    = "bxicons"
 	LUCIDE = "lucide"
 	CUSTOM = "custom"
 )
@@ -33,8 +39,18 @@ type Props struct {
 	Class       string
 }
 
+type IconFunc func(...Props) templ.Component
+
+type SVGMap map[string]string
+
+var DefSvgProps = Props{
+	Size:  24,
+	Color: "currentColor",
+	Solid: false,
+}
+
 // Icon returns a function that generates a templ.Component for the specified icon name.
-func Icon(name string, family ...string) func(...Props) templ.Component {
+func Icon(name string, family ...string) IconFunc {
 	var iconFamily = "bxicons"
 
 	if len(family) > 0 {
@@ -113,7 +129,7 @@ func generateSVG(name string, family string, props Props) (string, error) {
 		fill = "none" // Default fill
 	}
 
-	if props.Solid {
+	if props.Solid || strings.Contains(name, "bxs") {
 		fill = stroke
 	}
 
@@ -131,14 +147,13 @@ func generateSVG(name string, family string, props Props) (string, error) {
 }
 
 // getIconContent retrieves the raw inner SVG content for a given icon name.
-// It reads from the pre-generated internalSvgData map from icon_data.go.
+// It reads from the pre-generated SvgData map from bxIconSvgData.go, and lucideIconSvgData.go.
 func getIconContent(name string, family string) (string, error) {
 	content := ""
 	exists := false
 	switch family {
-	case BX:
+	case BOX:
 		content, exists = bxIconSvgData[name]
-
 	case LUCIDE:
 		content, exists = lucideSvgData[name]
 	case CUSTOM:
@@ -152,8 +167,103 @@ func getIconContent(name string, family string) (string, error) {
 	return content, nil
 }
 
-var customSvgData = map[string]string{}
+var customSvgData = SVGMap{}
 
 func AddSvg(name, content string) {
 	customSvgData[name] = content
+}
+
+// GetCustomSvgsFromFolder scans the selected folder for .svg files
+func GetCustomSvgsFromFolder(folderPath string) (SVGMap, error) {
+	// Initialize the map
+	customSvgData = make(SVGMap)
+
+	// Define the regex to find all <path> tags (including self-closing and multi-line)
+	// (?s) makes '.' match newlines, allowing multi-line matches.
+	regex := regexp.MustCompile(`(?s)<path[^>]*?>.*?</path>|<path[^>]*?/>`)
+
+	// Read all files from the specified folder
+	files, err := os.ReadDir(folderPath)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read directory %s: %w", folderPath, err)
+	}
+
+	// Loop through each file to build the map entries
+	for _, file := range files {
+		if file.IsDir() {
+			continue // Skip directories
+		}
+
+		if !strings.HasSuffix(strings.ToLower(file.Name()), ".svg") {
+			fmt.Printf("Skipping non-SVG file: %s\n", file.Name())
+			continue // Skip this file if it's not an SVG
+		}
+
+		filePath := filepath.Join(folderPath, file.Name())
+		key := strings.TrimSuffix(file.Name(), filepath.Ext(file.Name())) // The key is the filename WITHOUT the extension
+
+		// Read the entire file content
+		content, err := os.ReadFile(filePath)
+		if err != nil {
+			fmt.Printf("Warning: Could not read file %s: %v\n", filePath, err)
+			continue // Skip this file and proceed to the next
+		}
+
+		// Find all matches of the regex in the content
+		matches := regex.FindAllString(string(content), -1)
+
+		// Join all found <path> tags together into a single string
+		extractedPaths := strings.Join(matches, "")
+
+		// Add the entry to the map
+		customSvgData[key] = extractedPaths
+	}
+
+	return customSvgData, nil
+}
+
+// WriteIconMapToFile writes a given SVGMap to a file in JSON format.
+// The data will be indented for readability.
+func WriteIconMapToFile(filePath string) error {
+	jsonData, err := json.MarshalIndent(customSvgData, "", "  ")
+	if err != nil {
+		return fmt.Errorf("failed to marshal map to JSON: %w", err)
+	}
+
+	err = os.WriteFile(filePath, jsonData, 0644)
+	if err != nil {
+		return fmt.Errorf("failed to write JSON data to file %s: %w", filePath, err)
+	}
+
+	return nil
+}
+
+// ReadIconMapFromFile reads a JSON file from the given path and unmarshals it
+// into a SVGMap.
+func ReadIconMapFromFile(filePath string) (SVGMap, error) {
+	// Read the entire file content
+	jsonData, err := os.ReadFile(filePath)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read file %s: %w", filePath, err)
+	}
+
+	// Declare a variable of the target type (SVGMap)
+	var loadedMap SVGMap
+
+	// Unmarshal the JSON data into the map
+	err = json.Unmarshal(jsonData, &loadedMap)
+	if err != nil {
+		return nil, fmt.Errorf("failed to unmarshal JSON data from %s: %w", filePath, err)
+	}
+
+	return loadedMap, nil
+}
+
+func SetCustomSVGMap(svgs SVGMap) error {
+	if len(svgs) < 1 {
+		return errors.New("svgs is empty. Please provide a map of SVG Files using ReadIconMapFromFile or GetCustomSVGsFromFolder")
+	}
+	customSvgData = svgs
+
+	return nil
 }
