@@ -24,10 +24,9 @@ templ head(p headOpts) {
 		@js.HTMX()
 		{ children... }
 		if p.themeColor != "" {
-			<style>
-				{ p.themeColor }
-			</style>
+			@styles.ThemeCSS(p.themeColor)
 		}
+		
 	</head>
 }
 
