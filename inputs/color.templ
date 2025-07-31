@@ -1,4 +1,24 @@
 package inputs
 
-templ colorInput() {
+import (
+    "fmt"
+)
+
+templ colorInput(p InputOpts) {
+    <label class={ "tc-label", templ.KV("tc-vertical", p.vertical) }>
+		<span>{ p.Label }</span>
+		<input
+			id={ p.ID }
+			type="color" 
+			name={ p.Name }
+			value={ p.Value }
+			class={ "tc-input", p.Class } 
+			required?={ p.Required }
+			disabled?={ p.Disabled }
+			readonly?={ p.Readonly }
+			autofocus?={ p.Autofocus }
+			form={ p.Form }
+			tabindex={ fmt.Sprintf("%d", p.Tabindex) }
+		/>
+	</label>
 }

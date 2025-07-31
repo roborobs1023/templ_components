@@ -8,7 +8,11 @@ package templ_components
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-import "github.com/roborobs1023/templ_components/js"
+import (
+	"github.com/roborobs1023/templ_components/js"
+	"github.com/roborobs1023/templ_components/styles"
+	"log"
+)
 
 func head(p headOpts) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
@@ -38,7 +42,7 @@ func head(p headOpts) templ.Component {
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(p.title)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `main_elements.templ`, Line: 8, Col: 18}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `main_elements.templ`, Line: 12, Col: 18}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
@@ -48,7 +52,7 @@ func head(p headOpts) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		if o.icon != "" {
+		if p.icon != "" {
 			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<link rel=\"icon\" href=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -56,7 +60,7 @@ func head(p headOpts) templ.Component {
 			var templ_7745c5c3_Var3 string
 			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(p.icon)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `main_elements.templ`, Line: 11, Col: 33}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `main_elements.templ`, Line: 15, Col: 33}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
@@ -93,7 +97,13 @@ func head(p headOpts) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</head>")
+		if p.themeColor != "" {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<style>\r\n\t\t\t\t{ p.themeColor }\r\n\t\t\t</style>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "</head>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -102,9 +112,10 @@ func head(p headOpts) templ.Component {
 }
 
 type headOpts struct {
-	title    string
-	icon     templ.SafeURL
-	templCSS bool
+	title      string
+	icon       templ.SafeURL
+	templCSS   bool
+	themeColor string
 }
 
 type HeadOptsFunc func(p *headOpts)
@@ -112,6 +123,17 @@ type HeadOptsFunc func(p *headOpts)
 func FavIcon(url string) HeadOptsFunc {
 	return func(p *headOpts) {
 		p.icon = templ.URL(url)
+	}
+}
+
+func ThemeColor(color string) HeadOptsFunc {
+	return func(p *headOpts) {
+		t, err := styles.GenerateThemeCSSVariables(color)
+
+		if err != nil {
+			log.Println(err.Error())
+		}
+		p.themeColor = t
 	}
 }
 

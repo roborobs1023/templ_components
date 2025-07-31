@@ -49,9 +49,22 @@ var DefSvgProps = Props{
 	Solid: false,
 }
 
+var defFamily = BOX
+
+func SetDefIconFamily(family string) error {
+	switch family {
+	case BOX, LUCIDE:
+		defFamily = family
+		return nil
+	default:
+
+		return errors.New("invalid icon family, using bxicons")
+	}
+}
+
 // Icon returns a function that generates a templ.Component for the specified icon name.
 func Icon(name string, family ...string) IconFunc {
-	var iconFamily = "bxicons"
+	var iconFamily = defFamily
 
 	if len(family) > 0 {
 		iconFamily = family[0]

@@ -1,4 +1,52 @@
 package inputs
 
-templ emailInput() {
+import (
+    "fmt"
+    "strings"
+    )
+
+templ emailInput(p InputOpts) {
+    {{
+		// Construct the regex pattern for accepted domains
+		// Example: "(user@domain1\\.com|user@domain2\\.net)"
+		// We need to escape dots in the domain names for regex
+		var domainPatterns []string
+		for _, domain := range p.AcceptedDomains {
+			escapedDomain := strings.ReplaceAll(domain, ".", "\\.")
+			domainPatterns = append(domainPatterns, escapedDomain)
+		}
+		domainRegex := ""
+		if len(domainPatterns) > 0 {
+			domainRegex = "@(" + strings.Join(domainPatterns, "|") + ")"
+		}
+
+		// Full email regex (simplified for example, you might want a more robust one)
+		// This one allows letters, numbers, dots, and hyphens before the @
+		// and then appends the domain pattern.
+		// If no accepted domains, it will just be a basic email pattern.
+		emailPattern := `^[a-zA-Z0-9.!#$%&'*+\/=?^_` + "`" + `{|}~-]+` + domainRegex + `$`
+	}}
+	<label class={ "tc-label", templ.KV("tc-vertical", p.vertical) }>
+		<span>{ p.Label }</span>
+		<input
+			id={ p.ID }
+			type="email"
+			name={ p.Name }
+			value={ p.Value }
+			placeholder={ p.Placeholder }
+			class={ "tc-input tc-input", p.Class }
+			required?={ p.Required }
+			disabled?={ p.Disabled }
+			readonly?={ p.Readonly }
+			autofocus?={ p.Autofocus }
+			form={ p.Form }
+			autocomplete={ p.Autocomplete }
+			spellcheck?={ p.Spellcheck }
+			tabindex={ fmt.Sprintf("%d", p.Tabindex) }
+			
+			pattern={ emailPattern }
+			
+			title={ fmt.Sprintf("Please enter a valid email address from one of the following domains: %s", strings.Join(p.AcceptedDomains, ", ")) }
+		/>
+	</label>
 }

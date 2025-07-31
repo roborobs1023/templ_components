@@ -1,13 +1,17 @@
 package templ_components
 
-import "github.com/roborobs1023/templ_components/js"
+import (
+	"github.com/roborobs1023/templ_components/js"
+	"github.com/roborobs1023/templ_components/styles"
+	"log"
+	)
 
 templ head(p headOpts) {
 	<head>
 		<meta charset="utf-8"/>
 		<title>{ p.title }</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no"/>
-		if o.icon != "" {
+		if p.icon != "" {
 			<link rel="icon" href={ p.icon } type="image/x-icon"/>
 		}
 		<link href="https://cdn.jsdelivr.net/gh/roborobs1023/templ_components@master/styles/tc-style.css" rel="stylesheet"/>
@@ -19,6 +23,11 @@ templ head(p headOpts) {
 		@js.AlpineJS()
 		@js.HTMX()
 		{ children... }
+		if p.themeColor != "" {
+			<style>
+				{ p.themeColor }
+			</style>
+		}
 	</head>
 }
 
@@ -26,6 +35,7 @@ type headOpts struct {
 	title    string
 	icon     templ.SafeURL
 	templCSS bool
+	themeColor string
 }
 
 type HeadOptsFunc func(p *headOpts)
@@ -33,6 +43,17 @@ type HeadOptsFunc func(p *headOpts)
 func FavIcon(url string) HeadOptsFunc {
 	return func(p *headOpts) {
 		p.icon = templ.URL(url)
+	}
+}
+
+func ThemeColor(color string) HeadOptsFunc {
+	return func(p *headOpts) {
+		t, err := styles.GenerateThemeCSSVariables(color)
+
+		if err != nil {
+			log.Println(err.Error())
+		}
+		p.themeColor = t
 	}
 }
 

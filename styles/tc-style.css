@@ -23,8 +23,8 @@ form {
 }
 
 .tc-input:disabled {
-    color: var(--clr-disabled, lightgrey);
-    background-color: var(--clr-disabled-bg, grey);
+    color: var(--clr-disabled, --gray-light, lightgrey);
+    background-color: var(--clr-disabled-bg, --gray-medium, grey);
 }
 
 .tc-form-group {
@@ -285,9 +285,127 @@ form {
 }
 
 .full-width {
+
     grid-column: 1/-1;
 }
 
 fieldset {
     border: none;
+}
+
+.tc-alert {
+    position: relative;
+    padding: 1rem;
+    width: 100%;
+
+    & >svg {
+       position: absolute;
+       top: 1rem;
+       left: 1rem; 
+    }
+
+    & >svg+div {
+        transform: translateY(-3px); 
+    }
+
+    & :has(svg) {
+        padding-left: 2.75rem;
+    }
+}
+
+.tc-border-destructive {
+    border: 1px solid red;
+}
+
+.tc-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.375rem;
+    padding-inline: 0.125rem;
+    padding-block: 0.5rem;
+    border-width: 1px;
+    width: fit-content;
+    white-space: nowrap;
+    
+    & >svg {
+        pointer-events: none;
+    }
+
+}
+
+.tc-bg-destructive {
+    background-color: var(--clr-distructive, rgb(153, 54, 54));
+}
+
+
+.tc-badge[aria-invalid="true"] {
+    border-color:red;
+    color: red;
+}
+
+
+
+.tc-border {
+    border-width: 1px;
+}
+
+.overflow-auto {
+    overflow: auto;
+}
+
+.overflow-x-auto {
+    overflow-x: auto;
+}
+
+.overflow-y-auto {
+    overflow-y: auto;
+}
+
+.overflow-hidden {
+    overflow: hidden;
+}
+
+.overflow-x-hidden {
+    overflow-x: hidden;
+}
+
+.overflow-y-hidden {
+    overflow-y: hidden;
+}
+
+.overflow-clip {
+    overflow: clip;
+}
+
+.overflow-x-clip {
+    overflow-x: clip;
+}
+
+.overflow-y-clip {
+    overflow-y: clip;
+}
+
+.overflow-visible {
+    overflow: visible;
+}
+
+.overflow-x-visible {
+    overflow-x: visible;
+}
+
+.overflow-y-visible {
+    overflow-y: visible;
+}
+
+.overflow-scroll {
+    overflow: scroll;
+}
+
+.overflow-x-scroll {
+    overflow-x: scroll;
+}
+
+.overflow-y-scroll {
+    overflow-y: scroll;
 }

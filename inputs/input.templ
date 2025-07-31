@@ -103,13 +103,15 @@ func New(label, name string, inputType string, opts ...InputOptsFunc) templ.Comp
 		return dateInput(p)
 	case DATETIME:
 		return dateTimeInput(p)
-	// case EMAIL:
+	case EMAIL:
+		return emailInput(p)
 	// case FILE:
 	case HIDDEN:
 		return hiddenInput(p)
 	case MONTH:
 		return monthInput(p)
-	// case NEWPASSWORD:
+	case NEWPASSWORD:
+		return newPasswordInput(p.PasswordReq, p.Attrs)
 	// case NUMBER:
 	case PASSWORD:
 		return passwordInput(p.Attrs)

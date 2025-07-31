@@ -1,0 +1,52 @@
+package badge
+
+import (
+    "github.com/roborobs1023/templ_components/styles"
+)
+
+type Variant string
+
+const (
+	VariantDefault     Variant = "default"
+	VariantSecondary   Variant = "secondary"
+	VariantDestructive Variant = "destructive"
+	VariantOutline     Variant = "outline"
+)
+
+type Props struct {
+	ID         string
+	Class      string
+	Attributes templ.Attributes
+	Variant    Variant
+}
+
+templ New(props ...Props) {
+    {{ var p Props }}
+	if len(props) > 0 {
+		{{ p = props[0] }}
+	}
+
+    <span
+        if p.ID != "" {
+			id={ p.ID }
+		}
+        style={ styles.Transition("color", "box-shadow")}
+        class={ "tc-badge overflow-hidden", p.variantClasses(), p.Class }
+        { p.Attributes... }
+    >
+    { children... }
+    </span>
+}
+
+
+func (p Props) variantClasses() string {
+    switch p.Variant {
+        case VariantDestructive:
+        return "tc-border-transparent tc-bg-destructive text-white"
+        case VariantOutline:
+        return "tc-text-foreground "
+    default:
+        return ""
+    
+    }
+}
