@@ -1,0 +1,50 @@
+:root {
+    --fs-xs: clamp(0.75rem, 0.6818rem + 0.2424vw, 0.9rem);
+    --fs-sm: clamp(0.8333rem, 0.7576rem + 0.303vw, 1rem);
+    --fs-md: clamp(1rem, 0.9091rem + 0.3636vw, 1.2rem);
+    --fs-lg: clamp(1.2rem, 1.0909rem + 0.4848vw, 1.44rem);
+    --fs-xl: clamp(1.44rem, 1.3091rem + 0.606vw, 1.728rem);
+    --fs-2xl: clamp(1.728rem, 1.5709rem + 0.7272vw, 2.074rem);
+    --fs-3xl: clamp(2.074rem, 1.8818rem + 0.909vw, 2.488rem);
+    --fs-4xl: clamp(2.488rem, 2.2424rem + 1.0908vw, 2.986rem);
+    --fs-5xl: clamp(2.986rem, 2.6818rem + 1.3332vw, 3.583rem);
+
+    font-size: var(--fs-md);
+}
+
+
+.fs-xs {
+    font-size: var(--fs-xs);
+}
+
+.fs-sm {
+    font-size: var(--fs-sm);
+}
+
+.fs-md {
+    font-size: var(--fs-md);
+}
+
+.fs-lg {
+    font-size: var(--fs-lg);
+}
+
+.fs-xl {
+    font-size: var(--fs-xl);
+}
+
+.fs-2xl {
+    font-size: var(--fs-2xl);
+}
+
+.fs-3xl {
+    font-size: var(--fs-3xl);
+}
+
+.fs-4xl {
+    font-size: var(--fs-4xl);
+}
+
+.fs-5xl {
+    font-size: var(--fs-5xl);
+}

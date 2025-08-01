@@ -297,20 +297,20 @@ fieldset {
     position: relative;
     padding: 1rem;
     width: 100%;
+}
 
-    & >svg {
-       position: absolute;
-       top: 1rem;
-       left: 1rem; 
-    }
+.tc-alert > svg {
+    position: absolute;
+        top: 1rem;
+        left: 1rem;
+}
 
-    & >svg+div {
-        transform: translateY(-3px); 
-    }
+.tc-alert >svg+div {
+transform: translateY(-3px);
+}
 
-    & :has(svg) {
-        padding-left: 2.75rem;
-    }
+.tc-alert :has(svg) {
+    padding-left: 2.75rem;
 }
 
 .tc-border-destructive {
@@ -328,10 +328,11 @@ fieldset {
     width: fit-content;
     white-space: nowrap;
     
-    & >svg {
-        pointer-events: none;
-    }
+   
+}
 
+.tc-badge >svg {
+    pointer-events: none;
 }
 
 .tc-bg-destructive {

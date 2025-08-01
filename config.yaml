@@ -1,0 +1,15 @@
+file-dirs:
+  assets: web\assets
+  css: web\assets\css
+  javascript: web\assets\js
+  uploads: uploads
+  static: static
+theme:
+  colors: 
+    primary: "#0c1a2e"
+    secondary: "#545454"
+    accent: "#666666"
+  typography:
+    font-family: [ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"]
+  
+
