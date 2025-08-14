@@ -2,7 +2,7 @@ module github.com/roborobs1023/templ_components
 
 go 1.24.0
 
-require github.com/a-h/templ v0.3.906
+require github.com/a-h/templ v0.3.924
 
 require github.com/lucasb-eyer/go-colorful v1.2.0
 
@@ -10,6 +10,7 @@ require github.com/tdewolff/parse/v2 v2.8.1
 
 require (
 	dario.cat/mergo v1.0.1 // indirect
+	github.com/a-h/parse v0.0.0-20250122154542-74294addb73e // indirect
 	github.com/fatih/color v1.16.0 // indirect
 	github.com/goccy/go-yaml v1.12.0 // indirect
 	github.com/gookit/color v1.5.4 // indirect

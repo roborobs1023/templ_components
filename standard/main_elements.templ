@@ -13,7 +13,7 @@ templ head(p headOpts) {
 		if p.icon != "" {
 			<link rel="icon" href={ p.icon } type="image/x-icon"/>
 		}
-		<link href="/assets/css/combined.css" rel="stylesheet"/>
+		<link href="/assets/css/tc-styles.css" rel="stylesheet"/>
 		<script defer href="https://cdn.jsdelivr.net/gh/roborobs1023/templ_components@master/js/index.js"></script>
 		if p.templCSS {
 			<link href="/assets/css/output.css" rel="stylesheet"/>
@@ -22,8 +22,6 @@ templ head(p headOpts) {
 		@js.AlpineJS()
 		@js.HTMX()
 		{ children... }
-		
-		
 	</head>
 }
 
@@ -57,4 +55,9 @@ func NewHead(title string, opts ...HeadOptsFunc) templ.Component {
 	}
 
 	return head(p)
+}
+
+
+templ CustomStyleSheet(url string) {
+	<link rel="stylesheet" href={ url }/>
 }
