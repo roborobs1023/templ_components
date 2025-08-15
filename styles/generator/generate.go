@@ -150,6 +150,10 @@ type GeneratorProps struct {
 
 var cssDir = "web/assets/css"
 
+func SetCSSDir(dir string) {
+	cssDir = dir
+}
+
 func (cg *CSSBuilder) Build(p GeneratorProps) (status, error) {
 
 	if p.OutputDir != "" {
@@ -236,7 +240,6 @@ type SizeProperty string
 const (
 	PADDING SizeProperty = "padding"
 	MARGIN  SizeProperty = "margin"
-	INSET   SizeProperty = "inset"
 )
 
 func (s SizeProperty) String() string {

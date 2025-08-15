@@ -7,8 +7,9 @@ import (
 
 var backgroundProperties = map[string]CSSPropertyMap{
 	"background-attachment": {
-		"fixed": "fixed",
-		"local": "scroll",
+		"fixed":  "fixed",
+		"local":  "local",
+		"scroll": "scroll",
 	},
 	"background-clip": {
 		"border":  "border-box",
